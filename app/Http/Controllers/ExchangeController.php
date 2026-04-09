@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Exchange;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ExchangeController extends Controller
 {
@@ -12,7 +13,9 @@ class ExchangeController extends Controller
      */
     public function index()
     {
-        //
+        $exchanges = Exchange::all();
+
+        return Inertia::render('CreateExchange', ["exchanges" => $exchanges]);
     }
 
     /**
