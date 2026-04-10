@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::update('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->enum('role', ['teacher', 'student', 'admin'])->default('student');
             $table->string('image')->nullable();
             $table->string('surname')->nullable();
