@@ -21,7 +21,7 @@ const colors = [
 
 
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6">
+  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
 
       <div class="mb-6 text-center">
@@ -32,7 +32,7 @@ const colors = [
       </div>
 
       <!-- Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
         <Form :action="store()" method="post" class="space-y-5">
           <!-- Títol -->
           <div>
@@ -47,7 +47,7 @@ const colors = [
             </label>
             <div class="flex gap-2 mt-2 flex-wrap">
               <button v-for="color in colors" :key="color" type="button" @click="selectedColor = color"
-                class="w-6 h-6 rounded-full border-2 transition" :style="{ backgroundColor: color }"
+                class="w-8 h-8 sm:w-6 sm:h-6 rounded-full border-2 transition" :style="{ backgroundColor: color }"
                 :class="selectedColor === color ? 'border-gray-900 dark:border-white scale-110' : 'border-transparent opacity-80'"></button>
             </div>
             <input type="hidden" name="color" :value="selectedColor" />
@@ -67,7 +67,7 @@ const colors = [
           </div>
 
           <!-- Dates -->
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Comença</label>
               <input type="datetime-local" name="start_date"
@@ -82,12 +82,12 @@ const colors = [
           </div>
 
           <!-- Botó enviar -->
-          <div class="flex gap-3 pt-2">
-            <button type="button" class="w-1/2 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
+          <div class="flex gap-3 pt-2 w-full">
+            <button type="button" class="flex-1 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
               Cancel·lar
             </button>
             <button type="submit"
-              class="w-1/2 py-2 rounded-md bg-teal-400 hover:bg-teal-300 text-sm font-semibold">
+              class="flex-1 py-2 rounded-md bg-teal-400 hover:bg-teal-300 text-sm font-semibold">
               Crear Intercanvi
             </button>
           </div>
