@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('exchanges', function (Blueprint $table) {
-            $table->string('titol');
-            $table->string('color', 7);
+            $table->string('title')->nullable();
+            $table->string('color', 7)->nullable();
         });
     }
 
@@ -23,7 +23,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('exchanges', function (Blueprint $table) {
-            //
+                if (Schema::hasColumn('exchanges', 'title')) {
+                $table->dropColumn('title');
+            }
+
+            if (Schema::hasColumn('exchanges', 'color')) {
+                $table->dropColumn('color');
+            }
         });
     }
 };
