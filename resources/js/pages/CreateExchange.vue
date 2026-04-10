@@ -21,7 +21,7 @@ const colors = [
 
 
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6">
     <div class="w-full max-w-md">
 
       <div class="mb-6 text-center">
@@ -32,58 +32,62 @@ const colors = [
       </div>
 
       <!-- Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 space-y-4">
-        <Form :action="store()" method="post" class="space-y-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <Form :action="store()" method="post" class="space-y-5">
           <!-- Títol -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Títol</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Títol</label>
             <input type="text" name="title" placeholder="Escandinavia-2026"
-              class="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+              class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
           <!-- Selector de color -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Color
             </label>
-            <div class="flex gap-2">
+            <div class="flex gap-2 mt-2 flex-wrap">
               <button v-for="color in colors" :key="color" type="button" @click="selectedColor = color"
-                class="w-6 h-6 rounded-full border-2" :style="{ backgroundColor: color }"
-                :class="selectedColor === color ? 'border-black dark:border-white' : 'border-transparent'"></button>
+                class="w-6 h-6 rounded-full border-2 transition" :style="{ backgroundColor: color }"
+                :class="selectedColor === color ? 'border-gray-900 dark:border-white scale-110' : 'border-transparent opacity-80'"></button>
             </div>
             <input type="hidden" name="color" :value="selectedColor" />
           </div>
           <!-- Origen -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Origen</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Origen</label>
             <input type="text" name="origin" placeholder="Figueres"
-              class="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+              class=" mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
 
           <!-- Desti -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Desti</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Desti</label>
             <input type="text" name="destiny" placeholder="Italia"
-              class="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+              class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
 
-          <!-- Data d'inici -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data d'inici</label>
-            <input type="datetime-local" name="start_date"
-              class="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
-          </div>
+          <!-- Dates -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Comença</label>
+              <input type="datetime-local" name="start_date"
+                class="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+            </div>
 
-          <!-- Data de fi -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data de fi</label>
-            <input type="datetime-local" name="end_date"
-              class="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+            <div>
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Acaba</label>
+              <input type="datetime-local" name="end_date"
+                class="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700  bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+            </div>
           </div>
 
           <!-- Botó enviar -->
-          <div>
+          <div class="flex gap-3 pt-2">
+            <button type="button" class="w-1/2 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
+              Cancel·lar
+            </button>
             <button type="submit"
-              class="w-full py-2 rounded-md bg-teal-400 hover:bg-teal-300 font-semibold shadow cursor-pointer">
+              class="w-1/2 py-2 rounded-md bg-teal-400 hover:bg-teal-300 text-sm font-semibold">
               Crear Intercanvi
             </button>
           </div>
