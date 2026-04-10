@@ -6,6 +6,7 @@ use App\Models\Exchange;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateExchangeRequest;
+use App\Actions\Exchanges\CreateExchangeAction;
 
 class ExchangeController extends Controller
 {
@@ -30,18 +31,14 @@ class ExchangeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateExchangeRequest $request)
+    public function store(CreateExchangeRequest $request, CreateExchangeAction $createExchange)
     {
         $exchange = new Exchange();
 
         $validated = $request->validated();
+        $createExchange->execute($validated, auth()->id());
 
-        $exchange->origin = $validated['origin'];
-        $exchange->destiny = $validated['destiny'];
-        $exchange->start_date = $validated['start_date'];
-        $exchange->end_date = $validated['end_date'] ?? null;
-
-        $exchange->save();
+        Inertia::flash(['message' => 'Exchange creat correctament']);
         return to_route('exchange.index');
     }
 
