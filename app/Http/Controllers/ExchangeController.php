@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exchange;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\CreateExchangeRequest;
 
 class ExchangeController extends Controller
 {
@@ -29,16 +30,11 @@ class ExchangeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateExchangeRequest $request)
     {
         $exchange = new Exchange();
 
-        $validated = $request->validate([
-        'origin' => 'required|string|max:255',
-        'destiny' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-         ]);
+        $validated = $request->validated();
 
         $exchange->origin = $validated['origin'];
         $exchange->destiny = $validated['destiny'];
