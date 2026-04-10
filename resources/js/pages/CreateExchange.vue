@@ -6,7 +6,7 @@ import { store } from '@/routes/exchange';
 <template>
   <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
-      <!-- Título -->
+        
       <div class="mb-6 text-center">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -16,7 +16,7 @@ import { store } from '@/routes/exchange';
 
       <!-- Card -->
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 space-y-4">
-        <form class="space-y-4">
+        <Form :action="store()" method="post" class="space-y-4">
           <!-- Origen -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Origen</label>
@@ -66,7 +66,7 @@ import { store } from '@/routes/exchange';
               Crear Intercanvi
             </button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   </div>

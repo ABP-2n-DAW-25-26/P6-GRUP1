@@ -31,7 +31,22 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $exchange = new Exchange();
+
+        $validated = $request->validate([
+        'origin' => 'required|string|max:255',
+        'destiny' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'nullable|date|after_or_equal:start_date',
+         ]);
+
+        $exchange->origin = $validated['origin'];
+        $exchange->destiny = $validated['destiny'];
+        $exchange->start_date = $validated['start_date'];
+        $exchange->end_date = $validated['end_date'] ?? null;
+
+        $exchange->save();
+        return to_route('exchange.index');
     }
 
     /**
