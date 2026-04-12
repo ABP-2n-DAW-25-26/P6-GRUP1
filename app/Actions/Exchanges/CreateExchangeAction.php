@@ -14,6 +14,8 @@ class CreateExchangeAction
         $exchange->destiny = $data['destiny'];
         $exchange->start_date = $data['start_date'];
         $exchange->end_date = $data['end_date'] ?? null;
+        $exchange->title = $data['title']; 
+        $exchange->color = $data['color']; 
 
         $exchange->save();
 
