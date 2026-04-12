@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { MonitorCog, Menu, ChevronDown, Pencil, Trash, Users } from 'lucide-vue-next';
+import { Menu, ChevronDown, Pencil, Trash, Users, MonitorCog } from 'lucide-vue-next';
 import { ref } from 'vue';
+import PageTopBar from '@/components/PageTopBar.vue';
 
 interface Exchange {
     id: number;
@@ -70,15 +71,8 @@ const groupedActivities = () => {
 
 <template>
     <div class="min-h-screen bg-gray-100">
-        <div class="flex flex-row items-center justify-between border-b border-gray-200 bg-white p-4">
-            <div class="flex flex-row items-center">
-                <div class="mr-3 rounded-lg bg-[#D8D9DC] p-2 text-[#5D5D5D]">
-                    <MonitorCog :size="24" />
-                </div>
-                <h1 class="text-xl font-bold text-[#181D1B]">Intercanvi</h1>
-            </div>
-            <Menu :size="24" class="cursor-pointer text-gray-600" />
-        </div>
+        <PageTopBar :icon="MonitorCog" title="Intercanvi">
+        </PageTopBar>
 
         <div class="border-b border-gray-200 bg-white p-4">
             <div v-if="currentExchange" class="flex flex-row items-center justify-between">
