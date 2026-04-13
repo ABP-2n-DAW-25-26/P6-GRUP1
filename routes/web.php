@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\GuidedActivityController;
 
 use App\Http\Controllers\activityController;
 
@@ -19,5 +20,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::resource('exchange', ExchangeController::class);
+Route::resource('guidedactivity', GuidedActivityController::class);
 
 require __DIR__.'/settings.php';
