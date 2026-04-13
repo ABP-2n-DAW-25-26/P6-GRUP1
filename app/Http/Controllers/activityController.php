@@ -10,7 +10,7 @@ class activityController extends Controller
 {
     public function index()
     {
-        return Inertia::render('admin/AdminActivity', [
+        return Inertia::render('teacher/TeacherActivity', [
             'activity' => Activity::with('exchange.users')->get(),
         ]);
    }
