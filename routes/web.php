@@ -15,8 +15,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-// ADMIN
-    Route::resource('activity', activityController::class);
+// PROFE
+    Route::resource('profesor/intercanvi/{id}', activityController::class);
 
 
 Route::resource('exchange', ExchangeController::class);

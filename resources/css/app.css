@@ -59,6 +59,28 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    /* Hipatia custom colors */
+    --hipatia-primary:        var(--hipatia-primary);
+    --hipatia-primary-light:  var(--hipatia-primary-light);
+    --hipatia-primary-dark:   var(--hipatia-primary-dark);
+    --hipatia-secondary:      var(--hipatia-secondary);
+    --hipatia-secondary-light:var(--hipatia-secondary-light);
+    --hipatia-secondary-dark: var(--hipatia-secondary-dark);
+    --hipatia-red:            var(--hipatia-red);
+    --hipatia-red-light:      var(--hipatia-red-light);
+    --hipatia-blue:           var(--hipatia-blue);
+    --hipatia-blue-light:     var(--hipatia-blue-light);
+    --hipatia-yellow:         var(--hipatia-yellow);
+    --hipatia-yellow-light:   var(--hipatia-yellow-light);
+    --hipatia-green:          var(--hipatia-green);
+    --hipatia-green-light:    var(--hipatia-green-light);
+    --hipatia-text:           var(--hipatia-text);
+    --hipatia-text-dim:       var(--hipatia-text-dim);
+    --hipatia-bg:             var(--hipatia-bg);
+    --hipatia-surface:        var(--hipatia-surface);
+    --hipatia-border:         var(--hipatia-border);
+    --hipatia-focus:          var(--hipatia-focus);
 }
 
 /*
@@ -124,6 +146,28 @@
     --sidebar-border: hsl(0 0% 91%);
     --sidebar-ring: hsl(217.2 91.2% 59.8%);
     --sidebar: hsl(0 0% 98%);
+
+    /* Hipatia palette */
+    --hipatia-primary:         #4DBCAD;
+    --hipatia-primary-light:   #7ED6CB;
+    --hipatia-primary-dark:    #2E9080;
+    --hipatia-secondary:       #DEFFFB;
+    --hipatia-secondary-light: #F0FFFD;
+    --hipatia-secondary-dark:  #A8EDE5;
+    --hipatia-red:             #E84C4C;
+    --hipatia-red-light:       #F48C8C;
+    --hipatia-blue:            #3A82F7;
+    --hipatia-blue-light:      #82B4FA;
+    --hipatia-yellow:          #F5C842;
+    --hipatia-yellow-light:    #FAE08A;
+    --hipatia-green:           #3DBD6E;
+    --hipatia-green-light:     #82D9A8;
+    --hipatia-text:            #1A1A1A;
+    --hipatia-text-dim:        #5A5A6A;
+    --hipatia-bg:              #FFFFFF;
+    --hipatia-surface:         #F5FFFE;
+    --hipatia-border:          #C2EDE8;
+    --hipatia-focus:           #4DBCAD;
 }
 
 .dark {
