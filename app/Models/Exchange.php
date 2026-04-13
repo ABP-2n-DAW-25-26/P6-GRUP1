@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Exchange extends Model
 {
-    protected $fillable = ['id','origin','start_date','end_date','destiny',];
+    protected $fillable = ['id','origin','start_date','end_date','destiny', 'title', 'color'];
 
     public function users(): BelongsToMany
     {
