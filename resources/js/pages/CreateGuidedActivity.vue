@@ -31,7 +31,7 @@ import { ref } from 'vue';
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Descripció</label>
             <textarea name="description" rows="3" placeholder="Explica l'activitat aquí..."
-              class="mt-1 w-full px-3 py-2 text-sm border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700 dark:text-white"></textarea>
+              class="mt-1 w-full px-3 py-2 text-sm border rounded-md bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-400 dark:border-gray-700 dark:text-white"></textarea>
           </div>
 
           <!-- Dates -->
