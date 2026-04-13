@@ -14,6 +14,11 @@ class CreateGuidedActivityAction
         $guidedActivity->description = $data['description']; 
         $guidedActivity->start_date = $data['start_date'];
         $guidedActivity->end_date = $data['end_date'] ?? null;
+
+        if (!empty($data['file'])) {
+            $path = $data['file']->store('guidedActivity', 'public');
+            $guidedActivity->file = Storage::url($path);
+        }
         
         $guidedActivity->save();
 

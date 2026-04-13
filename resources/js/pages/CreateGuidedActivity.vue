@@ -48,6 +48,17 @@ import { ref } from 'vue';
                 class="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700  bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
           </div>
+          <!-- Imatge -->
+          <div>
+            <label class="mb-3 block text-sm font-medium text-gray-900 dark:text-gray-300">
+              Imatge
+            </label>
+            <label
+              class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-teal-300 rounded-2xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition">
+              <span class="text-sm text-gray-600">Fes clic per pujar una imatge</span>
+              <input type="file" name="file" placeholder="" class="hidden" />
+            </label>
+          </div>
 
           <!-- Botó enviar -->
           <div class="flex gap-3 pt-2 w-full">

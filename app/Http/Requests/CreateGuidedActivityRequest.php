@@ -27,6 +27,7 @@ class CreateGuidedActivityRequest extends FormRequest
         'description' => 'required|string|max:255',
         'start_date' => 'required|date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
+        'file' => 'nullable|image|max:2048',
         ];
     }
 }
