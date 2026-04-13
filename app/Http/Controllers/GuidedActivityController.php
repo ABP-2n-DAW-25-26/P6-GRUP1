@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\GuidedActivity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\CreateGuidedActivityRequest;
+use App\Actions\Activities\CreateGuidedActivityAction;
 
 class GuidedActivityController extends Controller
 {
@@ -30,9 +32,15 @@ class GuidedActivityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateGuidedActivityRequest $request, CreateGuidedActivityAction $createGuidedActivity)
     {
-        //
+        $guidedActivity = new GuidedActivity();
+
+        $validated = $request->validated();
+        $createGuidedActivity->execute($validated, auth()->id());
+
+        Inertia::flash(['message' => 'Activitat guiada creada correctament']);
+        return to_route('guidedactivity.index');
     }
 
     /**
