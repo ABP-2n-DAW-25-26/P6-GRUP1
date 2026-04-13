@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu, ChevronDown, Pencil, Trash, Users, MonitorCog } from 'lucide-vue-next';
+import { ChevronDown, Pencil, Trash, Users, MonitorCog } from 'lucide-vue-next';
 import { ref } from 'vue';
 import PageTopBar from '@/components/PageTopBar.vue';
 
@@ -31,10 +31,22 @@ const props = defineProps<{
 }>();
 
 const expandedId = ref<number | null>(null);
+const isCreateMenuOpen = ref(false);
 
 const toggleExpand = (id: number) => {
     expandedId.value = expandedId.value === id ? null : id;
 };
+
+const toggleCreateMenu = () => {
+    isCreateMenuOpen.value = !isCreateMenuOpen.value;
+};
+
+const createOptions = [
+    { label: 'Visita guiada', path: '/admin/activity/create/guidedTour' },
+    { label: 'Anunci', path: '/admin/activity/create/announcement' },
+    { label: "Punt d'interes", path: '/admin/activity/create/interestPoint' },
+    { label: 'Gimcana', path: '/admin/activity/create/gimcana'},
+];
 
 const formatTime = (value: string | null | undefined): string => {
     if (!value) return '--:--';
@@ -74,59 +86,102 @@ const groupedActivities = () => {
         <PageTopBar :icon="MonitorCog" title="Intercanvi">
         </PageTopBar>
 
-        <div class="border-b border-gray-200 bg-white p-4">
-            <div v-if="currentExchange" class="flex flex-row items-center justify-between">
-                <div class="text-center">
-                    <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.start_date) }}</p>
-                </div>
-                <div class="flex flex-row items-center">
-                    <p class="text-md font-bold text-gray-800">{{ currentExchange.origin }}</p>
-                    <div class="ml-1 mt-1 flex items-center rounded-md bg-gray-200 p-1">
-                        <Users :size="16" class="mr-1 text-gray-600" />
-                        <span class="text-xs text-gray-500">{{ currentExchange.users?.length ?? 0 }}</span>
+        <div class="mx-auto max-w-4xl mt-3 ml-3 mr-3  bg-gray-100">
+            <div class="border-b border-gray-200 rounded-t-xl bg-white p-4">
+                <div v-if="currentExchange" class="flex flex-row items-center justify-between">
+                    <div class="text-center">
+                        <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.start_date) }}</p>
+                    </div>
+                    <div class="flex flex-row items-center">
+                        <p class="text-md font-bold text-gray-800">{{ currentExchange.origin }}</p>
+                        <div class="ml-1 mt-1 flex items-center rounded-md bg-gray-200 p-1">
+                            <Users :size="16" class="mr-1 text-gray-600" />
+                            <span class="text-xs text-gray-500">{{ currentExchange.users?.length ?? 0 }}</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.end_date) }}</p>
                     </div>
                 </div>
-                <div class="text-center">
-                    <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.end_date) }}</p>
+                <div v-else class="text-center text-sm text-gray-500">
+                    No n'hi han intercanvis
                 </div>
             </div>
-            <div v-else class="text-center text-sm text-gray-500">
-                No n'hi han intercanvis
-            </div>
-        </div>
 
-        <div class="bg-white p-4">
-            <div v-if="activity.length === 0" class="py-8 text-center">
-                <p class="text-gray-500">No hay actividades</p>
-            </div>
-            <div v-else>
-                <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
-                    <p class="mb-3 text-sm font-bold text-gray-700">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
-                    <div class="space-y-2">
-                        <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border border-gray-200">
-                            <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
-                                <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" />
-                                <div class="flex-1 flex flex-col items-start px-2">
-                                    <p class="text-xs text-gray-600">{{ formatTime(activity.start_date) }} - {{ formatTime(activity.end_date) }}</p>
+            <div class="bg-white p-4 rounded-b-xl">
+                <div v-if="activity.length === 0" class="py-8 text-center">
+                    <p class="text-gray-500">No hay actividades</p>
+                </div>
+                <div v-else>
+                    <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
+                        <p class="mb-3 text-sm font-bold text-gray-700">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
+                        <div class="space-y-2">
+                            <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border border-gray-200">
+                                <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
+                                    <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" />
+                                    <div class="flex-1 flex flex-col items-start px-2">
+                                        <p class="text-xs text-gray-600">{{ formatTime(activity.start_date) }} - {{ formatTime(activity.end_date) }}</p>
+                                    </div>
+                                    <p class="flex-1 text-sm font-semibold text-gray-800">{{ activity.title }}</p>
+                                    <div class="flex items-center gap-2">
+                                        <button class="rounded p-1 hover:bg-gray-100">
+                                            <Pencil :size="16" class="text-gray-600" />
+                                        </button>
+                                        <button class="rounded p-1 hover:bg-gray-100">
+                                            <Trash :size="16" class="text-gray-600" />
+                                        </button>
+                                    </div>
+                                </button>
+                                <div v-show="expandedId === activity.id" class="border-t border-gray-200 bg-gray-50 px-3 py-2">
+                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ activity.description || '—' }}</p>
+                                    <p class="mt-1 text-xs text-gray-600"><strong>Tipo:</strong> {{ activity.type }}</p>
                                 </div>
-                                <p class="flex-1 text-sm font-semibold text-gray-800">{{ activity.title }}</p>
-                                <div class="flex items-center gap-2">
-                                    <button class="rounded p-1 hover:bg-gray-100" @click.stop>
-                                        <Pencil :size="16" class="text-gray-600" />
-                                    </button>
-                                    <button class="rounded p-1 hover:bg-gray-100" @click.stop>
-                                        <Trash :size="16" class="text-gray-600" />
-                                    </button>
-                                </div>
-                            </button>
-                            <div v-show="expandedId === activity.id" class="border-t border-gray-200 bg-gray-50 px-3 py-2">
-                                <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ activity.description || '—' }}</p>
-                                <p class="mt-1 text-xs text-gray-600"><strong>Tipo:</strong> {{ activity.type }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3">
+            <div v-show="isCreateMenuOpen" class="flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-xl transform-3d transition-all">
+                <a v-for="option in createOptions" :key="option.path" :href="option.path"
+                    class="min-w-40 rounded-xl px-4 py-3 text-left text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                    {{ option.label }}
+                </a>
+            </div>
+
+            <button type="button" @click="toggleCreateMenu" :aria-expanded="isCreateMenuOpen"
+                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-[#4DBCAD] text-white shadow-lg transition-all', { 'is-open': isCreateMenuOpen }]">
+                <span class="create-toggle-line create-toggle-line-vertical"></span>
+                <span class="create-toggle-line create-toggle-line-horizontal"></span>
+            </button>
+        </div>
     </div>
 </template>
+<style>
+.create-toggle {
+        position: relative;
+}
+
+.create-toggle-line {
+        position: absolute;
+        background: white;
+        border-radius: 9999px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.create-toggle-line-vertical {
+        width: 3px;
+        height: 22px;
+}
+
+.create-toggle-line-horizontal {
+        width: 22px;
+        height: 3px;
+}
+
+.create-toggle.is-open .create-toggle-line-vertical {
+        opacity: 0;
+        transform: scaleY(0.2);
+}
+</style>

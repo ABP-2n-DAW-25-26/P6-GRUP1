@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-    <header class="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header class="sticky top-0 z-40">
         <div class="flex items-center justify-between p-4">
             <div class="flex items-center">
                 <div class="mr-3 rounded-lg bg-[#D8D9DC] p-2 text-[#5D5D5D]">
@@ -23,7 +23,6 @@ defineProps<{
             <button>
                 <Menu :size="20" class="text-gray-600" />
             </button>
-
         </div>
     </header>
 </template>
