@@ -3,6 +3,16 @@ import { Link, Form } from '@inertiajs/vue3';
 import { store } from '@/routes/guidedactivity';
 import { ref } from 'vue';
 
+
+// Guarda la imatge seleccionada
+const preview = ref<string | null>(null)
+const handleFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files[0]) {
+    // Crear URL temporal 
+    preview.value = URL.createObjectURL(input.files[0])
+  }
+}
 </script>
 
 
@@ -56,8 +66,12 @@ import { ref } from 'vue';
             <label
               class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-teal-300 rounded-2xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition">
               <span class="text-sm text-gray-600">Fes clic per pujar una imatge</span>
-              <input type="file" name="file" placeholder="" class="hidden" />
+              <input type="file" name="file" placeholder="" class="hidden" @change="handleFileChange" />
             </label>
+            <!-- Preview -->
+            <div v-if="preview" class="mt-4">
+              <img :src="preview" alt="Preview" class="w-full h-40 object-contain rounded-xl" />
+            </div>
           </div>
 
           <!-- Botó enviar -->
