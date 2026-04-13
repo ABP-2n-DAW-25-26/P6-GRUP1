@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-// Profesor
+// PROFE
     Route::resource('profesor/intercanvi/{id}', activityController::class);
 
 
