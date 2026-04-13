@@ -42,10 +42,10 @@ const toggleCreateMenu = () => {
 };
 
 const createOptions = [
-    'Visita guiada',
-    'Anunci',
-    "Punt d'interes",
-    'Gimcana',
+    { label: 'Visita guiada', path: '/admin/activity/create/guidedTour' },
+    { label: 'Anunci', path: '/admin/activity/create/announcement' },
+    { label: "Punt d'interes", path: '/admin/activity/create/interestPoint' },
+    { label: 'Gimcana', path: '/admin/activity/create/gimcana'},
 ];
 
 const formatTime = (value: string | null | undefined): string => {
@@ -144,14 +144,14 @@ const groupedActivities = () => {
         </div>
         <div class="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3">
             <div v-show="isCreateMenuOpen" class="flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-xl transform-3d transition-all">
-                <button v-for="option in createOptions" :key="option" type="button" 
+                <a v-for="option in createOptions" :key="option.path" :href="option.path"
                     class="min-w-40 rounded-xl px-4 py-3 text-left text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-                    {{ option }}
-                </button>
+                    {{ option.label }}
+                </a>
             </div>
 
             <button type="button" @click="toggleCreateMenu" :aria-expanded="isCreateMenuOpen"
-                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-green-400 text-white shadow-lg transition-all hover:bg-green-500', { 'is-open': isCreateMenuOpen }]">
+                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-[#4DBCAD] text-white shadow-lg transition-all', { 'is-open': isCreateMenuOpen }]">
                 <span class="create-toggle-line create-toggle-line-vertical"></span>
                 <span class="create-toggle-line create-toggle-line-horizontal"></span>
             </button>
