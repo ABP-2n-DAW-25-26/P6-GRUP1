@@ -11,17 +11,17 @@ defineProps<{
     <header class="sticky bg-hipatia-primary top-0 z-40">
         <div class="flex items-center justify-between p-4">
             <div class="flex items-center">
-                <div class="mr-3 rounded-lg bg-[#D8D9DC] p-2 text-[#5D5D5D]">
+                <div class="mr-3 rounded-lg bg-hp-bg-icon p-2 text-hp-icon">
                     <component :is="icon" :size="24" />
                 </div>
-                <h1 class="text-xl font-bold text-[#181D1B]">{{ title }}</h1>
+                <h1 class="text-xl font-bold text-hp-text">{{ title }}</h1>
             </div>
 
             <div class="flex items-center gap-2">
                 <slot name="actions" />
             </div>
             <button>
-                <Menu :size="20" class="text-gray-600" />
+                <Menu :size="20" class="text-hp-icon" />
             </button>
         </div>
     </header>
