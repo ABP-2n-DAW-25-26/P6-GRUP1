@@ -45,11 +45,10 @@ class GuidedActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GuidedActivity $guidedActivity)
+    public function show(GuidedActivity $guidedactivity)
     {
-        $guidedActivity = GuidedActivity::all();
-        //dd($guidedActivity);
-        return Inertia::render('Activities/ShowGuidedActivity', ["guidedActivity" => $guidedActivity]);
+        
+        return Inertia::render('Activities/ShowGuidedActivity', ["guidedactivity" => $guidedactivity]);
     }
 
     /**
