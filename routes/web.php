@@ -16,7 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // PROFE
-    Route::resource('profesor/intercanvi/{id}', activityController::class);
+Route::get('profesor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
 
 
 Route::resource('exchange', ExchangeController::class);

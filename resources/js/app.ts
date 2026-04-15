@@ -19,6 +19,7 @@ createInertiaApp({
                 return [AppLayout, SettingsLayout];
             default:
                 return;
+
         }
     },
     progress: {

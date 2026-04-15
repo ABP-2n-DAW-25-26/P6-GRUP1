@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-    <header class="sticky top-0 z-40">
+    <header class="sticky bg-hipatia-primary top-0 z-40">
         <div class="flex items-center justify-between p-4">
             <div class="flex items-center">
                 <div class="mr-3 rounded-lg bg-[#D8D9DC] p-2 text-[#5D5D5D]">
