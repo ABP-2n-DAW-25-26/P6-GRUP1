@@ -15,10 +15,7 @@ class GuidedActivityController extends Controller
      */
     public function index()
     {
-        $guidedActivity = GuidedActivity::all();
-
-        return Inertia::render('CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
-
+        //
     }
 
     /**
@@ -26,7 +23,9 @@ class GuidedActivityController extends Controller
      */
     public function create()
     {
-        //
+        $guidedActivity = GuidedActivity::all();
+
+        return Inertia::render('Activities/CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
     }
 
     /**
@@ -48,7 +47,9 @@ class GuidedActivityController extends Controller
      */
     public function show(GuidedActivity $guidedActivity)
     {
-        //
+        $guidedActivity = GuidedActivity::all();
+        //dd($guidedActivity);
+        return Inertia::render('Activities/ShowGuidedActivity', ["guidedActivity" => $guidedActivity]);
     }
 
     /**
