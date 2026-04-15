@@ -15,11 +15,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-// PROFE
-    Route::resource('profesor/intercanvi/{id}', activityController::class);
-
-
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);
+
+// PROFE
+Route::resource('professor/intercanvi/{id}', activityController::class);
 
 require __DIR__.'/settings.php';
