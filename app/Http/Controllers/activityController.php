@@ -8,10 +8,12 @@ use Inertia\Inertia;
 
 class activityController extends Controller
 {
-    public function index()
+    public function index(int $id)
     {
-        return Inertia::render('teacher/TeacherActivity/{id}', [
-            'activity' => Activity::with('exchange.users')->get(),
+        return Inertia::render('teacher/TeacherActivity', [
+            'activity' => Activity::with('exchange.users')
+                ->where('exchange_id', $id)
+                ->get(),
         ]);
    }
 

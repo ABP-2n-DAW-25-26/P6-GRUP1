@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\addUsersController;
 
 use App\Http\Controllers\activityController;
 
@@ -14,6 +15,13 @@ Route::inertia('/', 'Welcome', [
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
+Route::resource('users', addUsersController::class);
+Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
+
+// PROFE
+Route::get('professor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
+Route::get('professor/afegir', [addUsersController::class, 'create'])->name('teacher.add');
+
 
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);

@@ -62,10 +62,22 @@ const formatDate = (value: string | null | undefined): string => {
     if (Number.isNaN(date.getTime())) return value;
 
     return date.toLocaleDateString('ca-ES', {
+        weekday: 'long',
         day: 'numeric',
-        month: 'short',
-        year: 'numeric',
+        month: 'long',
     });
+    };
+
+    const parseDateForDisplay = (value: string | null | undefined): { weekday: string; date: string } => {
+        if (!value) return { weekday: '—', date: '' };
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return { weekday: '—', date: '' };
+
+        const weekday = date.toLocaleDateString('ca-ES', { weekday: 'long' });
+        const dateStr = date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' });
+
+        return { weekday, date: dateStr };
 };
 
 const currentExchange = props.activity[0]?.exchange ?? null;
@@ -82,39 +94,41 @@ const groupedActivities = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-hp-bg">
         <PageTopBar :icon="MonitorCog" title="Intercanvi">
         </PageTopBar>
 
-        <div class="mx-auto max-w-4xl mt-3 ml-3 mr-3  bg-gray-100">
-            <div class="border-b border-gray-200 rounded-t-xl bg-white p-4">
+        <div class="mx-auto max-w-4xl mt-3 ml-3 mr-3 ">
+            <div class="border-b border-gray-200 bg-hp-bg-card rounded-t-xl p-4">
                 <div v-if="currentExchange" class="flex flex-row items-center justify-between">
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.start_date) }}</p>
+                        <p class="text-xs font-semibold text-hp-text">{{ parseDateForDisplay(currentExchange.start_date).weekday }}</p>
+                        <p class="text-[10px] text-hp-text-dim">{{ parseDateForDisplay(currentExchange.start_date).date }}</p>
                     </div>
                     <div class="flex flex-row items-center">
-                        <p class="text-md font-bold text-gray-800">{{ currentExchange.origin }}</p>
-                        <div class="ml-1 mt-1 flex items-center rounded-md bg-gray-200 p-1">
-                            <Users :size="16" class="mr-1 text-gray-600" />
-                            <span class="text-xs text-gray-500">{{ currentExchange.users?.length ?? 0 }}</span>
+                        <p class="text-md font-bold text-hp-text">{{ currentExchange.origin }}</p>
+                        <div class="ml-1 mt-1 flex items-center rounded-md bg-hp-bg-icon p-1">
+                            <Users :size="16" class="mr-1 text-hp-icon" />
+                            <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
                         </div>
                     </div>
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-gray-800">{{ formatDate(currentExchange.end_date) }}</p>
+                        <p class="text-xs font-semibold text-hp-text">{{ parseDateForDisplay(currentExchange.end_date).weekday }}</p>
+                        <p class="text-[10px] text-hp-text-dim">{{ parseDateForDisplay(currentExchange.end_date).date }}</p>
                     </div>
                 </div>
-                <div v-else class="text-center text-sm text-gray-500">
+                <div v-else class="text-center text-sm text-hp-text-dim">
                     No n'hi han intercanvis
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-b-xl">
+            <div class="bg-hp-bg-card p-4 rounded-b-xl">
                 <div v-if="activity.length === 0" class="py-8 text-center">
                     <p class="text-gray-500">No hay actividades</p>
                 </div>
                 <div v-else>
                     <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
-                        <p class="mb-3 text-sm font-bold text-gray-700">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
+                        <p class="mb-3 text-sm font-bold text-hp-text">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
                         <div class="space-y-2">
                             <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border border-gray-200">
                                 <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
