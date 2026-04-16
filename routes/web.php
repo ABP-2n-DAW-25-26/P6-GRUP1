@@ -19,8 +19,8 @@ Route::resource('users', addUsersController::class);
 Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
 
 // PROFE
-Route::get('professor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
-Route::get('professor/afegir', [addUsersController::class, 'create'])->name('teacher.add');
+Route::get('exchange/{id}', [activityController::class, 'index'])->name('activity.index');
+Route::get('exchange/{id}/addUser', [addUsersController::class, 'create'])->name('teacher.add');
 
 
 Route::resource('exchange', ExchangeController::class);
