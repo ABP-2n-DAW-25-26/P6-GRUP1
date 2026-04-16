@@ -87,7 +87,7 @@ class addUsersController extends Controller
                         'surname' => $lastName,
                         'email' => $email,
                         'role' => 'student',
-                        'password' => bcrypt('password123'),
+                        'password' => bcrypt(random_bytes(16)),
                     ]
                 );
             } catch (\Exception $e) {
