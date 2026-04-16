@@ -2,36 +2,121 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\GuidedActivity;
+use App\Models\Exchange;
+use Carbon\Carbon;
 
 class GuidedActivitiesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        /** =========================
+         * ITALIA (3 actividades)
+         * ========================= */
+        $italy = Exchange::find(1);
+        $startItaly = Carbon::parse($italy->start_date);
+
         GuidedActivity::create([
-            'title' => 'Ruta daliniana pel centre de Figueres',
-            'description' => 'Descobreix els espais més emblemàtics de Figueres relacionats amb Salvador Dalí, recorrent els carrers del centre històric i la seva influència artística.',
-            'start_date' => now()->addDays(2)->setTime(10, 0),
-            'end_date' => now()->addDays(2)->setTime(12, 0),
+            'title' => 'Visita al Duomo de Milà',
+            'description' => 'Descobreix la catedral més emblemàtica de Milà.',
+            'exchange_id' => 1,
+            'start_date' => $startItaly->copy()->addDays(1)->setTime(10, 0),
+            'end_date' => $startItaly->copy()->addDays(1)->setTime(12, 0),
         ]);
 
         GuidedActivity::create([
-            'title' => 'Visita al Teatre-Museu Dalí',
-            'description' => 'Una experiència immersiva dins del món surrealista de Dalí al seu museu més icònic, amb explicacions guiades sobre les seves obres més importants.',
-            'start_date' => now()->addDays(4)->setTime(11, 0),
-            'end_date' => now()->addDays(4)->setTime(13, 0),
+            'title' => 'Galeria Vittorio Emanuele II',
+            'description' => 'Passeig per una galeria històrica i comercial.',
+            'exchange_id' => 1,
+            'start_date' => $startItaly->copy()->addDays(3)->setTime(11, 0),
+            'end_date' => $startItaly->copy()->addDays(3)->setTime(13, 0),
         ]);
 
         GuidedActivity::create([
-            'title' => 'Passeig cultural pel castell de Sant Ferran',
-            'description' => 'Explora una de les fortaleses més grans d’Europa i descobreix la història militar i patrimonial de Figueres amb una visita guiada.',
-            'start_date' => now()->addDays(7)->setTime(16, 0),
-            'end_date' => now()->addDays(7)->setTime(18, 0),
+            'title' => 'Castell Sforzesco',
+            'description' => 'Explora aquest castell i els seus museus.',
+            'exchange_id' => 1,
+            'start_date' => $startItaly->copy()->addDays(5)->setTime(16, 0),
+            'end_date' => $startItaly->copy()->addDays(5)->setTime(18, 0),
+        ]);
+
+
+        /** =========================
+         * ALEMANIA (3 actividades)
+         * ========================= */
+        $germany = Exchange::find(2);
+        $startGermany = Carbon::parse($germany->start_date);
+
+        GuidedActivity::create([
+            'title' => 'Mur de Berlín',
+            'description' => 'Història i recorregut pel mur.',
+            'exchange_id' => 2,
+            'start_date' => $startGermany->copy()->addDays(1)->setTime(10, 0),
+            'end_date' => $startGermany->copy()->addDays(1)->setTime(12, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Reichstag',
+            'description' => 'Visita al parlament alemany.',
+            'exchange_id' => 2,
+            'start_date' => $startGermany->copy()->addDays(3)->setTime(11, 0),
+            'end_date' => $startGermany->copy()->addDays(3)->setTime(13, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Porta de Brandenburg',
+            'description' => 'Símbol icònic de Berlín.',
+            'exchange_id' => 2,
+            'start_date' => $startGermany->copy()->addDays(5)->setTime(16, 0),
+            'end_date' => $startGermany->copy()->addDays(5)->setTime(18, 0),
+        ]);
+
+
+        /** =========================
+         * FRANCIA (5 actividades en 1 semana)
+         * ========================= */
+        $france = Exchange::find(3);
+        $startFrance = Carbon::parse($france->start_date);
+
+        GuidedActivity::create([
+            'title' => 'Torre Eiffel',
+            'description' => 'Visita guiada al monument més famós.',
+            'exchange_id' => 3,
+            'start_date' => $startFrance->copy()->addDays(0)->setTime(10, 0),
+            'end_date' => $startFrance->copy()->addDays(0)->setTime(12, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Passeig pel Sena',
+            'description' => 'Ruta en vaixell per París.',
+            'exchange_id' => 3,
+            'start_date' => $startFrance->copy()->addDays(1)->setTime(11, 0),
+            'end_date' => $startFrance->copy()->addDays(1)->setTime(13, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Museu del Louvre',
+            'description' => 'Exploració artística guiada.',
+            'exchange_id' => 3,
+            'start_date' => $startFrance->copy()->addDays(2)->setTime(10, 0),
+            'end_date' => $startFrance->copy()->addDays(2)->setTime(13, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Montmartre',
+            'description' => 'Barri bohemi i cultural.',
+            'exchange_id' => 3,
+            'start_date' => $startFrance->copy()->addDays(3)->setTime(16, 0),
+            'end_date' => $startFrance->copy()->addDays(3)->setTime(18, 0),
+        ]);
+
+        GuidedActivity::create([
+            'title' => 'Versalles',
+            'description' => 'Excursió al palau.',
+            'exchange_id' => 3,
+            'start_date' => $startFrance->copy()->addDays(4)->setTime(9, 0),
+            'end_date' => $startFrance->copy()->addDays(4)->setTime(14, 0),
         ]);
     }
 }
