@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import { dashboard } from '@/routes';
+import { schedule } from '@/routes';
 
 defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Dashboard',
-                href: dashboard(),
+                title: 'Schedule',
+                href: schedule(),
             },
         ],
     },
@@ -16,7 +16,7 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Agenda" />
 
     <div
         class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
