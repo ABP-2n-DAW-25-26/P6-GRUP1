@@ -4,10 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\addUsersController;
-
-use App\Http\Controllers\activityController;
+use App\Http\Controllers\ActivityController;
 
 Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -20,14 +19,14 @@ Route::resource('users', addUsersController::class);
 Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
 
 // PROFE
-Route::get('professor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
-Route::get('professor/afegir', [addUsersController::class, 'create'])->name('teacher.add');
+Route::get('exchange/{id}', [ActivityController::class, 'index'])->name('activity.index');
+Route::get('exchange/{id}/addUser', [AddUsersController::class, 'create'])->name('teacher.add');
 
 
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);
 
 // PROFE
-Route::resource('professor/intercanvi/{id}', activityController::class);
+Route::resource('professor/intercanvi/{id}', ActivityController::class);
 
 require __DIR__.'/settings.php';
