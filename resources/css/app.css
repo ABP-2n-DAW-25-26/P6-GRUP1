@@ -61,26 +61,29 @@
     --color-sidebar-ring: var(--sidebar-ring);
 
     /* Hipatia custom colors */
-    --hipatia-primary:        var(--hipatia-primary);
-    --hipatia-primary-light:  var(--hipatia-primary-light);
-    --hipatia-primary-dark:   var(--hipatia-primary-dark);
-    --hipatia-secondary:      var(--hipatia-secondary);
-    --hipatia-secondary-light:var(--hipatia-secondary-light);
-    --hipatia-secondary-dark: var(--hipatia-secondary-dark);
-    --hipatia-red:            var(--hipatia-red);
-    --hipatia-red-light:      var(--hipatia-red-light);
-    --hipatia-blue:           var(--hipatia-blue);
-    --hipatia-blue-light:     var(--hipatia-blue-light);
-    --hipatia-yellow:         var(--hipatia-yellow);
-    --hipatia-yellow-light:   var(--hipatia-yellow-light);
-    --hipatia-green:          var(--hipatia-green);
-    --hipatia-green-light:    var(--hipatia-green-light);
-    --hipatia-text:           var(--hipatia-text);
-    --hipatia-text-dim:       var(--hipatia-text-dim);
-    --hipatia-bg:             var(--hipatia-bg);
-    --hipatia-surface:        var(--hipatia-surface);
-    --hipatia-border:         var(--hipatia-border);
-    --hipatia-focus:          var(--hipatia-focus);
+    --color-hp-primary:        var(--hp-primary);
+    --color-hp-primary-light:  var(--hp-primary-light);
+    --color-hp-primary-dark:   var(--hp-primary-dark);
+    --color-hp-secondary:      var(--hp-secondary);
+    --color-hp-secondary-light:var(--hp-secondary-light);
+    --color-hp-secondary-dark: var(--hp-secondary-dark);
+    --color-hp-red:            var(--hp-red);
+    --color-hp-red-light:      var(--hp-red-light);
+    --color-hp-blue:           var(--hp-blue);
+    --color-hp-blue-light:     var(--hp-blue-light);
+    --color-hp-yellow:         var(--hp-yellow);
+    --color-hp-yellow-light:   var(--hp-yellow-light);
+    --color-hp-green:          var(--hp-green);
+    --color-hp-green-light:    var(--hp-green-light);
+    --color-hp-text:           var(--hp-text);
+    --color-hp-text-dim:       var(--hp-text-dim);
+    --color-hp-bg:             var(--hp-bg);
+    --color-hp-surface:        var(--hp-surface);
+    --color-hp-border:         var(--hp-border);
+    --color-hp-focus:          var(--hp-focus);
+    --color-hp-icon:           var(--hp-icon);
+    --color-hp-bg-icon:        var(--hp-bg-icon);
+    --color-hp-bg-card:        var(--hp-bg-card);
 }
 
 /*
@@ -148,26 +151,29 @@
     --sidebar: hsl(0 0% 98%);
 
     /* Hipatia palette */
-    --hipatia-primary:         #4DBCAD;
-    --hipatia-primary-light:   #7ED6CB;
-    --hipatia-primary-dark:    #2E9080;
-    --hipatia-secondary:       #DEFFFB;
-    --hipatia-secondary-light: #F0FFFD;
-    --hipatia-secondary-dark:  #A8EDE5;
-    --hipatia-red:             #E84C4C;
-    --hipatia-red-light:       #F48C8C;
-    --hipatia-blue:            #3A82F7;
-    --hipatia-blue-light:      #82B4FA;
-    --hipatia-yellow:          #F5C842;
-    --hipatia-yellow-light:    #FAE08A;
-    --hipatia-green:           #3DBD6E;
-    --hipatia-green-light:     #82D9A8;
-    --hipatia-text:            #1A1A1A;
-    --hipatia-text-dim:        #5A5A6A;
-    --hipatia-bg:              #FFFFFF;
-    --hipatia-surface:         #F5FFFE;
-    --hipatia-border:          #C2EDE8;
-    --hipatia-focus:           #4DBCAD;
+    --hp-primary:         #4DBCAD;
+    --hp-primary-light:   #7ED6CB;
+    --hp-primary-dark:    #2E9080;
+    --hp-secondary:       #DEFFFB;
+    --hp-secondary-light: #F0FFFD;
+    --hp-secondary-dark:  #A8EDE5;
+    --hp-red:             #E84C4C;
+    --hp-red-light:       #F48C8C;
+    --hp-blue:            #3A82F7;
+    --hp-blue-light:      #82B4FA;
+    --hp-yellow:          #F5C842;
+    --hp-yellow-light:    #FAE08A;
+    --hp-green:           #3DBD6E;
+    --hp-green-light:     #82D9A8;
+    --hp-text:            #1A1A1A;
+    --hp-text-dim:        #5A5A6A;
+    --hp-bg-card:         #FFFFFF;
+    --hp-surface:         #F5FFFE;
+    --hp-border:          #C2EDE8;
+    --hp-focus:           #4DBCAD;
+    --hp-icon:            #5D5D5D;
+    --hp-bg-icon:         #D8D9DC;
+    --hp-bg:              #EDF1F7;
 }
 
 .dark {
