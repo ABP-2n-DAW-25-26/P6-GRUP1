@@ -77,7 +77,7 @@ const props = defineProps<{
                         Parades
                     </h2>
                     <div v-for="location in guidedactivity.locations" :key="location.id"
-                        class="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        class="mb-4 p-3  dark:bg-gray-700 rounded-lg">
                         <h3 class="font-semibold text-gray-800 dark:text-white">
                             {{ location.name }}
                         </h3>
@@ -86,7 +86,7 @@ const props = defineProps<{
                             {{ location.description }}
                         </p>
 
-                        <p class="flex items-center justify-between text-sm text-gray-500 border-t pt-2">
+                        <p class="flex items-center justify-between border border-solid border-gray-200  rounded-lg px-3 py-2 text-sm text-gray-600">
                             Lat: {{ location.latitude }} | Lng: {{ location.longitude }}
                         </p>
                     </div>
