@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\addUsersController;
 
 use App\Http\Controllers\activityController;
@@ -13,7 +14,7 @@ Route::inertia('/', 'Welcome', [
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
 });
 Route::resource('users', addUsersController::class);
 Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
