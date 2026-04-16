@@ -15,8 +15,6 @@ Route::inertia('/', 'Welcome', [
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
 });
-Route::resource('users', addUsersController::class);
-Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
 
 // PROFE
 Route::get('exchange/{id}', [ActivityController::class, 'index'])->name('activity.index');
