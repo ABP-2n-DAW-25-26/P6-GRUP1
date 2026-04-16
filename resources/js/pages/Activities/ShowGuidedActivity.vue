@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
 
+interface Locations {
+    id: number;
+    name: string;
+    description: string | null;
+    latitude: string | null;
+    longitude: string | null;
+    activity_id: number | null;
+}
+
 interface GuidedActivity {
     id: number;
     title: string;
@@ -12,18 +21,7 @@ interface GuidedActivity {
     type: string | null;
     file: string | null;
     exchange_id: number | null;
-}
-interface Locations {
-    id: number;
-    name: string;
-    description: string | null;
-    statement: string | null;
-    answer: string | null;
-    latitude: string | null;
-    longitude: string | null;
-    type: string | null;
-    file: string | null;
-    activity_id: number | null;
+    locations: Locations[];
 }
 
 const props = defineProps<{
@@ -75,9 +73,23 @@ const props = defineProps<{
                 </div>
                 <!-- Parades -->
                 <div>
-                    <h2 class="font-semibold text-gray-800 dark:text-white">
-                        {{ locations.description }}
+                    <h2 class="font-semibold text-teal-500 dark:text-white">
+                        Parades
                     </h2>
+                    <div v-for="location in guidedactivity.locations" :key="location.id"
+                        class="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">
+                            {{ location.name }}
+                        </h3>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-300">
+                            {{ location.description }}
+                        </p>
+
+                        <p class="flex items-center justify-between text-sm text-gray-500 border-t pt-2">
+                            Lat: {{ location.latitude }} | Lng: {{ location.longitude }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
