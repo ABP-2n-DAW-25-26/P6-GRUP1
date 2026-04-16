@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuidedActivity;
+use App\Models\Locations;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateGuidedActivityRequest;
@@ -15,10 +16,7 @@ class GuidedActivityController extends Controller
      */
     public function index()
     {
-        $guidedActivity = GuidedActivity::all();
-
-        return Inertia::render('CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
-
+        //
     }
 
     /**
@@ -26,7 +24,9 @@ class GuidedActivityController extends Controller
      */
     public function create()
     {
-        //
+        $guidedActivity = GuidedActivity::all();
+
+        return Inertia::render('Activities/CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
     }
 
     /**
@@ -46,9 +46,10 @@ class GuidedActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GuidedActivity $guidedActivity)
+    public function show(GuidedActivity $guidedactivity)
     {
-        //
+        $guidedactivity = GuidedActivity::with('locations')->findOrFail($guidedactivity->id);
+        return Inertia::render('Activities/ShowGuidedActivity', ["guidedactivity" => $guidedactivity]);
     }
 
     /**
