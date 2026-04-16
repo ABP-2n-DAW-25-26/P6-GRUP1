@@ -19,11 +19,14 @@ Route::resource('users', addUsersController::class);
 Route::post('import-csv', [addUsersController::class, 'importCSV'])->name('users.import');
 
 // PROFE
-Route::get('profesor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
+Route::get('professor/intercanvi/{id}', [activityController::class, 'index'])->name('activity.index');
 Route::get('professor/afegir', [addUsersController::class, 'create'])->name('teacher.add');
 
 
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);
+
+// PROFE
+Route::resource('professor/intercanvi/{id}', activityController::class);
 
 require __DIR__.'/settings.php';
