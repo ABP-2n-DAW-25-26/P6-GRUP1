@@ -8,8 +8,7 @@ class addUsersController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return inertia('users/Index', ['users' => $users]);
+
     }
 
     public function create()

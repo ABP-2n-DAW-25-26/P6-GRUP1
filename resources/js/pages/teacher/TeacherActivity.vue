@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Trash, Users, MonitorCog } from 'lucide-vue-next';
+import { ChevronDown, Pencil, Trash, Users, MonitorCog, UserPlus } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { router } from '@inertiajs/vue3';
 import PageTopBar from '@/components/PageTopBar.vue';
 
 interface Exchange {
@@ -32,6 +33,11 @@ const props = defineProps<{
 
 const expandedId = ref<number | null>(null);
 const isCreateMenuOpen = ref(false);
+const isUploadModalOpen = ref(false);
+const fileInput = ref<HTMLInputElement | null>(null);
+const selectedFile = ref<File | null>(null);
+const isUploadingCsv = ref(false);
+const uploadError = ref('');
 
 const toggleExpand = (id: number) => {
     expandedId.value = expandedId.value === id ? null : id;
@@ -41,8 +47,60 @@ const toggleCreateMenu = () => {
     isCreateMenuOpen.value = !isCreateMenuOpen.value;
 };
 
+const openUploadModal = () => {
+    isUploadModalOpen.value = true;
+};
+
+const closeUploadModal = () => {
+    isUploadModalOpen.value = false;
+    selectedFile.value = null;
+    uploadError.value = '';
+    if (fileInput.value) {
+        fileInput.value.value = '';
+    }
+};
+
+const selectFile = () => {
+    fileInput.value?.click();
+};
+
+const handleFileSelect = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files?.length) {
+        selectedFile.value = target.files[0];
+        uploadError.value = '';
+    }
+};
+
+const submitCsv = () => {
+    if (!selectedFile.value) {
+        uploadError.value = 'Por favor selecciona un archivo CSV';
+        return;
+    }
+
+    isUploadingCsv.value = true;
+    const formData = new FormData();
+    formData.append('import_csv', selectedFile.value);
+
+    router.post('/import-csv', formData, {
+        forceFormData: true,
+        onSuccess: () => {
+            closeUploadModal();
+        },
+        onError: (errors) => {
+            const csvError = errors.import_csv;
+            uploadError.value = Array.isArray(csvError)
+                ? csvError[0]
+                : (csvError ?? 'Error al importar el archivo');
+        },
+        onFinish: () => {
+            isUploadingCsv.value = false;
+        },
+    });
+};
+
 const createOptions = [
-    { label: 'Visita guiada', path: '/admin/activity/create/guidedTour' },
+    { label: 'Visita guiada', path: '/guidedactivity' },
     { label: 'Anunci', path: '/admin/activity/create/announcement' },
     { label: "Punt d'interes", path: '/admin/activity/create/interestPoint' },
     { label: 'Gimcana', path: '/admin/activity/create/gimcana'},
@@ -55,29 +113,16 @@ const formatTime = (value: string | null | undefined): string => {
     return timePart ? timePart.slice(0, 5) : '--:--';
 };
 
-const formatDate = (value: string | null | undefined): string => {
-    if (!value) return '—';
+const formatDate = (value: string | null | undefined): { weekday: string; date: string } => {
+    if (!value) return { weekday: '—', date: '' };
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
+    if (Number.isNaN(date.getTime())) return { weekday: '—', date: '' };
 
-    return date.toLocaleDateString('ca-ES', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-    });
-    };
+    const weekday = date.toLocaleDateString('ca-ES', { weekday: 'long' });
+    const dateStr = date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' });
 
-    const parseDateForDisplay = (value: string | null | undefined): { weekday: string; date: string } => {
-        if (!value) return { weekday: '—', date: '' };
-
-        const date = new Date(value);
-        if (Number.isNaN(date.getTime())) return { weekday: '—', date: '' };
-
-        const weekday = date.toLocaleDateString('ca-ES', { weekday: 'long' });
-        const dateStr = date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' });
-
-        return { weekday, date: dateStr };
+    return { weekday, date: dateStr };
 };
 
 const currentExchange = props.activity[0]?.exchange ?? null;
@@ -96,14 +141,78 @@ const groupedActivities = () => {
 <template>
     <div class="min-h-screen bg-hp-bg">
         <PageTopBar :icon="MonitorCog" title="Intercanvi">
+            <template #actions>
+                <button
+                    type="button"
+                    @click="openUploadModal"
+                    class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary"
+                >
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full text-hp-icon">
+                        <UserPlus :size="17" />
+                    </span>
+                    <span class="hidden sm:inline">Afegir usuaris</span>
+                </button>
+            </template>
         </PageTopBar>
+
+        <div
+            v-if="isUploadModalOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+            @click.self="closeUploadModal"
+        >
+            <div class="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
+                <div class="mb-4 flex items-center">
+                    <h2 class="text-lg font-semibold text-gray-800">Importar usuaris amb CSV</h2>
+                </div>
+
+                <form class="space-y-4" @submit.prevent="submitCsv">
+                    <input
+                        ref="fileInput"
+                        type="file"
+                        accept=".csv,.txt"
+                        class="hidden"
+                        @change="handleFileSelect"
+                    />
+
+                    <div class="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-700">
+                        <p class="mb-3 truncate">{{ selectedFile?.name || 'Selecciona un archivo CSV' }}</p>
+                        <button
+                            type="button"
+                            class="rounded-lg bg-hp-primary px-4 py-2 text-sm font-medium text-white hover:bg-hp-primary-dark"
+                            @click="selectFile"
+                        >
+                            Elegir archivo
+                        </button>
+                    </div>
+
+                    <p v-if="uploadError" class="text-sm text-red-600">{{ uploadError }}</p>
+
+                    <div class="flex justify-end gap-2">
+                        <button
+                            type="button"
+                            class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            @click="closeUploadModal"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            :disabled="!selectedFile || isUploadingCsv"
+                            class="rounded-lg bg-hp-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {{ isUploadingCsv ? 'Importando...' : 'Importar CSV' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="mx-auto max-w-4xl mt-3 ml-3 mr-3 ">
             <div class="border-b border-gray-200 bg-hp-bg-card rounded-t-xl p-4">
                 <div v-if="currentExchange" class="flex flex-row items-center justify-between">
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-hp-text">{{ parseDateForDisplay(currentExchange.start_date).weekday }}</p>
-                        <p class="text-[10px] text-hp-text-dim">{{ parseDateForDisplay(currentExchange.start_date).date }}</p>
+                        <p class="text-xs font-semibold text-hp-text">{{ formatDate(currentExchange.start_date).weekday }}</p>
+                        <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.start_date).date }}</p>
                     </div>
                     <div class="flex flex-row items-center">
                         <p class="text-md font-bold text-hp-text">{{ currentExchange.origin }}</p>
@@ -113,8 +222,8 @@ const groupedActivities = () => {
                         </div>
                     </div>
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-hp-text">{{ parseDateForDisplay(currentExchange.end_date).weekday }}</p>
-                        <p class="text-[10px] text-hp-text-dim">{{ parseDateForDisplay(currentExchange.end_date).date }}</p>
+                        <p class="text-xs font-semibold text-hp-text">{{ formatDate(currentExchange.end_date).weekday }}</p>
+                        <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.end_date).date }}</p>
                     </div>
                 </div>
                 <div v-else class="text-center text-sm text-hp-text-dim">
