@@ -13,9 +13,22 @@ interface GuidedActivity {
     file: string | null;
     exchange_id: number | null;
 }
+interface Locations {
+    id: number;
+    name: string;
+    description: string | null;
+    statement: string | null;
+    answer: string | null;
+    latitude: string | null;
+    longitude: string | null;
+    type: string | null;
+    file: string | null;
+    activity_id: number | null;
+}
 
 const props = defineProps<{
     guidedactivity: GuidedActivity;
+    locations: Locations;
 }>();
 </script>
 
@@ -49,8 +62,7 @@ const props = defineProps<{
 
                 <!-- Imatge -->
                 <div class="w-full h-40 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden relative">
-                    <img v-if="guidedactivity.file" :src="guidedactivity.file"
-                        class="w-full h-full object-cover" />
+                    <img v-if="guidedactivity.file" :src="guidedactivity.file" class="w-full h-full object-cover" />
                 </div>
 
                 <!-- Descripció -->
@@ -60,6 +72,12 @@ const props = defineProps<{
 
                 <!-- Mapa -->
                 <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+                </div>
+                <!-- Parades -->
+                <div>
+                    <h2 class="font-semibold text-gray-800 dark:text-white">
+                        {{ locations.description }}
+                    </h2>
                 </div>
             </div>
         </div>
