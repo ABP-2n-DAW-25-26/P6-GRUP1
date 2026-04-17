@@ -18,8 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // PROFE
 Route::get('exchange/{id}', [ActivityController::class, 'index'])->name('activity.index');
-Route::get('exchange/{id}/addUser', [AddUsersController::class, 'create'])->name('teacher.add');
-
+Route::resource('exchange.addUser', AddUsersController::class);
 
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);

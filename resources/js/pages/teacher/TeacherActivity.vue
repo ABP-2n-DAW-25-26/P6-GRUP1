@@ -73,6 +73,11 @@ const handleFileSelect = (event: Event) => {
 };
 
 const submitCsv = () => {
+    if (!currentExchange?.id) {
+        uploadError.value = 'No hay intercambio seleccionado';
+        return;
+    }
+
     if (!selectedFile.value) {
         uploadError.value = 'Por favor selecciona un archivo CSV';
         return;
@@ -82,7 +87,7 @@ const submitCsv = () => {
     const formData = new FormData();
     formData.append('import_csv', selectedFile.value);
 
-    router.post('/import-csv', formData, {
+    router.post(`/exchange/${currentExchange.id}/addUser`, formData, {
         forceFormData: true,
         onSuccess: () => {
             closeUploadModal();
@@ -145,7 +150,7 @@ const groupedActivities = () => {
                 <button
                     type="button"
                     @click="openUploadModal"
-                    class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary"
+                    class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary hover:border-hp-primary hover:shadow-md hover:shadow-hp-primary/60"
                 >
                     <span class="flex h-8 w-8 items-center justify-center rounded-full text-hp-icon">
                         <UserPlus :size="17" />
@@ -216,10 +221,6 @@ const groupedActivities = () => {
                     </div>
                     <div class="flex flex-row items-center">
                         <p class="text-md font-bold text-hp-text">{{ currentExchange.origin }}</p>
-                        <div class="ml-1 mt-1 flex items-center rounded-md bg-hp-bg-icon p-1">
-                            <Users :size="16" class="mr-1 text-hp-icon" />
-                            <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
-                        </div>
                     </div>
                     <div class="text-center">
                         <p class="text-xs font-semibold text-hp-text">{{ formatDate(currentExchange.end_date).weekday }}</p>
@@ -231,7 +232,13 @@ const groupedActivities = () => {
                 </div>
             </div>
 
-            <div class="bg-hp-bg-card p-4 rounded-b-xl">
+            <div class="bg-hp-bg-card p-4 relative rounded-b-xl">
+                <div v-if="currentExchange" class="flex mb-1 mt-1 mr-1 flex-row items-center absolute top-2 right-3 ">
+                    <div class="flex items-center rounded-md bg-hp-primary/40 p-1">
+                        <Users :size="16" class="mr-1 text-hp-text-dim" />
+                        <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
+                    </div>
+                </div>
                 <div v-if="activity.length === 0" class="py-8 text-center">
                     <p class="text-gray-500">No hay actividades</p>
                 </div>
@@ -264,17 +271,17 @@ const groupedActivities = () => {
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3">
-            <div v-show="isCreateMenuOpen" class="flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-xl transform-3d transition-all">
+        </div> 
+        <div class="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3 animate-">
+            <div v-show="isCreateMenuOpen" class="flex flex-col gap-2 rounded-2xl p-2 shadow-xl transform-3d transition-all items-center border border-hp-primary bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text">
                 <a v-for="option in createOptions" :key="option.path" :href="option.path"
-                    class="min-w-40 rounded-xl px-4 py-3 text-left text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                    class="min-w-40 px-4 py-3 text-left text-sm font-medium text-hp-text transition hover:bg-gray-100 border-b border-hp-primary/40 last:border-b-0 w-full">
                     {{ option.label }}
                 </a>
             </div>
 
             <button type="button" @click="toggleCreateMenu" :aria-expanded="isCreateMenuOpen"
-                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-[#4DBCAD] text-white shadow-lg transition-all', { 'is-open': isCreateMenuOpen }]">
+                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-hp-primary text-hp-text shadow-lg transition-all', { 'is-open': isCreateMenuOpen }]">
                 <span class="create-toggle-line create-toggle-line-vertical"></span>
                 <span class="create-toggle-line create-toggle-line-horizontal"></span>
             </button>
