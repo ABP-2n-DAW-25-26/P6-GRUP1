@@ -17,22 +17,33 @@ const colors = [
   '#ef4444',
   '#ec4899',
 ];
+
+defineOptions({
+    layout: {
+        breadcrumbs: [
+            {
+                title: 'Crear un nou Intercanvi',
+                // href: schedule(),
+            },
+        ],
+    },
+});
 </script>
 
 
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+  <div class="sm:min-h-screen lg:min-w-full lg:min-h-full dark:bg-gray-900 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
 
-      <div class="mb-6 text-center">
+      <!-- <div class="mb-6 text-center">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
           Completa la informació per registrar un nou intercanvi
         </p>
-      </div>
+      </div> -->
 
       <!-- Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl lg:border lg:border-black/3 shadow-lg p-4">
         <Form :action="store()" method="post" class="space-y-5">
           <!-- Títol -->
           <div>
@@ -82,7 +93,7 @@ const colors = [
           </div>
 
           <!-- Botó enviar -->
-          <div class="flex gap-3 pt-2 w-full">
+          <div class="flex gap-3 pt-2 w-full lg:mt-20">
             <button type="button" class="flex-1 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
               Cancel·lar
             </button>

@@ -25,7 +25,4 @@ Route::resource('guidedactivity', GuidedActivityController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 
-// PROFE
-// Route::resource('professor/intercanvi/{id}', ActivityController::class);
-
 require __DIR__.'/settings.php';

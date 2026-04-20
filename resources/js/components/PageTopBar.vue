@@ -20,9 +20,6 @@ defineProps<{
             <div class="flex items-center gap-2">
                 <slot name="actions" />
             </div>
-            <button>
-                <Menu :size="20" class="text-hp-icon" />
-            </button>
         </div>
     </header>
 </template>
