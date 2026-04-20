@@ -23,7 +23,4 @@ Route::resource('exchange.addUser', AddUsersController::class);
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);
 
-// PROFE
-// Route::resource('professor/intercanvi/{id}', ActivityController::class);
-
 require __DIR__.'/settings.php';

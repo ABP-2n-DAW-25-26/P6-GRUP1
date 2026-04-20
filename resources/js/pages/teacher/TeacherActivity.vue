@@ -141,11 +141,22 @@ const groupedActivities = () => {
     });
     return grouped;
 };
+
+defineOptions({
+    layout: {
+        breadcrumbs: [
+            {
+                title: 'Intercanvis',
+                // href: schedule(),
+            },
+        ],
+    },
+});
 </script>
 
 <template>
-    <div class="min-h-screen bg-hp-bg">
-        <PageTopBar :icon="MonitorCog" title="Intercanvi">
+    <div class="sm:min-h-screen lg:min-w-full lg:min-h-full">
+        <!-- <PageTopBar :icon="MonitorCog" title="Intercanvi">
             <template #actions>
                 <button
                     type="button"
@@ -158,8 +169,26 @@ const groupedActivities = () => {
                     <span class="hidden sm:inline">Afegir usuaris</span>
                 </button>
             </template>
-        </PageTopBar>
+        </PageTopBar> -->
+        <div class="flex flex-row items-center justify-between p-4">
+            <button
+                type="button"
+                @click="openUploadModal"
+                class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary hover:border-hp-primary hover:shadow-md hover:shadow-hp-primary/60"
+            >
+                <span class="flex h-8 w-8 items-center justify-center rounded-full text-hp-icon">
+                    <UserPlus :size="17" />
+                </span>
+                <span class="hidden sm:inline">Afegir usuaris</span>
+            </button>
 
+            <div v-if="currentExchange" class="flex mb-1 mt-1 mr-1 flex-row items-center top-2 right-3 ">
+                <div class="flex items-center rounded-md bg-hp-primary/40 p-1">
+                    <Users :size="16" class="mr-1 text-hp-text-dim" />
+                    <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
+                </div>
+            </div>
+        </div>
         <div
             v-if="isUploadModalOpen"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
@@ -212,18 +241,20 @@ const groupedActivities = () => {
             </div>
         </div>
 
-        <div class="mx-auto max-w-4xl mt-3 ml-3 mr-3 ">
-            <div class="border-b border-gray-200 bg-hp-bg-card rounded-t-xl p-4">
+        <div class="lg:min-w-full sm:mx-auto sm:max-w-4xl lg:max-w-0 sm:mt-3 lg:mt-0 sm:ml-3 lg:ml-0 sm:mr-3 lg:mr-0">
+            <div class="lg:border sm:border-b sm:rounded-t-xl border-gray-200 bg-hp-bg-card lg:rounded-xl lg:m-4 p-4">
                 <div v-if="currentExchange" class="flex flex-row items-center justify-between">
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-hp-text">{{ formatDate(currentExchange.start_date).weekday }}</p>
+                        <p class="text-xs font-semibold uppercase">{{ formatDate(currentExchange.start_date).weekday }}</p>
                         <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.start_date).date }}</p>
                     </div>
-                    <div class="flex flex-row items-center">
+                    <hr class="lg:w-full lg:mx-4">
+                    <div class="flex flex-row items-center w-full justify-center">
                         <p class="text-md font-bold text-hp-text">{{ currentExchange.origin }}</p>
                     </div>
+                    <hr class="lg:w-full lg:mx-4">
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-hp-text">{{ formatDate(currentExchange.end_date).weekday }}</p>
+                        <p class="text-xs font-semibold text-hp-primary-dark uppercase">{{ formatDate(currentExchange.end_date).weekday }}</p>
                         <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.end_date).date }}</p>
                     </div>
                 </div>
@@ -233,12 +264,6 @@ const groupedActivities = () => {
             </div>
 
             <div class="bg-hp-bg-card p-4 relative rounded-b-xl">
-                <div v-if="currentExchange" class="flex mb-1 mt-1 mr-1 flex-row items-center absolute top-2 right-3 ">
-                    <div class="flex items-center rounded-md bg-hp-primary/40 p-1">
-                        <Users :size="16" class="mr-1 text-hp-text-dim" />
-                        <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
-                    </div>
-                </div>
                 <div v-if="activity.length === 0" class="py-8 text-center">
                     <p class="text-gray-500">No hay actividades</p>
                 </div>
@@ -246,13 +271,16 @@ const groupedActivities = () => {
                     <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
                         <p class="mb-3 text-sm font-bold text-hp-text">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
                         <div class="space-y-2">
-                            <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border border-gray-200">
+                            <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border bg-stone-100 border-gray-200">
                                 <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
-                                    <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" />
-                                    <div class="flex-1 flex flex-col items-start px-2">
-                                        <p class="text-xs text-gray-600">{{ formatTime(activity.start_date) }} - {{ formatTime(activity.end_date) }}</p>
+                                    <!-- <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" /> -->
+                                    <div class="flex flex-row items-center">
+                                        <div class="flex flex-col items-start px-2">
+                                            <p class="text-md font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
+                                            <p class="text-xs text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
+                                        </div>
+                                        <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
                                     </div>
-                                    <p class="flex-1 text-sm font-semibold text-gray-800">{{ activity.title }}</p>
                                     <div class="flex items-center gap-2">
                                         <button class="rounded p-1 hover:bg-gray-100">
                                             <Pencil :size="16" class="text-gray-600" />
