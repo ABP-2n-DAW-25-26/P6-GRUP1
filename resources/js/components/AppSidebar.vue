@@ -25,17 +25,17 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Panell de professor',
-        href: "#",
+        href: "/teacher",
         icon: LayoutDashboard,
     },
     {
         title: 'Intercanvis',
-        href: "#",
+        href: "/exchange",
         icon: Repeat,
     },
     {
         title: 'Notificacions',
-        href: "#",
+        href: "/notifications",
         icon: Bell,
     },
 ];
