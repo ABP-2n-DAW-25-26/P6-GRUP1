@@ -209,13 +209,13 @@ defineOptions({
                     />
 
                     <div class="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-700">
-                        <p class="mb-3 truncate">{{ selectedFile?.name || 'Selecciona un archivo CSV' }}</p>
+                        <p class="mb-3 truncate">{{ selectedFile?.name || 'Selecciona un arxiu CSV' }}</p>
                         <button
                             type="button"
                             class="rounded-lg bg-hp-primary px-4 py-2 text-sm font-medium text-white hover:bg-hp-primary-dark"
                             @click="selectFile"
                         >
-                            Elegir archivo
+                            Escollir fitcher
                         </button>
                     </div>
 
