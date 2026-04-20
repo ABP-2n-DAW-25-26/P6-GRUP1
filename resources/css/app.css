@@ -115,7 +115,7 @@
 }
 
 :root {
-    --background: hsl(0 0% 100%);
+    --background: hsl(0 0% 97%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(0 0% 3.9%);
@@ -140,7 +140,7 @@
     --chart-4: hsl(43 74% 66%);
     --chart-5: hsl(27 87% 67%);
     --radius: 0.5rem;
-    --sidebar-background: hsl(0 0% 98%);
+    --sidebar-background: hsl(0 0% 100%);
     --sidebar-foreground: hsl(240 5.3% 26.1%);
     --sidebar-primary: hsl(0 0% 10%);
     --sidebar-primary-foreground: hsl(0 0% 98%);
@@ -153,10 +153,10 @@
     /* Hipatia palette */
     --hp-primary:         #4DBCAD;
     --hp-primary-light:   #7ED6CB;
-    --hp-primary-dark:    #2E9080;
+    --hp-primary-dark:    #198371;
     --hp-secondary:       #DEFFFB;
     --hp-secondary-light: #F0FFFD;
-    --hp-secondary-dark:  #A8EDE5;
+    --hp-secondary-dark:  #93faec;
     --hp-red:             #E84C4C;
     --hp-red-light:       #F48C8C;
     --hp-blue:            #3A82F7;

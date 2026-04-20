@@ -20,9 +20,9 @@ withDefaults(defineProps<Props>(), {
         <AppSidebar />
         <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
-            <!-- <div class="p-2 m-4 min-h-full bg-red-300 rounded-2xl mx-auto flex h-full w-full max-w-7xl flex-1 flex-col gap-4"> -->
+            <div class="bg-hp-bg-card rounded-2xl flex w-[95%] md:w-[90%] h-auto mx-auto flex justify-center border border-sidebar-border/70 dark:border-sidebar-border mt-10">
                 <slot />
-            <!-- </div> -->
+            </div>
         </AppContent>
         <Toaster />
     </AppShell>
