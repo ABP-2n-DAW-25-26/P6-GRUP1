@@ -7,7 +7,7 @@ use App\Models\Activity;
 use App\Models\Exchange;
 use Carbon\Carbon;
 
-class GuidedActivitiesSeeder extends Seeder
+class ActivitiesSeeder extends Seeder
 {
     public function run(): void
     {
@@ -117,15 +117,6 @@ class GuidedActivitiesSeeder extends Seeder
             'exchange_id' => 3,
             'start_date' => $startFrance->copy()->addDays(4)->setTime(9, 0),
             'end_date' => $startFrance->copy()->addDays(4)->setTime(14, 0),
-        ]);
-        GuidedActivity::create([
-            'title' => 'Punt d’interès: Parc Güell',
-            'description' => 'Visita lliure a un dels parcs més icònics de Barcelona amb vistes espectaculars.',
-            'start_date' => now()->addDays(7)->setTime(16, 0),
-            'end_date' => now()->addDays(7)->setTime(18, 0),
-            'latitude' => '41.4145',
-            'longitude' => '2.1527',
-            'file' => 'https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/0a/c8/c9/f2.jpg',
         ]);
     }
 }
