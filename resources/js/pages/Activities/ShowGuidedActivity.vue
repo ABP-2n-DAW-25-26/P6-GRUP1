@@ -27,7 +27,6 @@ interface GuidedActivity {
 
 const props = defineProps<{
     guidedactivity: GuidedActivity;
-    locations: Locations;
 }>();
 </script>
 
@@ -71,7 +70,7 @@ const props = defineProps<{
 
                 <!-- Mapa -->
                 <div class="w-full h-80 rounded-lg overflow-hidden">
-                    <LeafletMap :markers=locations />
+                    <LeafletMap :markers=guidedactivity.locations />
                 </div>
                 <!-- Parades -->
                 <div>
