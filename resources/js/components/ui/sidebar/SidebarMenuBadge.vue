@@ -21,6 +21,7 @@ const props = defineProps<{
       props.class,
     )"
   >
+  fkdnjdf
     <slot />
   </div>
 </template>

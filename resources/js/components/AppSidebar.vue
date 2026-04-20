@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+import { Bell, BookOpen, Calendar, FolderGit2, LayoutDashboard, LayoutGrid, PanelBottom, Repeat } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -19,23 +19,28 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Agenda',
         href: schedule(),
-        icon: LayoutGrid,
+        icon: Calendar,
+    },
+    {
+        title: 'Panell de professor',
+        href: "#",
+        icon: LayoutDashboard,
+    },
+    {
+        title: 'Intercanvis',
+        href: "#",
+        icon: Repeat,
+    },
+    {
+        title: 'Notificacions',
+        href: "#",
+        icon: Bell,
     },
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
 ];
 </script>
 
