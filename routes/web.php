@@ -22,6 +22,8 @@ Route::resource('exchange.addUser', AddUsersController::class);
 
 Route::resource('exchange', ExchangeController::class);
 Route::resource('guidedactivity', GuidedActivityController::class);
+Route::inertia('notifications', 'Notifications')->name('notifications');
+Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 
 // PROFE
 // Route::resource('professor/intercanvi/{id}', ActivityController::class);
