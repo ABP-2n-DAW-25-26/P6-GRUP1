@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
+import LeafletMap from '@/components/LeafletMap.vue'
 
 interface Locations {
     id: number;
@@ -69,7 +70,8 @@ const props = defineProps<{
                 </p>
 
                 <!-- Mapa -->
-                <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+                <div class="w-full h-80 rounded-lg overflow-hidden">
+                    <LeafletMap :markers=locations />
                 </div>
                 <!-- Parades -->
                 <div>
@@ -86,7 +88,8 @@ const props = defineProps<{
                             {{ location.description }}
                         </p>
 
-                        <p class="flex items-center justify-between border border-solid border-gray-200  rounded-lg px-3 py-2 text-sm text-gray-600">
+                        <p
+                            class="flex items-center justify-between border border-solid border-gray-200  rounded-lg px-3 py-2 text-sm text-gray-600">
                             Lat: {{ location.latitude }} | Lng: {{ location.longitude }}
                         </p>
                     </div>
