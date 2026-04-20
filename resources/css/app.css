@@ -84,6 +84,18 @@
     --color-hp-icon:           var(--hp-icon);
     --color-hp-bg-icon:        var(--hp-bg-icon);
     --color-hp-bg-card:        var(--hp-bg-card);
+
+    /* Font */
+    --font-hp: 'Catalona', sans-serif;
+
+}
+
+@font-face {
+    font-family: 'Catalona';
+    src: url('../fonts/Catalona.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 /*
@@ -174,6 +186,7 @@
     --hp-icon:            #5D5D5D;
     --hp-bg-icon:         #D8D9DC;
     --hp-bg:              #EDF1F7;
+    --font-hp: 'Catalona', sans-serif;
 }
 
 .dark {

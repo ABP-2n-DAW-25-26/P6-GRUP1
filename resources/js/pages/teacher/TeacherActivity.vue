@@ -276,8 +276,8 @@ defineOptions({
                                     <!-- <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" /> -->
                                     <div class="flex flex-row items-center">
                                         <div class="flex flex-col items-start px-2">
-                                            <p class="text-md font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
-                                            <p class="text-xs text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
+                                            <p class="text-md font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
+                                            <p class="text-xs font-hp text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
                                         </div>
                                         <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
                                     </div>
@@ -303,7 +303,7 @@ defineOptions({
         <div class="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3 animate-">
             <div v-show="isCreateMenuOpen" class="flex flex-col gap-2 rounded-2xl p-2 shadow-xl transform-3d transition-all items-center border border-hp-primary bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text">
                 <a v-for="option in createOptions" :key="option.path" :href="option.path"
-                    class="min-w-40 px-4 py-3 text-left text-sm font-medium text-hp-text transition hover:bg-gray-100 border-b border-hp-primary/40 last:border-b-0 w-full">
+                    class="min-w-40 px-4 py-3 text-left text-sm font-medium text-hp-text transition hover:bg-hp-primary/20 hover:rounded-t-lg border-b border-hp-primary/40 last:border-b-0 w-full">
                     {{ option.label }}
                 </a>
             </div>
