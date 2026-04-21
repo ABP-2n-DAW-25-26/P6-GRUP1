@@ -31,4 +31,9 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+    public function exchanges() : HasMany
+    {
+        return $this->hasMany(Exchange::class);
+    }
+    
 }

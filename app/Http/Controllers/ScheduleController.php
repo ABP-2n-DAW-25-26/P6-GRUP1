@@ -10,7 +10,7 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $nextExchange = Exchange::with('activities')->first();
+        $nextExchange = Exchange::with('activities', 'user')->first();
 
         $start = Carbon::parse($nextExchange->start_date);
         $end = Carbon::parse($nextExchange->end_date);
