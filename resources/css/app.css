@@ -61,12 +61,31 @@
     --color-sidebar-ring: var(--sidebar-ring);
 
     /* Hipatia custom colors */
-    --color-hp-primary:        var(--hp-primary);
-    --color-hp-primary-light:  var(--hp-primary-light);
-    --color-hp-primary-dark:   var(--hp-primary-dark);
-    --color-hp-secondary:      var(--hp-secondary);
-    --color-hp-secondary-light:var(--hp-secondary-light);
+    --color-hp-primary: var(--hp-primary);
+    --color-hp-primary-light: var(--hp-primary-light);
+    --color-hp-primary-dark: var(--hp-primary-dark);
+    --color-hp-secondary: var(--hp-secondary);
+    --color-hp-secondary-light: var(--hp-secondary-light);
     --color-hp-secondary-dark: var(--hp-secondary-dark);
+<<<<<<< HEAD
+    --color-hp-red: var(--hp-red);
+    --color-hp-red-light: var(--hp-red-light);
+    --color-hp-blue: var(--hp-blue);
+    --color-hp-blue-light: var(--hp-blue-light);
+    --color-hp-yellow: var(--hp-yellow);
+    --color-hp-yellow-light: var(--hp-yellow-light);
+    --color-hp-green: var(--hp-green);
+    --color-hp-green-light: var(--hp-green-light);
+    --color-hp-text: var(--hp-text);
+    --color-hp-text-dim: var(--hp-text-dim);
+    --color-hp-bg: var(--hp-bg);
+    --color-hp-surface: var(--hp-surface);
+    --color-hp-border: var(--hp-border);
+    --color-hp-focus: var(--hp-focus);
+    --color-hp-icon: var(--hp-icon);
+    --color-hp-bg-icon: var(--hp-bg-icon);
+    --color-hp-bg-card: var(--hp-bg-card);
+=======
     --color-hp-red:            var(--hp-red);
     --color-hp-red-light:      var(--hp-red-light);
     --color-hp-blue:           var(--hp-blue);
@@ -96,6 +115,7 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+>>>>>>> ef71a4ea6867d9506fd7c7fce1f3e5006a18b2c2
 }
 
 /*
