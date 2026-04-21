@@ -275,9 +275,9 @@ defineOptions({
                                 <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
                                     <!-- <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" /> -->
                                     <div class="flex flex-row items-center">
-                                        <div class="flex flex-col items-start px-2">
-                                            <p class="text-md font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
-                                            <p class="text-xs font-hp text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
+                                        <div class="flex flex-col items-start">
+                                            <p class="text-xl font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
+                                            <p class="text-md font-hp text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
                                         </div>
                                         <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
                                     </div>
