@@ -1,16 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 
-Route::inertia('/', 'Welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+Route::inertia('/', 'Home')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
