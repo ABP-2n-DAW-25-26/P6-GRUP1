@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Exchange extends Model
 {
-    protected $fillable = ['id','origin','start_date','end_date','destiny', 'title', 'color'];
+    protected $fillable = ['id','origin','start_date','end_date','destiny', 'title', 'color','user_id'];
 
     public function user(): BelongsTo
     {

@@ -15,7 +15,8 @@ class CreateExchangeAction
         $exchange->start_date = $data['start_date'];
         $exchange->end_date = $data['end_date'] ?? null;
         $exchange->title = $data['title']; 
-        $exchange->color = $data['color']; 
+        $exchange->color = $data['color'];
+        $exchange->user_id = $userId;
 
         $exchange->save();
 
