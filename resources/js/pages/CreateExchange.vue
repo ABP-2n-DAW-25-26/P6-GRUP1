@@ -44,6 +44,7 @@ defineOptions({
 
       <!-- Card -->
       <p class="font-hp text-6xl text-hp-primary">Intercanvi</p>
+
       <div class="bg-white dark:bg-gray-800 rounded-2xl lg:border lg:border-black/3 shadow-lg p-4">
         <Form :action="store()" method="post" class="space-y-5">
           <!-- Títol -->
