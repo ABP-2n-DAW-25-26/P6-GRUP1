@@ -14,7 +14,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { schedule } from '@/routes';
+import { schedule, home } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -64,6 +64,16 @@ const footerNavItems: NavItem[] = [
 
         <SidebarFooter>
             <NavFooter :items="footerNavItems" />
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton as-child>
+                        <Link :href="home()">
+                            <LayoutGrid />
+                            <span>Inici</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
             <NavUser />
         </SidebarFooter>
     </Sidebar>
