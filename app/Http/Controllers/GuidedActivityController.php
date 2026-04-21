@@ -16,7 +16,8 @@ class GuidedActivityController extends Controller
      */
     public function index()
     {
-        //
+        $guidedActivities = GuidedActivity::all();
+        return Inertia::render('Activities/IndexGuidedActivity', ['guidedActivities' => $guidedActivities]);
     }
 
     /**
