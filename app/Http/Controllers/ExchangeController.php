@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateExchangeRequest;
 use App\Actions\Exchanges\CreateExchangeAction;
+use App\Models\Activity;
 
 class ExchangeController extends Controller
 {
@@ -15,7 +16,29 @@ class ExchangeController extends Controller
      */
     public function index()
     {
-        //
+        $exchange = Exchange::query()->orderBy('start_date', 'asc')->first();
+
+        if (! $exchange) {
+            return Inertia::render('teacher/TeacherActivity', [
+                'activity' => [],
+                'exchange' => null,
+            ]);
+        }
+
+        return to_route('exchange.show', $exchange);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Exchange $exchange)
+    {
+        return Inertia::render('teacher/TeacherActivity', [
+            'activity' => Activity::with('exchange.users')
+                ->where('exchange_id', $exchange->id)
+                ->get(),
+            'exchange' => $exchange->load('users'),
+        ]);
     }
 
     /**
@@ -40,14 +63,6 @@ class ExchangeController extends Controller
 
         Inertia::flash(['message' => 'Exchange creat correctament']);
         return to_route('exchange.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Exchange $exchange)
-    {
-        //
     }
 
     /**
