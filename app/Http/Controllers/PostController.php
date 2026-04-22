@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\ActivityImage;
+use App\Models\Exchange;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -12,33 +14,58 @@ class PostController extends Controller
     {
     }
 
-    public function create()
+    public function create(Exchange $exchange)
     {
         $post = Post::all();
 
-        return Inertia::render('teacher/CreatePost', ["post" => $post]);
+        return Inertia::render('teacher/CreatePost', [
+            "post" => $post,
+            "exchangeId" => $exchange->id,
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Exchange $exchange)
     {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'files' => ['nullable', 'array'],
+            'files.*' => ['image', 'max:5120'],
+        ]);
+
         $post = new Post();
-
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->start_date = $request->start_date;
-        $post->end_date = $request->end_date;
+        $post->title = $validated['title'];
+        $post->description = $validated['description'] ?? null;
+        $post->start_date = $validated['start_date'];
+        $post->end_date = $validated['end_date'] ?? null;
         $post->type = 'post';
-        $post->exchange_id = $request->exchange_id;
-
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('public/files');
-            $post->file = basename($filePath);
-        }
-
+        $post->exchange_id = $exchange->id;
         $post->save();
 
+        if ($request->hasFile('files')) {
+            $savedImages = [];
+
+            foreach ($request->file('files') as $file) {
+                $filePath = $file->store('public/files');
+                $imageName = basename($filePath);
+
+                ActivityImage::create([
+                    'activity_id' => $post->id,
+                    'image_path' => $imageName,
+                ]);
+
+                $savedImages[] = $imageName;
+            }
+
+            // Compatibility with existing views that still read activities.file.
+            $post->file = $savedImages[0] ?? null;
+            $post->save();
+        }
+
         Inertia::flash(['message' => 'Post creat correctament']);
-        return to_route('exchange.show', ['exchange' => $request->exchange_id]);
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
         public function show(Post $post)

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange';
-import { ref } from 'vue';
+import { store } from '@/routes/exchange/post';
+import { ref, onBeforeUnmount } from 'vue';
+
+const props = defineProps<{
+  exchangeId: number
+}>()
 
 defineOptions({
   layout: {
@@ -14,14 +18,45 @@ defineOptions({
   },
 });
 
-const preview = ref<string | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null)
+const selectedFiles = ref<File[]>([])
+const previews = ref<string[]>([])
+
+const fileSignature = (file: File) => `${file.name}-${file.size}-${file.lastModified}`
+
+const refreshPreviews = () => {
+  previews.value.forEach((url) => URL.revokeObjectURL(url))
+  previews.value = selectedFiles.value.map((file) => URL.createObjectURL(file))
+}
+
 const handleFileChange = (event: Event) => {
   const input = event.target as HTMLInputElement
-  if (input.files && input.files[0]) {
-    // Crear URL temporal 
-    preview.value = URL.createObjectURL(input.files[0])
+
+  if (!input.files || input.files.length === 0) {
+    return
   }
+
+  const existingSignatures = new Set(selectedFiles.value.map((file) => fileSignature(file)))
+  const incomingFiles = Array.from(input.files)
+
+  incomingFiles.forEach((file) => {
+    const signature = fileSignature(file)
+    if (!existingSignatures.has(signature)) {
+      selectedFiles.value.push(file)
+      existingSignatures.add(signature)
+    }
+  })
+
+  const dataTransfer = new DataTransfer()
+  selectedFiles.value.forEach((file) => dataTransfer.items.add(file))
+  input.files = dataTransfer.files
+
+  refreshPreviews()
 }
+
+onBeforeUnmount(() => {
+  previews.value.forEach((url) => URL.revokeObjectURL(url))
+})
 </script>
 <template>
   <div class="sm:min-h-screen lg:min-h-screen flex pt-6 justify-center">
@@ -33,7 +68,7 @@ const handleFileChange = (event: Event) => {
 
       <!-- Card -->
       <div class="">
-        <Form :action="store()" method="post" class="space-y-5">
+        <Form :action="store({ exchange: props.exchangeId })" method="post" enctype="multipart/form-data" class="space-y-5">
           <!-- Títol -->
           <div>
             <label class="text-sm font-medium text-hp-text">Títol</label>
@@ -69,12 +104,13 @@ const handleFileChange = (event: Event) => {
             </label>
             <label
               class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-teal-300 rounded-2xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition">
-              <span class="text-sm text-gray-600">Fes clic per pujar una imatge</span>
-              <input type="file" name="file" placeholder="" class="hidden" @change="handleFileChange" />
+              <span class="text-sm text-gray-600">Fes clic per pujar una o més imatges</span>
+              <input ref="fileInput" type="file" name="files[]" placeholder="" class="hidden" accept="image/*" multiple @change="handleFileChange" />
             </label>
             <!-- Preview -->
-            <div v-if="preview" class="mt-4">
-              <img :src="preview" alt="Preview" class="w-full h-40 object-contain rounded-xl" />
+            <div v-if="previews.length" class="mt-4 grid grid-cols-2 gap-3">
+              <img v-for="(preview, index) in previews" :key="`${preview}-${index}`" :src="preview" :alt="`Preview ${index + 1}`"
+                class="w-full h-32 object-contain rounded-2xl border border-hp-primary shadow-[inset_0_0_20px_5px_rgba(0,0,0,0.3)] inset-shadow-lg shadow-hp-primary bg-hp-primary/30 p-1" />
             </div>
           </div>
 
