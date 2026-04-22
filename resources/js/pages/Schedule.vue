@@ -90,7 +90,7 @@ function formatTime(dateString: string) {
                             {{ formatDayName(day.date) }}
                         </h3>
                         <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)
-                        }}</time>
+                            }}</time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-2">
