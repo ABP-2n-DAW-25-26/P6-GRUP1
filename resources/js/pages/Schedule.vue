@@ -66,17 +66,19 @@ function formatTime(dateString: string) {
 
     <Head title="Agenda" />
 
-    <div class="flex h-full flex-1 flex-col gap-8 overflow-x-auto rounded-xl p-4">
-        <div class="mx-auto flex gap-6 px-4 py-6 bg-stone-100 rounded-3xl uppercase sticky top-0">
-            <div v-for="day in exchangeDays" :key="day.date" class="text-center font-bold">
-                <div v-if="day.day === currentDay()"
-                    class="p-5 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-2xl shadow-xl/10">
-                    <p class="text-xs">día</p>
-                    <time :datetime="day.date" class="font-extrabold text-xl">{{ day.day }}</time>
-                </div>
-                <div v-else class="p-5">
-                    <p class="text-xs text-gray-400">día</p>
-                    <time :datetime="day.date" class="font-bold text-2xl">{{ day.day }}</time>
+    <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
+        <div class="mx-auto flex gap-6 px-4 py-6 bg-stone-100 rounded-3xl uppercase sticky top-0 overflow-x-auto w-full">
+            <div class="mx-auto flex gap-2">
+                <div v-for="day in exchangeDays" :key="day.date" class="text-center font-bold">
+                    <div v-if="day.day === currentDay()"
+                        class="p-5 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-2xl shadow-xl/10">
+                        <p class="text-xs">día</p>
+                        <time :datetime="day.date" class="font-extrabold text-xl">{{ day.day }}</time>
+                    </div>
+                    <div v-else class="p-5">
+                        <p class="text-xs text-gray-400">día</p>
+                        <time :datetime="day.date" class="font-bold text-2xl">{{ day.day }}</time>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,7 +88,10 @@ function formatTime(dateString: string) {
 
                 <div class="flex-1 rounded-2xl p-4">
                     <div class="flex gap-3 items-center mb-4">
-                        <h3 class="font-bold text-xl capitalize">
+                        <h3 v-if="day.day === currentDay()" class="px-4 py-2 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-xl font-semibold text-xl">
+                            Avui,
+                        </h3>
+                        <h3 v-else class="font-bold text-xl capitalize">
                             {{ formatDayName(day.date) }}
                         </h3>
                         <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)

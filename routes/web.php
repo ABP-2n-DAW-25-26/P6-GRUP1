@@ -20,10 +20,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // PROFE
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.addUser', AddUsersController::class);
+    Route::resource('exchange.guidedactivity', GuidedActivityController::class);
 });
 
 
-Route::resource('guidedactivity', GuidedActivityController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 

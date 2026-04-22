@@ -32,8 +32,8 @@ defineOptions({
 
 
 <template>
-  <div class="sm:min-h-screen lg:min-w-full lg:min-h-full dark:bg-gray-900 flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
+  <div class="flex items-center p-4 w-full">
+    <div class="w-full max-w-lg mx-auto">
 
       <!-- <div class="mb-6 text-center">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
@@ -45,7 +45,7 @@ defineOptions({
       <!-- Card -->
       <p class="font-hp text-6xl text-hp-primary">Intercanvi</p>
 
-      <div class="bg-white dark:bg-gray-800 rounded-2xl lg:border lg:border-black/3 shadow-lg p-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl lg:border lg:border-black/3 p-4">
         <Form :action="store()" method="post" class="space-y-5">
           <!-- Títol -->
           <div>
