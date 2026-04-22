@@ -2,9 +2,7 @@ name: Deploy
 
 on:
     push:
-        branches: ['main', 'develop']
-    pull_request:
-        branches: ['main', 'develop']
+        branches: ['develop']
     workflow_dispatch:
 
 jobs:
@@ -30,13 +28,23 @@ jobs:
             - name: Instal·la les dependències de Node JS
               run: npm install
 
-            - name: Compila vue.js
+            - name: Configura .env per al build
+              run: |
+                  cp .env.example .env
+                  sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+                  echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+                  echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+                  echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+                  echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+                  echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+            - name: Compila frontend amb Vite
               run: npm run build
 
             - name: Fent neteja
               run: rm -rf node_modules
 
-            - name: Comprimir el projecte  (incloent els ocults)
+            - name: Comprimir el projecte (incloent els ocults)
               run: tar -czf app.tgz $(ls -A)
 
             - name: Envia app.tgz al servidor
@@ -62,21 +70,20 @@ jobs:
                       tar -xzf app.tgz
                       pwd
                       ls -lisa
-                      echo "Copiar el fitxer env si no el tenim"
+                      echo "Configurant .env al servidor"
                       $(which php84) -r "file_exists('.env') || copy('.env.example', '.env');"
-                      echo "Canvia el fitxer env"
-                      sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
-                      sed -i "s/DB_HOST=.*/DB_HOST=${{ secrets.DB_HOST }}/g" .env
-                      sed -i "s|^DB_PORT=.*|DB_PORT=${{ secrets.DB_PORT }}|" .env
-                      sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${{ secrets.DB_DATABASE }}/" .env
-                      sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/" .env
-                      sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/" .env
-
-                      # Configurar tot el .env :/
+                      sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+                      sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
+                      echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+                      echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+                      echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+                      echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+                      echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
                       $(which php84) artisan config:clear
                       $(which php84) artisan key:generate
-                      echo "Executar migracions, cache i altres operacions de Laravel"
+                      echo "Executar migracions i seeders"
                       $(which php84) artisan migrate --force
+                      $(which php84) artisan db:seed --force
                       $(which php84) artisan optimize:clear
                       $(which php84) artisan optimize
                       $(which php84) artisan storage:unlink
