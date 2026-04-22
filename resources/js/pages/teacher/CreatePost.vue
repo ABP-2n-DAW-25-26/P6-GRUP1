@@ -1,0 +1,94 @@
+<script setup lang="ts">
+import { Link, Form } from '@inertiajs/vue3';
+import { store } from '@/routes/exchange';
+import { ref } from 'vue';
+
+defineOptions({
+  layout: {
+    breadcrumbs: [
+      {
+        title: 'Crear una activitat',
+        // href: schedule(),
+      },
+    ],
+  },
+});
+
+const preview = ref<string | null>(null)
+const handleFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files[0]) {
+    // Crear URL temporal 
+    preview.value = URL.createObjectURL(input.files[0])
+  }
+}
+</script>
+<template>
+  <div class="sm:min-h-screen lg:min-h-screen flex pt-6 justify-center">
+    <div class="w-full max-w-md">
+
+      <div class="mb-7 text-center">
+        <h1 class="font-hp text-6xl text-hp-primary">Anunci</h1>
+      </div>
+
+      <!-- Card -->
+      <div class="">
+        <Form :action="store()" method="post" class="space-y-5">
+          <!-- Títol -->
+          <div>
+            <label class="text-sm font-medium text-hp-text">Títol</label>
+            <input type="text" name="title" placeholder="Anunci..."
+              class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+          </div>
+
+          <!-- Descripció -->
+          <div>
+            <label class="text-sm font-medium text-hp-text">Descripció</label>
+            <textarea name="description" rows="3" placeholder="Explica l'anunci aquí..."
+              class="mt-1 w-full px-3 py-2 text-sm border rounded-md bg-hp-bg border-hp-bg-icon focus:outline-none focus:ring-2 focus:ring-teal-400"></textarea>
+          </div>
+
+          <!-- Dates -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-medium text-hp-text">Comença</label>
+              <input type="datetime-local" name="start_date"
+                class="mt-1 w-full px-3 py-2 rounded-md border bg-hp-bg border-hp-bg-icon text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-hp-text">Acaba</label>
+              <input type="datetime-local" name="end_date"
+                class="mt-1 w-full px-3 py-2 rounded-md border bg-hp-bg border-hp-bg-icon text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+            </div>
+          </div>
+          <!-- Imatge -->
+          <div>
+            <label class="mb-3 block text-sm font-medium text-hp-text">
+              Imatge
+            </label>
+            <label
+              class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-teal-300 rounded-2xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition">
+              <span class="text-sm text-gray-600">Fes clic per pujar una imatge</span>
+              <input type="file" name="file" placeholder="" class="hidden" @change="handleFileChange" />
+            </label>
+            <!-- Preview -->
+            <div v-if="preview" class="mt-4">
+              <img :src="preview" alt="Preview" class="w-full h-40 object-contain rounded-xl" />
+            </div>
+          </div>
+
+          <!-- Botó enviar -->
+          <div class="flex gap-3 pt-2 w-full">
+            <button type="button" class="flex-1 py-2 rounded-md border border-hp-bg-icon text-sm">
+              Cancel·lar
+            </button>
+            <button type="submit" class="flex-1 py-2 rounded-md bg-hp-primary hover:bg-teal-300 text-sm font-semibold">
+              Crear Activitat
+            </button>
+          </div>
+        </Form>
+      </div>
+    </div>
+  </div>
+</template>
