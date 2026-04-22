@@ -29,6 +29,7 @@ interface Activity {
 
 const props = defineProps<{
     activity: Activity[];
+    exchange?: Exchange | null;
 }>();
 
 const expandedId = ref<number | null>(null);
@@ -130,7 +131,7 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
     return { weekday, date: dateStr };
 };
 
-const currentExchange = props.activity[0]?.exchange ?? null;
+const currentExchange = props.exchange ?? props.activity[0]?.exchange ?? null;
 
 const groupedActivities = () => {
     const grouped: { [key: string]: Activity[] } = {};
