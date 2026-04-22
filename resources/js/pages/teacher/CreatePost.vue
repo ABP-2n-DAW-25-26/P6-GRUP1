@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Link, Form } from '@inertiajs/vue3';
 import { store } from '@/routes/exchange/post';
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
 const props = defineProps<{
   exchangeId: number
@@ -21,6 +23,9 @@ defineOptions({
 const fileInput = ref<HTMLInputElement | null>(null)
 const selectedFiles = ref<File[]>([])
 const previews = ref<string[]>([])
+const editorRef = ref<HTMLDivElement | null>(null)
+const description = ref('')
+let quill: Quill | null = null
 
 const fileSignature = (file: File) => `${file.name}-${file.size}-${file.lastModified}`
 
@@ -54,8 +59,36 @@ const handleFileChange = (event: Event) => {
   refreshPreviews()
 }
 
+onMounted(() => {
+  if (!editorRef.value) {
+    return
+  }
+
+  quill = new Quill(editorRef.value, {
+    theme: 'snow',
+    placeholder: "Explica l'anunci aquí...",
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link'],
+      ],
+    },
+  })
+
+  quill.on('text-change', () => {
+    if (!quill) {
+      return
+    }
+
+    const html = quill.root.innerHTML
+    description.value = html === '<p><br></p>' ? '' : html
+  })
+})
+
 onBeforeUnmount(() => {
   previews.value.forEach((url) => URL.revokeObjectURL(url))
+  quill = null
 })
 </script>
 <template>
@@ -79,8 +112,10 @@ onBeforeUnmount(() => {
           <!-- Descripció -->
           <div>
             <label class="text-sm font-medium text-hp-text">Descripció</label>
-            <textarea name="description" rows="3" placeholder="Explica l'anunci aquí..."
-              class="mt-1 w-full px-3 py-2 text-sm border rounded-md bg-hp-bg border-hp-bg-icon focus:outline-none focus:ring-2 focus:ring-teal-400"></textarea>
+            <div class="quill-wrapper mt-1">
+              <div ref="editorRef" class="quill-container"></div>
+            </div>
+            <input type="hidden" name="description" :value="description" />
           </div>
 
           <!-- Dates -->
@@ -128,3 +163,51 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+
+<style>
+.quill-wrapper {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--hp-bg-icon, #d1d5db);
+}
+
+.quill-container {
+  min-height: 100px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--hp-bg, #f8fafc);
+  color: var(--hp-text, #0f172a);
+}
+
+.ql-toolbar.ql-snow {
+  background: var(--hp-bg-card, #ffffff);
+  border: none;
+  border-bottom: 1px solid var(--hp-bg-icon, #d1d5db);
+}
+
+.ql-container.ql-snow {
+  border: none;
+}
+
+.ql-toolbar button .ql-stroke {
+  stroke: var(--hp-text-dim, #64748b);
+}
+
+.ql-toolbar button:hover .ql-stroke,
+.ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--hp-primary, #14b8a6);
+}
+
+.ql-toolbar button .ql-fill {
+  fill: var(--hp-text-dim, #64748b);
+}
+
+.ql-toolbar button:hover .ql-fill,
+.ql-toolbar button.ql-active .ql-fill {
+  fill: var(--hp-primary, #14b8a6);
+}
+
+.ql-snow .ql-editor.ql-blank::before {
+  color: var(--hp-text-dim, #64748b);
+}
+</style>
