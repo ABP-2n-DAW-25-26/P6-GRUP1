@@ -1,90 +1,91 @@
 name: Deploy
 
 on:
-    push:
-        branches: ['develop']
-    workflow_dispatch:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.4'
-                  extensions: curl, mbstring, pdo_mysql, tokenizer, xml, zip, zlib, ctype, openssl, fileinfo, bcmath
-
-            - name: Install Dependencies
-              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-            - name: Node JS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-
-            - name: Instal·la les dependències de Node JS
-              run: npm install
-
-            - name: Configura .env per al build
-              run: |
-                  cp .env.example .env
-                  sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
-                  echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-                  echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-                  echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-                  echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-                  echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-
-            - name: Compila frontend amb Vite
-              run: npm run build
-
-            - name: Fent neteja
-              run: rm -rf node_modules
-
-            - name: Comprimir el projecte (incloent els ocults)
-              run: tar -czf app.tgz $(ls -A)
-
-            - name: Envia app.tgz al servidor
-              uses: appleboy/scp-action@v0.1.7
-              with:
-                  host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USER }}
-                  password: ${{ secrets.SSH_PASS }}
-                  port: ${{ secrets.SSH_PORT }}
-                  source: 'app.tgz'
-                  target: ${{ secrets.DOCUMENT_ROOT }}
-
-            - name: Es connecta per ssh per fer el desplegament
-              uses: appleboy/ssh-action@v1.0.3
-              with:
-                  host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USER }}
-                  password: ${{ secrets.SSH_PASS }}
-                  port: ${{ secrets.SSH_PORT }}
-                  script: |
-                      echo "Descomprimint el fitxer app.tgz"
-                      cd ${{ secrets.DOCUMENT_ROOT }}
-                      tar -xzf app.tgz
-                      pwd
-                      ls -lisa
-                      echo "Configurant .env al servidor"
-                      $(which php84) -r "file_exists('.env') || copy('.env.example', '.env');"
-                      sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
-                      sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
-                      echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-                      echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-                      echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-                      echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-                      echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-                      $(which php84) artisan config:clear
-                      $(which php84) artisan key:generate
-                      echo "Executar migracions i seeders"
-                      $(which php84) artisan migrate --force
-                      $(which php84) artisan db:seed --force
-                      $(which php84) artisan optimize:clear
-                      $(which php84) artisan optimize
-                      $(which php84) artisan storage:unlink
-                      $(which php84) artisan storage:link
+    steps:
+    # Fa un git clone de la branca que ha generat l'acció a la màquina ubuntu
+    - uses: actions/checkout@v4
+    # Instal·la el php
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: curl, mbstring, pdo_mysql, tokenizer, xml, zip, zlib, ctype, openssl, fileinfo, bcmath
+    # Instal·la les dependències de php
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    # Instal·la el Node JS
+    - name: Node JS
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    # Instal·la les dependències Node.js
+    - name: Instal·la les dependències de Node JS
+      run: npm install
+    # Configura el .env amb els secrets abans del build de Vite
+    # (el .env.example té sqlite i les línies de DB comentades, les sobreescrivim)
+    - name: Configura .env per al build
+      run: |
+        cp .env.example .env
+        sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+    # Compila el Vue
+    - name: Compila frontend amb Vite
+      run: npm run build
+    - name: Fent neteja
+      run: rm -rf node_modules
+    - name: Comprimir el projecte (incloent els ocults)
+      run: tar -czf app.tgz $(ls -A)
+    - name: Envia app.tgz al servidor
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "app.tgz"
+        target: ${{ secrets.DOCUMENT_ROOT }}
+    - name: Es connecta per ssh per fer el desplegament
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          echo "Descomprimint el fitxer app.tgz"
+          cd ${{ secrets.DOCUMENT_ROOT }}
+          tar -xzf app.tgz
+          pwd
+          ls -lisa
+          echo "Copiar el fitxer env si no el tenim"
+          $(which php84) -r "file_exists('.env') || copy('.env.example', '.env');"
+          echo "Canvia el fitxer env"
+          sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+          sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          $(which php84) artisan config:clear
+          $(which php84) artisan key:generate
+          echo "Executar migracions, cache i altres operacions de Laravel"
+          $(which php84) artisan migrate --force
+          $(which php84) artisan db:seed --force
+          $(which php84) artisan optimize:clear
+          $(which php84) artisan optimize
+          $(which php84) artisan storage:unlink
+          $(which php84) artisan storage:link
