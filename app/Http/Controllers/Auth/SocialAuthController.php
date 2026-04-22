@@ -20,7 +20,6 @@ class SocialAuthController extends Controller
 
     /**
      * Handle the callback from Google after authentication.
-     * Only allows users with a @cendrassos.net email address.
      */
     public function handleGoogleCallback()
     {
@@ -29,7 +28,7 @@ class SocialAuthController extends Controller
         // Restrict access to @cendrassos.net domain only
         if (!str_ends_with($googleUser->getEmail(), '@cendrassos.net')) {
             return redirect()->route('login')->withErrors([
-                'email' => 'Només es permet accedir amb un correu @cendrassos.net',
+                'email' => 'Necessites un correu @cendrassos.net per accedir a CendraQuest.',
             ]);
         }
 
@@ -48,7 +47,6 @@ class SocialAuthController extends Controller
             return redirect()->intended('/schedule');
         }
 
-        // Create a new user with a random password (login is via Google)
         $user = User::create([
             'name'      => $googleUser->getName(),
             'email'     => $googleUser->getEmail(),
