@@ -36,11 +36,6 @@ const mainNavItems: NavItem[] = [
         icon: Repeat,
     },
     {
-        title: 'Activitats guiades',
-        href: "/guidedactivity",
-        icon: BookOpen,
-    },
-    {
         title: 'Notificacions',
         href: "/notifications",
         icon: Bell,

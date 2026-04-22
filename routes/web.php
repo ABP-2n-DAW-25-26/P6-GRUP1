@@ -16,10 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange', ExchangeController::class);
     Route::get('exchange/{id}', [ActivityController::class, 'index'])->name('activity.index');
     Route::resource('exchange.addUser', AddUsersController::class);
+    Route::resource('exchange.guidedactivity', GuidedActivityController::class);
 });
 
 
-Route::resource('guidedactivity', GuidedActivityController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 

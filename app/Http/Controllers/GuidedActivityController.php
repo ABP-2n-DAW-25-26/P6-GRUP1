@@ -16,8 +16,7 @@ class GuidedActivityController extends Controller
      */
     public function index()
     {
-        $guidedActivities = GuidedActivity::all();
-        return Inertia::render('Activities/IndexGuidedActivity', ['guidedActivities' => $guidedActivities]);
+        //
     }
 
     /**
@@ -47,9 +46,9 @@ class GuidedActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GuidedActivity $guidedactivity)
+    public function show(string $id)
     {
-        $guidedactivity = GuidedActivity::with('locations')->findOrFail($guidedactivity->id);
+        $guidedactivity = GuidedActivity::with('locations')->findOrFail($id);
         return Inertia::render('Activities/ShowGuidedActivity', ["guidedactivity" => $guidedactivity]);
     }
 

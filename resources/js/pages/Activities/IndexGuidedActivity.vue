@@ -15,11 +15,11 @@ defineProps<{
 </script>
 
 <template>
-    <div class="p-6">
+    <div class="p-6 w-full">
         <h1 class="text-2xl font-bold text-hp-text mb-6">Activitats guiades</h1>
 
         <div v-if="guidedActivities.length === 0" class="text-hp-text-dim text-sm">
-            No hi ha activitats guiades
+            No hi ha activitats
         </div>
 
         <div class="grid gap-4">

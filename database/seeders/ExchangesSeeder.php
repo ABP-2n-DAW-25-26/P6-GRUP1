@@ -11,17 +11,17 @@ class ExchangesSeeder extends Seeder
     public function run(): void
     {
         Exchange::create([
-            'title' => 'Intercanvi Cendrassos - Itàlia 2026',
+            'title' => 'Cendrassos - Itàlia 2026',
             'user_id' => 1,
             'color' => '#10b981',
             'origin' => 'INS Cendrassos (Figueres)',
             'destiny' => 'Milà, Itàlia',
-            'start_date' => Carbon::now()->addDays(10)->setTime(9, 0),
-            'end_date' => Carbon::now()->addDays(17)->setTime(18, 0),
+            'start_date' => Carbon::now()->addDays(-2)->setTime(9, 0),
+            'end_date' => Carbon::now()->addDays(4)->setTime(18, 0),
         ]);
 
         Exchange::create([
-            'title' => 'Intercanvi Cendrassos - Alemanya',
+            'title' => 'Cendrassos - Alemanya',
             'user_id' => 1,
             'color' => '#6366f1',
             'origin' => 'INS Cendrassos (Figueres)',
@@ -31,7 +31,7 @@ class ExchangesSeeder extends Seeder
         ]);
 
         Exchange::create([
-            'title' => 'Intercanvi Lycée Victor Hugo - Cendrassos',
+            'title' => 'Lycée Victor Hugo - Cendrassos',
             'user_id' => 1,
             'color' => '#facc15',
             'origin' => 'Lycée Victor Hugo (París, França)',
