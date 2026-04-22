@@ -6,6 +6,8 @@ use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\InterestPointController;
+
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -20,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::resource('guidedactivity', GuidedActivityController::class);
+Route::resource('interestpoint', InterestPointController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 
