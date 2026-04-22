@@ -34,9 +34,9 @@ const props = defineProps<{
 
     <Head :title="guidedactivity.title" />
 
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+    <div class="min-h-screen dark:bg-gray-900 p-4 w-full">
 
-        <div class="max-w-md mx-auto">
+        <div class="mx-auto">
 
             <!-- Header -->
             <div class="flex items-center justify-between mb-4">
@@ -46,7 +46,7 @@ const props = defineProps<{
             </div>
 
             <!-- Card -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 space-y-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl space-y-4">
 
                 <!-- Nom de la activitat i horari -->
                 <div>
@@ -56,11 +56,6 @@ const props = defineProps<{
                     <p class="text-sm text-gray-500">
                         {{ guidedactivity.start_date }} - {{ guidedactivity.end_date }}
                     </p>
-                </div>
-
-                <!-- Imatge -->
-                <div class="w-full h-40 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden relative">
-                    <img v-if="guidedactivity.file" :src="guidedactivity.file" class="w-full h-full object-cover" />
                 </div>
 
                 <!-- Descripció -->

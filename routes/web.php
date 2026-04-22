@@ -7,8 +7,13 @@ use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Auth\SocialAuthController;
 
 Route::inertia('/', 'Home')->name('home');
+
+// OAuth — Google (restringit a @cendrassos.net)
+Route::get('/auth/gmail', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.gmail');
+Route::get('/auth/gmail/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.gmail.callback');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
@@ -17,10 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.addUser', AddUsersController::class);
     Route::resource('exchange.post', PostController::class);
+    Route::resource('exchange.guidedactivity', GuidedActivityController::class);
 });
 
 
-Route::resource('guidedactivity', GuidedActivityController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 
