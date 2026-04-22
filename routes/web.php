@@ -6,8 +6,13 @@ use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Auth\SocialAuthController;
 
 Route::inertia('/', 'Home')->name('home');
+
+// OAuth — Google (restringit a @cendrassos.net)
+Route::get('/auth/gmail', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.gmail');
+Route::get('/auth/gmail/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.gmail.callback');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
