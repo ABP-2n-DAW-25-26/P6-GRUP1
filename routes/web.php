@@ -6,6 +6,7 @@ use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\PostController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -15,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // PROFE
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.addUser', AddUsersController::class);
+    Route::resource('exchange.post', PostController::class);
 });
 
 
