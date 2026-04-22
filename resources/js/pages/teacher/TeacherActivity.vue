@@ -39,6 +39,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const selectedFile = ref<File | null>(null);
 const isUploadingCsv = ref(false);
 const uploadError = ref('');
+const currentExchange = props.exchange ?? props.activity[0]?.exchange ?? null;
 
 const toggleExpand = (id: number) => {
     expandedId.value = expandedId.value === id ? null : id;
@@ -107,7 +108,7 @@ const submitCsv = () => {
 
 const createOptions = [
     { label: 'Visita guiada', path: '/guidedactivity' },
-    { label: 'Anunci', path: '/admin/activity/create/announcement' },
+    { label: 'Anunci', path: currentExchange?.id ? `/exchange/${currentExchange.id}/post/create` : '#' },
     { label: "Punt d'interes", path: '/admin/activity/create/interestPoint' },
     { label: 'Gimcana', path: '/admin/activity/create/gimcana'},
 ];
@@ -130,8 +131,6 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
 
     return { weekday, date: dateStr };
 };
-
-const currentExchange = props.exchange ?? props.activity[0]?.exchange ?? null;
 
 const groupedActivities = () => {
     const grouped: { [key: string]: Activity[] } = {};
