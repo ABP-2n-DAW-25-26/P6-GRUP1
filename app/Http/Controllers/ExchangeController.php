@@ -11,13 +11,11 @@ use App\Actions\Exchanges\CreateExchangeAction;
 class ExchangeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. 
      */
     public function index()
     {
-        $exchanges = Exchange::all();
-
-        return Inertia::render('CreateExchange', ["exchanges" => $exchanges]);
+        //
     }
 
     /**
@@ -25,7 +23,9 @@ class ExchangeController extends Controller
      */
     public function create()
     {
-        //
+        $exchanges = Exchange::all();
+
+        return Inertia::render('CreateExchange', ["exchanges" => $exchanges]);
     }
 
     /**

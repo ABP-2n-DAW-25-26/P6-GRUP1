@@ -11,13 +11,14 @@ Route::inertia('/', 'Home')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
-
+    
     // PROFE
+    Route::resource('exchange', ExchangeController::class);
     Route::get('exchange/{id}', [ActivityController::class, 'index'])->name('activity.index');
     Route::resource('exchange.addUser', AddUsersController::class);
 });
 
-Route::resource('exchange', ExchangeController::class);
+
 Route::resource('guidedactivity', GuidedActivityController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
