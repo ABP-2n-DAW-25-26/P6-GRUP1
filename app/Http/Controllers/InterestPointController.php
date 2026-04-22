@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\InterestPoint;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\CreateInterestPointRequest;
+use App\Actions\Exchanges\CreateInterestPointAction;
 
 class InterestPointController extends Controller
 {
@@ -29,9 +31,15 @@ class InterestPointController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateInterestPointRequest $request, CreateInterestPointAction $createinterestPoint)
     {
-        //
+        $interestPoint = new InterestPoint();
+
+        $validated = $request->validated();
+        $createinterestPoint->execute($validated, auth()->id());
+
+        Inertia::flash(['message' => 'Interestpoint creat correctament']);
+        return to_route('interestpoint.index');
     }
 
     /**
