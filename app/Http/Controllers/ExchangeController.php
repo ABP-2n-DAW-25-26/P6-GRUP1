@@ -36,6 +36,7 @@ class ExchangeController extends Controller
         return Inertia::render('teacher/TeacherActivity', [
             'activity' => Activity::with('exchange.users')
                 ->where('exchange_id', $exchange->id)
+                ->orderBy('start_date', 'asc')
                 ->get(),
             'exchange' => $exchange->load('users'),
         ]);

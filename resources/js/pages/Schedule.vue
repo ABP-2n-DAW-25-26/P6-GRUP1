@@ -98,9 +98,9 @@ function formatTime(dateString: string) {
                             }}</time>
                     </div>
 
-                    <div v-if="day.activities.length > 0" class="space-y-2">
+                    <div v-if="day.activities.length > 0" class="space-y-4">
                         <div v-for="activity in day.activities" :key="activity.id" class="flex gap-3">
-                            <div class="flex flex-col justify-around">
+                            <div class="flex flex-col justify-around w-18">
                                 <time class="text-gray-400">
                                     {{ formatTime(activity.start_date) }}
                                 </time>
