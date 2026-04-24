@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use App\Models\Exchange;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,17 @@ class AppServiceProvider extends ServiceProvider
     {
         // $this->configureDefaults();
         Inertia::share('exchanges', function () {
-            return \App\Models\Exchange::orderBy('start_date', 'asc')
+            $user = Auth::user();
+            
+            if (!$user) {
+                return [];
+            }
+            
+            return \App\Models\Exchange::where('user_id', $user->id)
+                ->orWhereHas('users', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->orderBy('start_date', 'asc')
                 ->limit(7)
                 ->get();
         });

@@ -67,6 +67,7 @@ function formatTime(dateString: string) {
     <Head title="Agenda" />
 
     <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
+        <h1 class="font-hp text-hp-primary text-6xl text-center">agenda</h1>
         <div class="mx-auto flex gap-6 px-4 py-6 bg-stone-100 rounded-3xl uppercase sticky top-0 overflow-x-auto w-full">
             <div class="mx-auto flex gap-2">
                 <div v-for="day in exchangeDays" :key="day.date" class="text-center font-bold">
@@ -98,9 +99,9 @@ function formatTime(dateString: string) {
                             }}</time>
                     </div>
 
-                    <div v-if="day.activities.length > 0" class="space-y-2">
+                    <div v-if="day.activities.length > 0" class="space-y-4">
                         <div v-for="activity in day.activities" :key="activity.id" class="flex gap-3">
-                            <div class="flex flex-col justify-around">
+                            <div class="flex flex-col justify-around w-18">
                                 <time class="text-gray-400">
                                     {{ formatTime(activity.start_date) }}
                                 </time>

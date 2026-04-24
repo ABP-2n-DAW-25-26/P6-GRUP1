@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Requests\CreateExchangeRequest;
 use App\Actions\Exchanges\CreateExchangeAction;
 use App\Models\Activity;
+use Illuminate\Support\Facades\Auth;
 
 class ExchangeController extends Controller
 {
@@ -33,9 +34,14 @@ class ExchangeController extends Controller
      */
     public function show(Exchange $exchange)
     {
+        $user = Auth::user();
+        if ($exchange->user_id !== $user->id && ! $exchange->users()->where('user_id', $user->id)->where('role', 'teacher')->exists()) {
+             return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');
+        }
         return Inertia::render('teacher/TeacherActivity', [
             'activity' => Activity::with('exchange.users')
                 ->where('exchange_id', $exchange->id)
+                ->orderBy('start_date', 'asc')
                 ->get(),
             'exchange' => $exchange->load('users'),
         ]);
