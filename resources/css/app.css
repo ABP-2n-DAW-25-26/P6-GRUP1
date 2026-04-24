@@ -67,32 +67,31 @@
     --color-hp-secondary: var(--hp-secondary);
     --color-hp-secondary-light: var(--hp-secondary-light);
     --color-hp-secondary-dark: var(--hp-secondary-dark);
-    --color-hp-red:            var(--hp-red);
-    --color-hp-red-light:      var(--hp-red-light);
-    --color-hp-blue:           var(--hp-blue);
-    --color-hp-blue-light:     var(--hp-blue-light);
-    --color-hp-yellow:         var(--hp-yellow);
-    --color-hp-yellow-light:   var(--hp-yellow-light);
-    --color-hp-green:          var(--hp-green);
-    --color-hp-green-light:    var(--hp-green-light);
-    --color-hp-text:           var(--hp-text);
-    --color-hp-text-dim:       var(--hp-text-dim);
-    --color-hp-bg:             var(--hp-bg);
-    --color-hp-surface:        var(--hp-surface);
-    --color-hp-border:         var(--hp-border);
-    --color-hp-focus:          var(--hp-focus);
-    --color-hp-icon:           var(--hp-icon);
-    --color-hp-bg-icon:        var(--hp-bg-icon);
-    --color-hp-bg-card:        var(--hp-bg-card);
+    --color-hp-red: var(--hp-red);
+    --color-hp-red-light: var(--hp-red-light);
+    --color-hp-blue: var(--hp-blue);
+    --color-hp-blue-light: var(--hp-blue-light);
+    --color-hp-yellow: var(--hp-yellow);
+    --color-hp-yellow-light: var(--hp-yellow-light);
+    --color-hp-green: var(--hp-green);
+    --color-hp-green-light: var(--hp-green-light);
+    --color-hp-text: var(--hp-text);
+    --color-hp-text-dim: var(--hp-text-dim);
+    --color-hp-bg: var(--hp-bg);
+    --color-hp-surface: var(--hp-surface);
+    --color-hp-border: var(--hp-border);
+    --color-hp-focus: var(--hp-focus);
+    --color-hp-icon: var(--hp-icon);
+    --color-hp-bg-icon: var(--hp-bg-icon);
+    --color-hp-bg-card: var(--hp-bg-card);
 
     /* Font */
     --font-hp: 'Catalona', sans-serif;
-
 }
 
 @font-face {
     font-family: 'Catalona';
-    src: url('../fonts/Catalona.ttf') format('truetype');
+    src: url('/public/fonts/Catalona.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;

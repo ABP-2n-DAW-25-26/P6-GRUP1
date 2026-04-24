@@ -25,6 +25,7 @@ class ScheduleController extends Controller
                 ->filter(function ($activity) use ($date) {
                     return Carbon::parse($activity->start_date)->toDateString() === $date;
                 })
+                ->sortBy('start_date')
                 ->values();
 
             $days[] = [

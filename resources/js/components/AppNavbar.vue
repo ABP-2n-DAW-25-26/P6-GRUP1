@@ -12,7 +12,11 @@ const isLoggedIn = computed(() => !!page.props.auth?.user);
         <nav class="relative flex items-center justify-between px-8 py-3 rounded-2xl shadow-sm border bg-white border-hp-border max-w-[95vw] mx-auto transition-colors">
 
             <Link href="/" class="flex items-center gap-3 no-underline">
-                <span class="text-xl font-black tracking-widest text-hp-primary">HIPATIA</span>
+                <img src="/cendraquest-256.png" alt="CendraQuest" class="w-9 h-9 rounded-full" />
+                <div class="flex flex-col leading-tight">
+                    <span class="text-sm font-black tracking-widest text-hp-text uppercase">CendraQuest</span>
+                    <span class="text-xs font-semibold tracking-widest text-hp-primary uppercase">Institut Cendrassos</span>
+                </div>
             </Link>
 
             <div class="flex items-center gap-3">

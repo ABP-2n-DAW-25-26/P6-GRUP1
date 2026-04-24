@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, Calendar, FolderGit2, LayoutDashboard, LayoutGrid, PanelBottom, Repeat, Folder } from 'lucide-vue-next';
+import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
+    SidebarGroup,
+    SidebarGroupContent,
     SidebarGroupLabel,
     Sidebar,
     SidebarContent,
@@ -36,11 +39,6 @@ const mainNavItems: NavItem[] = [
         icon: Repeat,
     },
     {
-        title: 'Activitats guiades',
-        href: "/guidedactivity",
-        icon: BookOpen,
-    },
-    {
         title: 'Notificacions',
         href: "/notifications",
         icon: Bell,
@@ -50,8 +48,14 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
 ];
 
-const page = usePage();
-const exchanges = page.props.exchanges;
+type ExchangeSidebarItem = {
+    id: number | string;
+    title: string;
+    color?: string | null;
+};
+
+const page = usePage<{ exchanges?: ExchangeSidebarItem[] }>();
+const exchanges = computed(() => page.props.exchanges ?? []);
 </script>
 
 <template>
@@ -70,18 +74,22 @@ const exchanges = page.props.exchanges;
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <SidebarGroup class="px-2 py-0">
+                <SidebarGroupLabel>Intercanvis</SidebarGroupLabel>
+                <SidebarGroupContent>
+                    <SidebarMenu>
+                        <SidebarMenuItem v-for="ex in exchanges" :key="ex.id">
+                            <SidebarMenuButton as-child>
+                                <Link :href="`/exchange/${ex.id}`">
+                                    <Folder :color="ex.color ?? undefined" />
+                                    <span>{{ ex.title }}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarGroupContent>
+            </SidebarGroup>
         </SidebarContent>
-        <SidebarGroupLabel class="ml-2">Intercanvis</SidebarGroupLabel>
-        <div v-for="ex in exchanges" :key="ex.id" class="ml-2 pl-2 pb-4">
-            <Link :href="`/exchange/${ex.id}`" class="flex flex-row gap-1 hover:bg-gray-200">
-                <p  :style="{ color: ex.color }">
-                    <Folder /> 
-                </p>
-                <p class="text-base">
-                    {{ ex.title }}
-                </p>
-            </Link>
-        </div>
         <SidebarFooter>
 
             <NavFooter :items="footerNavItems" />
