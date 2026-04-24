@@ -2,6 +2,7 @@
 import { Link, Form } from '@inertiajs/vue3';
 import { store } from '@/routes/guidedactivity';
 import { ref } from 'vue';
+import Map from '@/components/AddLocationsMap.vue'
 
 
 // Guarda la imatge seleccionada
@@ -73,6 +74,11 @@ const handleFileChange = (event: Event) => {
               <img :src="preview" alt="Preview" class="w-full h-40 object-contain rounded-xl" />
             </div>
           </div>
+
+            <div class="w-full h-80 rounded-lg overflow-hidden">
+                <h1 class="text-xl font-bold mb-4">Mapa</h1>
+                <Map />
+            </div>
 
           <!-- Botó enviar -->
           <div class="flex gap-3 pt-2 w-full">
