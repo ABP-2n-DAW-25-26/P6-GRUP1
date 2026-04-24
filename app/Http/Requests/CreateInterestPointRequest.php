@@ -28,6 +28,8 @@ class CreateInterestPointRequest extends FormRequest
         'start_date' => 'required|date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
         'file' => 'nullable|image|max:2048',
+        'latitude' => 'required|numeric',
+        'longitude' => 'required|numeric',
         ];
     }
 }

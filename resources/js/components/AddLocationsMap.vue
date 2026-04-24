@@ -12,6 +12,7 @@ import { onMounted, ref } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
+const emit = defineEmits(['location-selected'])
 const lat = ref(null)
 const lng = ref(null)
 
@@ -32,6 +33,8 @@ onMounted(() => {
   map.on('click', (e) => {
     lat.value = e.latlng.lat
     lng.value = e.latlng.lng
+
+  emit('location-selected', {latitude: lat.value, longitude: lng.value})
 
     // marker
     if (marker) {
