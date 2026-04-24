@@ -19,11 +19,25 @@ class ExchangeController extends Controller
     {
         $exchange = Exchange::query()->orderBy('start_date', 'asc')->first();
 
-        if (! $exchange) {
-            return Inertia::render('teacher/TeacherActivity', [
-                'activity' => [],
-                'exchange' => null,
-            ]);
+        $user = auth()->user();
+
+        if ($user && $user->role === 'teacher' || $user->role === 'admin')
+        {
+            if (! $exchange) {
+                return Inertia::render('teacher/TeacherActivity', [
+                    'activity' => [],
+                    'exchange' => null,
+                ]);
+            }
+        }
+        elseif ($user && $user->role === 'student')
+        {
+            if (! $exchange) {
+                return Inertia::render('users/StudentActivity', [
+                    'activity' => [],
+                    'exchange' => null,
+                ]);
+            }
         }
 
         return to_route('exchange.show', $exchange);
@@ -34,6 +48,17 @@ class ExchangeController extends Controller
      */
     public function show(Exchange $exchange)
     {
+        $user = auth()->user();
+        if ($user && $user->role === 'student')
+        {
+            return Inertia::render('users/StudentActivity', [
+                'activity' => Activity::with('exchange.users')
+                    ->where('exchange_id', $exchange->id)
+                    ->get(),
+                'exchange' => $exchange->load('users'),
+            ]);
+        }
+        
         $user = Auth::user();
         if ($exchange->user_id !== $user->id && ! $exchange->users()->where('user_id', $user->id)->where('role', 'teacher')->exists()) {
              return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Trash, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search } from 'lucide-vue-next';
+import { ChevronDown, Pencil, Eye, Trash, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import PageTopBar from '@/components/PageTopBar.vue';
 
 interface Exchange {
@@ -369,19 +369,17 @@ defineOptions({
             <div class="lg:border sm:border-b sm:rounded-t-xl border-gray-200 bg-hp-bg-card lg:rounded-xl lg:m-4 p-4">
                 <div v-if="currentExchange" class="flex flex-row items-center justify-between">
                     <div class="text-center">
-                        <p class="text-xs font-semibold uppercase">{{ formatDate(currentExchange.start_date).weekday }}
-                        </p>
-                        <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.start_date).date }}</p>
+                        <p class="text-xs lg:text-lg font-semibold uppercase">{{ formatDate(currentExchange.start_date).weekday }}</p>
+                        <p class="text-[10px] lg:text-sm text-hp-text-dim">{{ formatDate(currentExchange.start_date).date }}</p>
                     </div>
                     <hr class="lg:w-full lg:mx-4">
                     <div class="flex flex-row items-center w-full justify-center">
-                        <p class="text-md font-bold text-hp-text">{{ currentExchange.origin }}</p>
+                        <p class="text-md lg:text-xl font-bold text-hp-text">{{ currentExchange.origin }}</p>
                     </div>
                     <hr class="lg:w-full lg:mx-4">
                     <div class="text-center">
-                        <p class="text-xs font-semibold text-hp-primary-dark uppercase">{{
-                            formatDate(currentExchange.end_date).weekday }}</p>
-                        <p class="text-[10px] text-hp-text-dim">{{ formatDate(currentExchange.end_date).date }}</p>
+                        <p class="text-xs lg:text-lg font-semibold text-hp-primary-dark uppercase">{{ formatDate(currentExchange.end_date).weekday }}</p>
+                        <p class="text-[10px] lg:text-sm text-hp-text-dim">{{ formatDate(currentExchange.end_date).date }}</p>
                     </div>
                 </div>
                 <div v-else class="text-center text-sm text-hp-text-dim">
@@ -395,10 +393,7 @@ defineOptions({
                 </div>
                 <div v-else>
                     <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
-                        <p class="mb-3 text-sm font-bold text-hp-text">{{ new Date(date).toLocaleDateString('ca-ES', {
-                            weekday:
-                                'long', day: 'numeric', month: 'long'
-                        }) }}</p>
+                        <p class="mb-3 lg:text-lg sm:text-sm font-bold text-hp-text">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
                         <div class="space-y-2">
                             <div v-for="activity in activities" :key="activity.id"
                                 class="overflow-hidden rounded-lg border bg-stone-100 border-gray-200">
@@ -415,12 +410,48 @@ defineOptions({
                                         </div>
                                         <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <button class="rounded p-1 hover:bg-gray-100">
-                                            <Pencil :size="16" class="text-gray-600" />
+                                    <div v-if="activity.type === 'post'" class="flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        </Link>
+                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
+                                        </Link>
+                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
+                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
                                         </button>
-                                        <button class="rounded p-1 hover:bg-gray-100">
-                                            <Trash :size="16" class="text-gray-600" />
+                                    </div>
+                                    <div v-if="activity.type === 'interest_point'" class="flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        </Link>
+                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
+                                        </Link>
+                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
+                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
+                                        </button>
+                                    </div>
+                                    <div v-if="activity.type === 'guided_visit'" class="flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        </Link>
+                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
+                                        </Link>
+                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
+                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
+                                        </button>
+                                    </div>
+                                    <div v-if="activity.type === 'gimcana'" class="flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        </Link>
+                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
+                                        </Link>
+                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
+                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
                                         </button>
                                     </div>
                                 </button>
