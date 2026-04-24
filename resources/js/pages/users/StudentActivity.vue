@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronDown, Eye, Trash, Users, MonitorCog, UserPlus } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import PageTopBar from '@/components/PageTopBar.vue';
 
@@ -45,14 +45,6 @@ const toggleExpand = (id: number) => {
     expandedId.value = expandedId.value === id ? null : id;
 };
 
-const toggleCreateMenu = () => {
-    isCreateMenuOpen.value = !isCreateMenuOpen.value;
-};
-
-const openUploadModal = () => {
-    isUploadModalOpen.value = true;
-};
-
 const closeUploadModal = () => {
     isUploadModalOpen.value = false;
     selectedFile.value = null;
@@ -60,50 +52,6 @@ const closeUploadModal = () => {
     if (fileInput.value) {
         fileInput.value.value = '';
     }
-};
-
-const selectFile = () => {
-    fileInput.value?.click();
-};
-
-const handleFileSelect = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files?.length) {
-        selectedFile.value = target.files[0];
-        uploadError.value = '';
-    }
-};
-
-const submitCsv = () => {
-    if (!currentExchange?.id) {
-        uploadError.value = 'No hay intercambio seleccionado';
-        return;
-    }
-
-    if (!selectedFile.value) {
-        uploadError.value = 'Por favor selecciona un archivo CSV';
-        return;
-    }
-
-    isUploadingCsv.value = true;
-    const formData = new FormData();
-    formData.append('import_csv', selectedFile.value);
-
-    router.post(`/exchange/${currentExchange.id}/addUser`, formData, {
-        forceFormData: true,
-        onSuccess: () => {
-            closeUploadModal();
-        },
-        onError: (errors) => {
-            const csvError = errors.import_csv;
-            uploadError.value = Array.isArray(csvError)
-                ? csvError[0]
-                : (csvError ?? 'Error al importar el archivo');
-        },
-        onFinish: () => {
-            isUploadingCsv.value = false;
-        },
-    });
 };
 
 const createOptions = [
@@ -131,6 +79,41 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
 
     return { weekday, date: dateStr };
 };
+
+const parseDateTime = (value: string | null | undefined): Date | null => {
+    if (!value) return null;
+
+    const directDate = new Date(value);
+    if (!Number.isNaN(directDate.getTime())) return directDate;
+
+    const normalizedDate = new Date(value.replace(' ', 'T'));
+    if (!Number.isNaN(normalizedDate.getTime())) return normalizedDate;
+
+    return null;
+};
+
+const nextActivityId = computed<number | null>(() => {
+    const now = Date.now();
+    let closestActivityId: number | null = null;
+    let closestDiff = Number.POSITIVE_INFINITY;
+
+    for (const activity of props.activity) {
+        const activityDate = parseDateTime(activity.start_date);
+        if (!activityDate) continue;
+
+        const diff = activityDate.getTime() - now;
+        if (diff < 0) continue;
+
+        if (diff < closestDiff) {
+            closestDiff = diff;
+            closestActivityId = activity.id;
+        }
+    }
+
+    return closestActivityId;
+});
+
+const isNextActivity = (activityId: number): boolean => nextActivityId.value === activityId;
 
 const groupedActivities = () => {
     const grouped: { [key: string]: Activity[] } = {};
@@ -187,34 +170,35 @@ defineOptions({
                     <div v-for="(activities, date) in groupedActivities()" :key="date" class="mb-6">
                         <p class="mb-3 lg:text-lg sm:text-sm font-bold text-hp-text">{{ new Date(date).toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</p>
                         <div class="space-y-2">
-                            <div v-for="activity in activities" :key="activity.id" class="overflow-hidden rounded-lg border bg-stone-100 border-gray-200">
+                            <div v-for="activity in activities" :key="activity.id" 
+                            :class="['overflow-hidden rounded-lg border', isNextActivity(activity.id) ? 'border-hp-primary bg-hp-primary/5' : 'border-gray-200 bg-stone-100',]">
                                 <button @click="toggleExpand(activity.id)" class="flex w-full items-center justify-between p-3 transition hover:bg-gray-50">
                                     <!-- <ChevronDown :class="['text-gray-400 transition-transform duration-300', expandedId === activity.id ? 'rotate-180' : '']" :size="20" /> -->
                                     <div class="flex flex-row items-center">
                                         <div class="flex flex-col items-start">
                                             <p class="text-xl font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
-                                            <p class="text-md font-hp text-hp-text-dim">{{ formatTime(activity.end_date) }}</p>
+                                            <p :class="['text-md font-hp', isNextActivity(activity.id) ? 'text-hp-primary/80 font-bold' : 'text-hp-text-dim']">{{ formatTime(activity.end_date) }}</p>
                                         </div>
-                                        <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
+                                        <p :class="['flex ml-5 text-sm font-semibold', isNextActivity(activity.id) ? 'text-hp-primary' : 'text-hp-primary']">{{ activity.title }}</p>
                                     </div>
-                                    <div v-if="activity.type === 'post'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
-                                            <Eye :size="16" class="text-hp-icon" />post
+                                    <div v-if="activity.type === 'post'" class="flex hover:text-hp-primary hover:bg-hp-primary/20 rounded-md items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1">
+                                            <Eye :size="16" />
                                         </Link>
                                     </div>
-                                    <div v-if="activity.type === 'interest_point'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
-                                            <Eye :size="16" class="text-hp-icon" />interest point
+                                    <div v-if="activity.type === 'interest_point'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1">
+                                            <Eye :size="16" class="" />
                                         </Link>
                                     </div>
-                                    <div v-if="activity.type === 'guided_visit'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
-                                            <Eye :size="16" class="text-hp-icon" />guided visit
+                                    <div v-if="activity.type === 'guided_visit'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1">
+                                            <Eye :size="16" class="" />
                                         </Link>
                                     </div>
-                                    <div v-if="activity.type === 'gimcana'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
-                                            <Eye :size="16" class="text-hp-icon" />gimcana
+                                    <div v-if="activity.type === 'gimcana'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
+                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1">
+                                            <Eye :size="16" class="" />
                                         </Link>
                                     </div>
                                 </button>
