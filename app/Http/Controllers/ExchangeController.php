@@ -18,11 +18,25 @@ class ExchangeController extends Controller
     {
         $exchange = Exchange::query()->orderBy('start_date', 'asc')->first();
 
-        if (! $exchange) {
-            return Inertia::render('teacher/TeacherActivity', [
-                'activity' => [],
-                'exchange' => null,
-            ]);
+        $user = auth()->user();
+
+        if ($user && $user->role === 'teacher' || $user->role === 'admin')
+        {
+            if (! $exchange) {
+                return Inertia::render('teacher/TeacherActivity', [
+                    'activity' => [],
+                    'exchange' => null,
+                ]);
+            }
+        }
+        elseif ($user && $user->role === 'student')
+        {
+            if (! $exchange) {
+                return Inertia::render('users/StudentActivity', [
+                    'activity' => [],
+                    'exchange' => null,
+                ]);
+            }
         }
 
         return to_route('exchange.show', $exchange);
