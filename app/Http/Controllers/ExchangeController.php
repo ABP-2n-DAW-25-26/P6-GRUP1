@@ -47,6 +47,17 @@ class ExchangeController extends Controller
      */
     public function show(Exchange $exchange)
     {
+        $user = auth()->user();
+        if ($user && $user->role === 'student')
+        {
+            return Inertia::render('users/StudentActivity', [
+                'activity' => Activity::with('exchange.users')
+                    ->where('exchange_id', $exchange->id)
+                    ->get(),
+                'exchange' => $exchange->load('users'),
+            ]);
+        }
+        
         return Inertia::render('teacher/TeacherActivity', [
             'activity' => Activity::with('exchange.users')
                 ->where('exchange_id', $exchange->id)

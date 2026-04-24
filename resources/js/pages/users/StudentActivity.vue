@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Eye, Trash, Users, MonitorCog, UserPlus } from 'lucide-vue-next';
+import { ChevronDown, Eye, Trash, Users, MonitorCog, UserPlus } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import PageTopBar from '@/components/PageTopBar.vue';
@@ -142,6 +142,7 @@ const groupedActivities = () => {
     return grouped;
 };
 
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -156,91 +157,6 @@ defineOptions({
 
 <template>
     <div class="sm:min-h-screen lg:min-w-full lg:min-h-full">
-        <!-- <PageTopBar :icon="MonitorCog" title="Intercanvi">
-            <template #actions>
-                <button
-                    type="button"
-                    @click="openUploadModal"
-                    class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary hover:border-hp-primary hover:shadow-md hover:shadow-hp-primary/60"
-                >
-                    <span class="flex h-8 w-8 items-center justify-center rounded-full text-hp-icon">
-                        <UserPlus :size="17" />
-                    </span>
-                    <span class="hidden sm:inline">Afegir usuaris</span>
-                </button>
-            </template>
-        </PageTopBar> -->
-        <div class="flex flex-row items-center justify-between p-4">
-            <button
-                type="button"
-                @click="openUploadModal"
-                class="inline-flex items-center gap-2 rounded-full border border-hp-border bg-hp-bg-card px-4 py-2 text-sm font-semibold text-hp-text shadow-sm transition hover:bg-hp-secondary hover:border-hp-primary hover:shadow-md hover:shadow-hp-primary/60"
-            >
-                <span class="flex h-8 w-8 items-center justify-center rounded-full text-hp-icon">
-                    <UserPlus :size="17" />
-                </span>
-                <span class="hidden sm:inline">Afegir usuaris</span>
-            </button>
-
-            <div v-if="currentExchange" class="flex mb-1 mt-1 mr-1 flex-row items-center top-2 right-3 ">
-                <div class="flex items-center rounded-md bg-hp-primary/40 p-1">
-                    <Users :size="16" class="mr-1 text-hp-text-dim" />
-                    <span class="text-xs text-hp-text-dim">{{ currentExchange.users?.length ?? 0 }}</span>
-                </div>
-            </div>
-        </div>
-        <div
-            v-if="isUploadModalOpen"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            @click.self="closeUploadModal"
-        >
-            <div class="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
-                <div class="mb-4 flex items-center">
-                    <h2 class="text-lg font-semibold text-gray-800">Importar usuaris amb CSV</h2>
-                </div>
-
-                <form class="space-y-4" @submit.prevent="submitCsv">
-                    <input
-                        ref="fileInput"
-                        type="file"
-                        accept=".csv,.txt"
-                        class="hidden"
-                        @change="handleFileSelect"
-                    />
-
-                    <div class="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-700">
-                        <p class="mb-3 truncate">{{ selectedFile?.name || 'Selecciona un arxiu CSV' }}</p>
-                        <button
-                            type="button"
-                            class="rounded-lg bg-hp-primary px-4 py-2 text-sm font-medium text-white hover:bg-hp-primary-dark"
-                            @click="selectFile"
-                        >
-                            Escollir fitcher
-                        </button>
-                    </div>
-
-                    <p v-if="uploadError" class="text-sm text-red-600">{{ uploadError }}</p>
-
-                    <div class="flex justify-end gap-2">
-                        <button
-                            type="button"
-                            class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            @click="closeUploadModal"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            type="submit"
-                            :disabled="!selectedFile || isUploadingCsv"
-                            class="rounded-lg bg-hp-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                            {{ isUploadingCsv ? 'Importando...' : 'Importar CSV' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <div class="lg:min-w-full sm:mx-auto sm:max-w-4xl lg:max-w-0 sm:mt-3 lg:mt-0 sm:ml-3 lg:ml-0 sm:mr-3 lg:mr-0">
             <div class="lg:border sm:border-b sm:rounded-t-xl border-gray-200 bg-hp-bg-card lg:rounded-xl lg:m-4 p-4">
                 <div v-if="currentExchange" class="flex flex-row items-center justify-between">
@@ -282,48 +198,24 @@ defineOptions({
                                         <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
-                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
+                                            <Eye :size="16" class="text-hp-icon" />post
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
-                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
-                                        </Link>
-                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
-                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
-                                        </button>
                                     </div>
                                     <div v-if="activity.type === 'interest_point'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
-                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
+                                            <Eye :size="16" class="text-hp-icon" />interest point
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
-                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
-                                        </Link>
-                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
-                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
-                                        </button>
                                     </div>
                                     <div v-if="activity.type === 'guided_visit'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
-                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
+                                            <Eye :size="16" class="text-hp-icon" />guided visit
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
-                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
-                                        </Link>
-                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
-                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
-                                        </button>
                                     </div>
                                     <div v-if="activity.type === 'gimcana'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
-                                            <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
+                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:bg-gray-100">
+                                            <Eye :size="16" class="text-hp-icon" />gimcana
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
-                                            <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
-                                        </Link>
-                                        <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
-                                            <Trash :size="16" class="text-hp-icon hover:text-hp-red" />
-                                        </button>
                                     </div>
                                 </button>
                                 <div v-show="expandedId === activity.id" class="border-t border-gray-200 bg-gray-50 px-3 py-2">
@@ -343,39 +235,6 @@ defineOptions({
                     {{ option.label }}
                 </a>
             </div>
-
-            <button type="button" @click="toggleCreateMenu" :aria-expanded="isCreateMenuOpen"
-                :class="['create-toggle flex h-14 w-14 items-center justify-center rounded-full bg-hp-primary text-hp-text shadow-lg transition-all', { 'is-open': isCreateMenuOpen }]">
-                <span class="create-toggle-line create-toggle-line-vertical"></span>
-                <span class="create-toggle-line create-toggle-line-horizontal"></span>
-            </button>
         </div>
     </div>
 </template>
-<style>
-.create-toggle {
-        position: relative;
-}
-
-.create-toggle-line {
-        position: absolute;
-        background: white;
-        border-radius: 9999px;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.create-toggle-line-vertical {
-        width: 3px;
-        height: 22px;
-}
-
-.create-toggle-line-horizontal {
-        width: 22px;
-        height: 3px;
-}
-
-.create-toggle.is-open .create-toggle-line-vertical {
-        opacity: 0;
-        transform: scaleY(0.2);
-}
-</style>

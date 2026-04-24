@@ -68,8 +68,15 @@ class PostController extends Controller
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
-        public function show(Post $post)
-        {
-            return Inertia::render('teacher/ShowPost', ["post" => $post]);
-        }
+    public function show(Post $post)
+    {
+        return Inertia::render('teacher/ShowPost', ["post" => $post]);
+    }
+
+    public function delete(Post $post)
+    {
+        $exchange = $post->exchange;
+
+        $post->delete();
+    }
 }
