@@ -86,6 +86,22 @@ const handleFileSelect = (event: Event) => {
     }
 };
 
+const getActivityDescription = (activity: Activity): string => {
+    const description = activity.description?.trim();
+    if (!description) return '—';
+
+    if (activity.type !== 'post') return description;
+
+    const withoutHtmlTags = description
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return withoutHtmlTags || '—';
+};
+
 const submitCsv = () => {
     if (!currentExchange?.id) {
         uploadError.value = 'No hay intercambio seleccionado';
@@ -408,7 +424,10 @@ defineOptions({
                                             <p class="text-md font-hp text-hp-text-dim">{{ formatTime(activity.end_date)
                                             }}</p>
                                         </div>
-                                        <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
+                                        <div class="flex flex-col items-start ml-5">
+                                            <p class="flex ml-5 text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
+                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark">{{ activity.type }}</p>
+                                        </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex items-center gap-2">
                                         <Link :href="`${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
@@ -457,8 +476,8 @@ defineOptions({
                                 </button>
                                 <div v-show="expandedId === activity.id"
                                     class="border-t border-gray-200 bg-gray-50 px-3 py-2">
-                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{
-                                        activity.description ||
+                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ 
+                                    getActivityDescription(activity) ||
                                         '—' }}</p>
                                     <p class="mt-1 text-xs text-gray-600"><strong>Tipo:</strong> {{ activity.type }}</p>
                                 </div>

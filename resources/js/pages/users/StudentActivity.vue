@@ -125,6 +125,22 @@ const groupedActivities = () => {
     return grouped;
 };
 
+const getActivityDescription = (activity: Activity): string => {
+    const description = activity.description?.trim();
+    if (!description) return '—';
+
+    if (activity.type !== 'post') return description;
+
+    const withoutHtmlTags = description
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return withoutHtmlTags || '—';
+};
+
 
 defineOptions({
     layout: {
@@ -179,7 +195,10 @@ defineOptions({
                                             <p class="text-xl font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
                                             <p :class="['text-md font-hp', isNextActivity(activity.id) ? 'text-hp-primary/80 font-bold' : 'text-hp-text-dim']">{{ formatTime(activity.end_date) }}</p>
                                         </div>
-                                        <p :class="['flex ml-5 text-sm font-semibold', isNextActivity(activity.id) ? 'text-hp-primary' : 'text-hp-primary']">{{ activity.title }}</p>
+                                        <div class="flex flex-col items-start ml-5">
+                                            <p class="flex text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
+                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark uppercase">{{ activity.type }}</p>
+                                        </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex hover:text-hp-primary hover:bg-hp-primary/20 rounded-md items-center gap-2">
                                         <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1">
@@ -203,7 +222,7 @@ defineOptions({
                                     </div>
                                 </button>
                                 <div v-show="expandedId === activity.id" class="border-t border-gray-200 bg-gray-50 px-3 py-2">
-                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ activity.description || '—' }}</p>
+                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ getActivityDescription(activity) }}</p>
                                     <p class="mt-1 text-xs text-gray-600"><strong>Tipo:</strong> {{ activity.type }}</p>
                                 </div>
                             </div>
