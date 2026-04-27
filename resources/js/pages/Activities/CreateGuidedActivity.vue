@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/guidedactivity';
+import { store } from '@/routes/exchange/guidedactivity';
 import { ref } from 'vue';
 
 
