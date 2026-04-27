@@ -39,6 +39,11 @@ const mainNavItems: NavItem[] = [
         icon: Repeat,
     },
     {
+        title: 'Llistat intercanvis',
+        href: "/exchanges",
+        icon: Folder,
+    },
+    {
         title: 'Notificacions',
         href: "/notifications",
         icon: Bell,
