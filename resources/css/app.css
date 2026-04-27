@@ -232,3 +232,29 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer utilities {
+    .btn-delete {
+        background: color-mix(in srgb, var(--hp-red) 10%, white);
+    }
+    .btn-delete:hover {
+        background: color-mix(in srgb, var(--hp-red) 20%, white);
+    }
+
+    /* Badges d'estat dels intercanvis */
+    .badge-actiu {
+        color: var(--hp-primary);
+        background: color-mix(in srgb, var(--hp-primary) 12%, white);
+        border: 1px solid color-mix(in srgb, var(--hp-primary) 30%, white);
+    }
+    .badge-pendent {
+        color: var(--hp-red);
+        background: color-mix(in srgb, var(--hp-red) 12%, white);
+        border: 1px solid color-mix(in srgb, var(--hp-red) 30%, white);
+    }
+    .badge-finalitzat {
+        color: var(--hp-text-dim);
+        background: color-mix(in srgb, var(--hp-text-dim) 10%, white);
+        border: 1px solid color-mix(in srgb, var(--hp-text-dim) 20%, white);
+    }
+}
