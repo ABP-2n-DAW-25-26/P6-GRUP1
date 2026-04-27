@@ -179,7 +179,10 @@ defineOptions({
                                             <p class="text-xl font-hp font-bold text-hp-text">{{ formatTime(activity.start_date) }} </p>
                                             <p :class="['text-md font-hp', isNextActivity(activity.id) ? 'text-hp-primary/80 font-bold' : 'text-hp-text-dim']">{{ formatTime(activity.end_date) }}</p>
                                         </div>
-                                        <p :class="['flex ml-5 text-sm font-semibold', isNextActivity(activity.id) ? 'text-hp-primary' : 'text-hp-primary']">{{ activity.title }}</p>
+                                        <div class="flex flex-col items-start ml-5">
+                                            <p class="flex text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
+                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark uppercase">{{ activity.type }}</p>
+                                        </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex hover:text-hp-primary hover:bg-hp-primary/20 rounded-md items-center gap-2">
                                         <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1">

@@ -408,7 +408,10 @@ defineOptions({
                                             <p class="text-md font-hp text-hp-text-dim">{{ formatTime(activity.end_date)
                                             }}</p>
                                         </div>
-                                        <p class="flex ml-5 text-sm font-semibold text-hp-text">{{ activity.title }}</p>
+                                        <div class="flex flex-col items-start ml-5">
+                                            <p class="flex ml-5 text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
+                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark">{{ activity.type }}</p>
+                                        </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex items-center gap-2">
                                         <Link :href="`${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
