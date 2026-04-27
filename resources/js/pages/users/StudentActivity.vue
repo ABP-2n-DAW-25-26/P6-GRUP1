@@ -125,6 +125,22 @@ const groupedActivities = () => {
     return grouped;
 };
 
+const getActivityDescription = (activity: Activity): string => {
+    const description = activity.description?.trim();
+    if (!description) return '—';
+
+    if (activity.type !== 'post') return description;
+
+    const withoutHtmlTags = description
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return withoutHtmlTags || '—';
+};
+
 
 defineOptions({
     layout: {
@@ -206,7 +222,7 @@ defineOptions({
                                     </div>
                                 </button>
                                 <div v-show="expandedId === activity.id" class="border-t border-gray-200 bg-gray-50 px-3 py-2">
-                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ activity.description || '—' }}</p>
+                                    <p class="text-xs text-gray-600"><strong>Descripción:</strong> {{ getActivityDescription(activity) }}</p>
                                     <p class="mt-1 text-xs text-gray-600"><strong>Tipo:</strong> {{ activity.type }}</p>
                                 </div>
                             </div>
