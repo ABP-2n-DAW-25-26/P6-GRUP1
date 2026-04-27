@@ -6,6 +6,8 @@ use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\AddUsersController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\InterestPointController;
+
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
@@ -21,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // PROFE
     Route::resource('exchange', ExchangeController::class);
+    Route::get('exchanges', [ExchangeController::class, 'list'])->name('exchange.list');
     Route::resource('exchange.addUser', AddUsersController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
@@ -32,6 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
+Route::resource('guidedactivity', GuidedActivityController::class);
+Route::resource('interestpoint', InterestPointController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 

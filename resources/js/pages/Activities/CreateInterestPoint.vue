@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange/guidedactivity';
+import { store } from '@/routes/interestpoint';
 import { ref } from 'vue';
+import Map from '@/components/AddLocationsMap.vue'
 
-
+const emit = defineEmits(['location-selected'])
 // Guarda la imatge seleccionada
 const preview = ref<string | null>(null)
 const handleFileChange = (event: Event) => {
@@ -13,6 +14,16 @@ const handleFileChange = (event: Event) => {
     preview.value = URL.createObjectURL(input.files[0])
   }
 }
+
+const latitude = ref('')
+const longitude = ref('')
+
+const setInterestPointLocation = (coords: { latitude: number, longitude: number }) => {
+  latitude.value = coords.latitude.toString()
+  longitude.value = coords.longitude.toString()
+  console.log('coords seleccionades', latitude.value, longitude.value)
+}
+
 </script>
 
 
@@ -33,7 +44,7 @@ const handleFileChange = (event: Event) => {
           <!-- Títol -->
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Títol</label>
-            <input type="text" name="title" placeholder="Visita guiada..."
+            <input type="text" name="title" placeholder="Punt d'interes..."
               class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
 
@@ -72,6 +83,13 @@ const handleFileChange = (event: Event) => {
             <div v-if="preview" class="mt-4">
               <img :src="preview" alt="Preview" class="w-full h-40 object-contain rounded-xl" />
             </div>
+          </div>
+
+          <div class="w-full h-80 rounded-lg overflow-hidden">
+            <h1 class="text-xl font-bold mb-4">Mapa</h1>
+            <Map @location-selected="setInterestPointLocation" />
+            <input type="hidden" name="latitude" v-model="latitude" />
+            <input type="hidden" name="longitude" v-model="longitude" />
           </div>
 
           <!-- Botó enviar -->
