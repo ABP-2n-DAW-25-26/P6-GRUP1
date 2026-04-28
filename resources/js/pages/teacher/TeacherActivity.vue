@@ -13,6 +13,16 @@ interface Exchange {
     users?: { id: number }[];
 }
 
+interface Teacher {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface ExchangeTeachers {
+    users: Teacher[];
+}
+
 interface Activity {
     id: number;
     title: string;
@@ -37,8 +47,8 @@ const expandedId = ref<number | null>(null);
 const isCreateMenuOpen = ref(false);
 const isStudentModalOpen = ref(false);
 const isTeacherModalOpen = ref(false);
-const teacherSearchData = ref<string>('');
-const exchangeTeachers = ref<{ users: { id: number, name: string, email: string }[] } | null>(null);
+const teacherSearchData = ref<Teacher[]>([]);
+const exchangeTeachers = ref<ExchangeTeachers | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 const selectedFile = ref<File | null>(null);
 const isUploadingCsv = ref(false);
@@ -101,6 +111,9 @@ const submitCsv = () => {
     const formData = new FormData();
     formData.append('import_csv', selectedFile.value);
 
+    //console log para ver el csv
+    console.log('Enviando CSV:', selectedFile.value);
+
     router.post(`/exchange/${currentExchange.id}/addUser`, formData, {
         forceFormData: true,
         onSuccess: () => {
@@ -122,7 +135,7 @@ const teacherSearch = (event: KeyboardEvent) => {
     const target = event.target as HTMLInputElement;
     const query = target.value.trim();
     if (query.length === 0) {
-        teacherSearchData.value = '';
+        teacherSearchData.value = [];
         return;
     }
     if (!currentExchange?.id) {
@@ -166,7 +179,7 @@ const addTeacherToExchange = (teacherId: number, exchangeId: number) => {
         .then(response => response.json())
         .then(message => {
             console.log('addTeacherToExchange response:', message);
-            teacherSearchData.value = '';
+            teacherSearchData.value = [];
             loadExchangeTeachers();
         })
         .catch(error => {
@@ -255,22 +268,22 @@ defineOptions({
                 </button>
             </template>
 </PageTopBar> -->
-        <div class="flex flex-row items-center justify-end gap-6 p-4">
-            <div class="flex gap-6 items-center">
+        <div class="flex flex-row items-center justify-end gap-2 p-4">
+            <div class="flex gap-8 items-center">
                 <button type="button" @click="openTeacherModal"
-                    class="text-sm sm:text-[16px] flex gap-3 items-center px-4 py-2 rounded-md cursor-pointer bg-hp-primary font-medium text-white hover:bg-hp-primary-dark transition">
+                    class="text-sm sm:text-[16px] flex gap-3 items-center px-4 py-2 rounded-xl cursor-pointer bg-hp-primary font-medium text-white hover:bg-hp-primary-dark transition">
                     <UserCog :size="22" />
                     Afegir professors
                 </button>
                 <button type="button" @click="openStudentModal"
-                    class="text-sm sm:text-[16px] flex gap-3 items-center px-4 py-2 rounded-md cursor-pointer bg-hp-primary font-medium text-white hover:bg-hp-primary-dark transition">
+                    class="text-sm sm:text-[16px] flex gap-3 items-center px-4 py-2 rounded-xl cursor-pointer bg-hp-primary font-medium text-white hover:bg-hp-primary-dark transition">
                     <UserPlus :size="22" />
                     Afegir alumnes
                 </button>
             </div>
 
             <div v-if="currentExchange" class="">
-                <div class="flex items-center rounded-md border border-gray-300 p-3">
+                <div class="flex items-center rounded-xl border border-gray-300 p-3">
                     <Users :size="16" class="mr-1 text-hp-text-dim" />
                     <span class="text-xs text-hp-text-dim">{{ props.studentsCount ?? 0 }}</span>
                 </div>
@@ -279,8 +292,9 @@ defineOptions({
         <div v-if="isStudentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             @click.self="closeStudentModal">
             <div class="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
-                <div class="mb-4 flex items-center">
-                    <h2 class="text-lg font-semibold text-gray-800">Importar usuaris amb CSV</h2>
+                <div class="mb-4 items-center">
+                    <h2 class="text-lg font-semibold text-gray-800">Importar alumnes amb CSV</h2>
+                    <span class="ml-auto text-sm text-gray-500">El CSV ha de tenir el format: nom, cognom, email</span>
                 </div>
 
                 <form class="space-y-4" @submit.prevent="submitCsv">
@@ -338,7 +352,7 @@ defineOptions({
                                 </div>
                                 <button
                                     class="rounded-md bg-red-500 px-3 py-1 text-sm font-medium text-white hover:bg-red-600 cursor-pointer transition"
-                                    @click="removeTeacherFromExchange(user.id, currentExchange.id)">
+                                    @click="currentExchange && removeTeacherFromExchange(user.id, currentExchange.id)">
                                     <Trash :size="16" />
                                 </button>
                             </li>
@@ -355,7 +369,7 @@ defineOptions({
                                 </div>
                                 <button
                                     class="rounded-md bg-hp-primary px-3 py-1 text-sm font-medium text-white hover:bg-hp-primary-dark cursor-pointer transition"
-                                    @click="addTeacherToExchange(teacher.id, currentExchange.id)">
+                                    @click="currentExchange && addTeacherToExchange(teacher.id, currentExchange.id)">
                                     <UserPlus :size="16" />
                                 </button>
                             </li>
@@ -454,30 +468,3 @@ defineOptions({
         </div>
     </div>
 </template>
-<style>
-.create-toggle {
-    position: relative;
-}
-
-.create-toggle-line {
-    position: absolute;
-    background: white;
-    border-radius: 9999px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.create-toggle-line-vertical {
-    width: 3px;
-    height: 22px;
-}
-
-.create-toggle-line-horizontal {
-    width: 22px;
-    height: 3px;
-}
-
-.create-toggle.is-open .create-toggle-line-vertical {
-    opacity: 0;
-    transform: scaleY(0.2);
-}
-</style>

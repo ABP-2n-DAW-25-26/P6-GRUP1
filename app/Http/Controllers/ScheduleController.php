@@ -5,12 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Exchange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
     public function index()
     {
-        $nextExchange = Exchange::with('activities', 'user')->first();
+        $user = Auth::user();
+        
+        $nextExchange = Exchange::where('user_id', $user->id)
+            ->orWhereHas('users', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with('activities', 'user')
+            ->orderBy('start_date', 'asc')
+            ->first();
+
+        if (!$nextExchange) {
+            return inertia('Schedule', [
+                'exchange' => null,
+                'exchangeDays' => [],
+            ]);
+        }
 
         $start = Carbon::parse($nextExchange->start_date);
         $end = Carbon::parse($nextExchange->end_date);
