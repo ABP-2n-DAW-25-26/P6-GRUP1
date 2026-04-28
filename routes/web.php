@@ -11,6 +11,7 @@ use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\ThemeController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -32,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');
     Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');
     Route::delete('/exchange/{exchangeId}/removeTeacher/{teacherId}', [TeacherController::class, 'removeTeacherFromExchange'])->name('teacher.removeFromExchange');
+
+    Route::resource('theme', ThemeController::class);
 });
 
 
