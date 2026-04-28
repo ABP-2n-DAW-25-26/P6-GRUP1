@@ -14,7 +14,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('exchanges')->get();
+        //return $users;
         return Inertia::render('AdminDashboard',['users' => $users]);
     }
 

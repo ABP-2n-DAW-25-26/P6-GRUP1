@@ -49,11 +49,13 @@ defineProps<{
             <td class="px-8 py-6 font-semibold text-hp-text">
               {{ user.name }}
             </td>
+            <!-- procedencia -->
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
-              Figueres
+              {{ user.exchanges?.[0]?.origin ?? '-' }}
             </td>
+            <!-- desti -->
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
-              Italia
+              {{ user.exchanges?.[0]?.destiny ?? '-' }}
             </td>
             <td class="px-4 py-6">
               <span
