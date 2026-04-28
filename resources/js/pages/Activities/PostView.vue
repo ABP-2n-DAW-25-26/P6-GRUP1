@@ -21,7 +21,7 @@ const props = defineProps<{
 	post: Post;
 }>();
 
-const formatDateTime = (value: string | null): string => {
+const formatDate = (value: string | null): string => {
 	if (!value) return '--';
 
 	const date = new Date(value);
@@ -31,6 +31,16 @@ const formatDateTime = (value: string | null): string => {
 		day: '2-digit',
 		month: '2-digit',
 		year: 'numeric',
+	});
+};
+
+const formatTime = (value: string | null): string => {
+	if (!value) return '--';
+
+	const date = new Date(value);
+	if (Number.isNaN(date.getTime())) return value;
+
+	return date.toLocaleString('ca-ES', {
 		hour: '2-digit',
 		minute: '2-digit',
 	});
@@ -66,19 +76,21 @@ const imageUrl = (imagePath: string | null | undefined): string => {
 				<p class="mb-2 font-hp text-lg font-semibold uppercase tracking-wide text-hp-primary">
 					Anunci
 				</p>
-				<h1 class="mb-3 lg:text-7xl font-bold text-hp-primary-dark sm:text-3xl">
+				<h1 class="mb-3 lg:text-7xl font-bold text-hp-primary-dark text-4xl">
 					{{ post.title }}
 				</h1>
 
-				<div class="mb-5 flex flex-row justify-between text-sm text-hp-text-dim sm:grid-cols-2">
-					<p>
-						<strong>Inici:</strong>
-						{{ formatDateTime(post.start_date) }}
-					</p>
-					<p>
-						<strong>Fi:</strong>
-						{{ formatDateTime(post.end_date) }}
-					</p>
+				<div class="mb-5 bg-hp-bg/30 rounded-xl p-4 flex flex-row justify-between text-sm text-hp-text-dim gap-20 sm:grid-cols-2">
+					<div class="border-l-3 rounded border-hp-primary pl-3"> 
+						<p>Inici</p>
+						<p><strong>{{ formatDate(post.start_date) }}</strong></p>
+						<p>{{ formatTime(post.start_date) }}</p>
+					</div>
+					<div class="border-r-3 rounded border-hp-primary text-right pr-3"> 
+						<p>Fi</p>
+						<p><strong>{{ formatDate(post.end_date) }}</strong></p>
+						<p>{{ formatTime(post.end_date) }}</p>
+					</div>
 				</div>
 
 				<div class="max-w-none my-2 text-hp-text">
