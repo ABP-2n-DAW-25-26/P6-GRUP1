@@ -2,6 +2,11 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
+
+defineProps<{
+  users: Array<any>
+}>();
+
 </script>
 <template>
   <div class="flex h-full flex-1 flex-col gap-6 p-6">
@@ -39,9 +44,10 @@ import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
         </thead>
 
         <tbody>
-          <tr class="border-b border-gray-100 hover:bg-gray-50/60">
+          <tr v-for="user in users" :key="user.id" class="border-b border-gray-100 hover:bg-gray-50/60">
+            <!-- nom -->
             <td class="px-8 py-6 font-semibold text-hp-text">
-              Dani
+              {{ user.name }}
             </td>
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
               Figueres
