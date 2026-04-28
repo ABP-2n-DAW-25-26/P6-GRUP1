@@ -426,14 +426,14 @@ defineOptions({
                                         </div>
                                         <div class="flex flex-col items-start ml-5">
                                             <p class="flex ml-5 text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
-                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark">{{ activity.type }}</p>
+                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark uppercase">{{ activity.type }}</p>
                                         </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                        <Link :href="`/exchange/${currentExchange?.id}/post/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
                                             <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                        <Link :href="`/exchange/${currentExchange?.id}/post/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
                                             <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
                                         </Link>
                                         <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
@@ -441,10 +441,10 @@ defineOptions({
                                         </button>
                                     </div>
                                     <div v-if="activity.type === 'interest_point'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                        <Link :href="`/exchange/${currentExchange?.id}/interestpoint/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
                                             <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                        <Link :href="`/exchange/${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
                                             <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
                                         </Link>
                                         <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
@@ -452,10 +452,10 @@ defineOptions({
                                         </button>
                                     </div>
                                     <div v-if="activity.type === 'guided_visit'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                        <Link :href="`/exchange/${currentExchange?.id}/guidedactivity/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
                                             <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                        <Link :href="`/exchange/${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
                                             <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
                                         </Link>
                                         <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
@@ -463,10 +463,10 @@ defineOptions({
                                         </button>
                                     </div>
                                     <div v-if="activity.type === 'gimcana'" class="flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
+                                        <Link :href="`/exchange/${currentExchange?.id}/gimcana/${activity.id}/edit`" class="rounded p-1 hover:bg-hp-primary/20 ">
                                             <Pencil :size="16" class="text-hp-icon hover:text-hp-primary" />
                                         </Link>
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
+                                        <Link :href="`/exchange/${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1 hover:text-primary-dark hover:bg-hp-primary-dark/20">
                                             <Eye :size="16" class="text-hp-icon hover:text-hp-primary-dark" />
                                         </Link>
                                         <button class="rounded p-1 hover:bg-hp-red/20 hover:text-hp-red">
