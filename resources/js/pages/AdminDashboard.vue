@@ -29,6 +29,9 @@ defineProps<{
               Usuari
             </th>
             <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
+              Intercanvi
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
               Procedència
             </th>
             <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
@@ -48,6 +51,10 @@ defineProps<{
             <!-- nom -->
             <td class="px-8 py-6 font-semibold text-hp-text">
               {{ user.name }}
+            </td>
+            <!-- intercanvi -->
+            <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
+              {{ user.exchanges?.[0]?.title ?? '-' }}
             </td>
             <!-- procedencia -->
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
