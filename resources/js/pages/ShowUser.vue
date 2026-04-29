@@ -46,7 +46,7 @@ defineProps<{
 
                 <div class="mt-6 border-t pt-4 text-sm text-gray-600 dark:text-gray-300">
                     <p><strong>ID:</strong> {{ user.id }}</p>
-                    <p><strong>Usuari afegit:</strong> {{ user.created_at }}</p>
+                    <p><strong>Usuari afegit:</strong>{{ new Date(user.created_at).toLocaleDateString() }}</p>
                 </div>
             </div>
 
