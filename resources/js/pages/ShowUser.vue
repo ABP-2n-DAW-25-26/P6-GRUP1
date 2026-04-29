@@ -6,9 +6,9 @@ defineProps<{
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-50 p-6 dark:bg-gray-900">
+    <div class="min-h-screen w-full bg-gray-50 px-4 p-6 sm:px-6 lg:px-10 dark:bg-gray-900">
 
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                     Perfil d'usuari
@@ -18,15 +18,16 @@ defineProps<{
                 </p>
             </div>
 
-            <button class="rounded-xl bg-teal-600 px-4 py-2 text-white hover:bg-teal-700">
+            <button class="w-full rounded-xl bg-teal-600 px-4 py-2 text-white hover:bg-teal-700 sm:w-auto">
                 Editar usuari
             </button>
         </div>
 
         <!-- grid -->
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-4">
 
             <div class="rounded-2xl bg-white p-6 shadow dark:bg-gray-800">
+
                 <div class="flex flex-col items-center text-center">
                     <div
                         class="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-2xl font-bold text-gray-700 dark:bg-gray-700 dark:text-white">
@@ -50,9 +51,10 @@ defineProps<{
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
+            <div class="space-y-6 xl:col-span-3">
+
                 <!-- info usuari -->
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
 
                     <div class="rounded-2xl bg-white p-4 shadow dark:bg-gray-800">
                         <p class="text-sm text-gray-500">Intercanvis</p>
@@ -60,6 +62,7 @@ defineProps<{
                             {{ user.exchanges.length }}
                         </p>
                     </div>
+
                     <!-- cal afegir a al DB -->
                     <div class="rounded-2xl bg-white p-4 shadow dark:bg-gray-800">
                         <p class="text-sm text-gray-500">Estat</p>
@@ -91,7 +94,7 @@ defineProps<{
                                     {{ ex.title }}
                                 </p>
                                 <p class="text-sm text-gray-500">
-                                     {{ ex.origin}} - {{ex.destiny }}
+                                    {{ ex.origin }} - {{ ex.destiny }}
                                 </p>
                             </div>
                         </div>
