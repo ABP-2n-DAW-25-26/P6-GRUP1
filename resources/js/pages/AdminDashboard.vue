@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { edit, destroy, show, create,} from '@/routes/admin';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 
@@ -67,8 +68,8 @@ defineOptions({ layout: AppLayout });
             </td>
             <td class="px-8 py-6">
               <div class="flex items-center justify-end gap-2">
-                <Link class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
-                  title="Veure">
+                <Link :href="show(user.id)"
+                  class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text" title="Veure">
                   <Eye class="w-4 h-4" />
                 </Link>
                 <Link class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"

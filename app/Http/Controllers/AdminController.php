@@ -38,9 +38,11 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Admin $admin)
+    public function show(string $id)
     {
-        //
+        $user = User::with('exchanges')->findOrFail($id);
+
+        return Inertia::render('ShowUser', ["user" => $user]);
     }
 
     /**
