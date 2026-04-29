@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Theme;
-use Intertia\Inertia;
+use Inertia\Inertia;
 
 class ThemeController extends Controller
 {
@@ -31,23 +31,23 @@ class ThemeController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:themes,name'],
             'primary' => ['required', 'string', 'size:7'],
-            'primary-dark' => ['required', 'string', 'size:7'],
+            'primary_dark' => ['required', 'string', 'size:7'],
             'secondary' => ['required', 'string', 'size:7'],
             'text' => ['required', 'string', 'size:7'],
-            'text-secondary' => ['required', 'string', 'size:7'],
+            'text_secondary' => ['required', 'string', 'size:7'],
             'background' => ['required', 'string', 'size:7'],
-            'background-card' => ['required', 'string', 'size:7'],
+            'background_card' => ['required', 'string', 'size:7'],
         ]);
 
         $theme = new Theme();
         $theme->name = $validated['name'];
         $theme->primary = $validated['primary'];
-        $theme->primary_dark = $validated['primary-dark'];
+        $theme->primary_dark = $validated['primary_dark'];
         $theme->secondary = $validated['secondary'];
         $theme->text = $validated['text'];
-        $theme->text_secondary = $validated['text-secondary'];
+        $theme->text_secondary = $validated['text_secondary'];
         $theme->background = $validated['background'];
-        $theme->background_card = $validated['background-card'];
+        $theme->background_card = $validated['background_card'];
         $theme->save();
 
         return redirect()->route('theme.index');
@@ -76,23 +76,23 @@ class ThemeController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:themes,name,' . $id],
             'primary' => ['required', 'string', 'size:7'],
-            'primary-dark' => ['required', 'string', 'size:7'],
+            'primary_dark' => ['required', 'string', 'size:7'],
             'secondary' => ['required', 'string', 'size:7'],
             'text' => ['required', 'string', 'size:7'],
-            'text-secondary' => ['required', 'string', 'size:7'],
+            'text_secondary' => ['required', 'string', 'size:7'],
             'background' => ['required', 'string', 'size:7'],
-            'background-card' => ['required', 'string', 'size:7'],
+            'background_card' => ['required', 'string', 'size:7'],
         ]);
 
         $theme = Theme::findOrFail($id);
         $theme->name = $validated['name'];
         $theme->primary = $validated['primary'];
-        $theme->primary_dark = $validated['primary-dark'];
+        $theme->primary_dark = $validated['primary_dark'];
         $theme->secondary = $validated['secondary'];
         $theme->text = $validated['text'];
-        $theme->text_secondary = $validated['text-secondary'];
+        $theme->text_secondary = $validated['text_secondary'];
         $theme->background = $validated['background'];
-        $theme->background_card = $validated['background-card'];
+        $theme->background_card = $validated['background_card'];
         $theme->save();
 
         return redirect()->route('theme.index');

@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('themes', function (Blueprint $table){
             $table->string('name')->unique();
             $table->string('primary', 7);
-            $table->string('primary-dark', 7);
+            $table->string('primary_dark', 7);
             $table->string('secondary', 7);
             $table->string('text', 7);
-            $table->string('text-secondary', 7);
+            $table->string('text_secondary', 7);
             $table->string('background', 7);
-            $table->string('background-card', 7);
+            $table->string('background_card', 7);
         });
     }
 
