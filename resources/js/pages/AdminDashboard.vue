@@ -7,9 +7,11 @@ defineProps<{
   users: Array<any>
 }>();
 
+defineOptions({ layout: AppLayout });
+
 </script>
 <template>
-  <div class="flex h-full flex-1 flex-col gap-6 p-6">
+  <div class="mx-auto flex h-full w-full max-w-6xl flex-1 flex-col gap-6 p-6">
 
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-bold text-hp-text">Llista usuaris</h1>
@@ -32,10 +34,7 @@ defineProps<{
               Intercanvi
             </th>
             <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
-              Procedència
-            </th>
-            <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
-              Destí
+              Rol
             </th>
             <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
               Estat
@@ -56,13 +55,9 @@ defineProps<{
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
               {{ user.exchanges?.[0]?.title ?? '-' }}
             </td>
-            <!-- procedencia -->
+            <!-- rol -->
             <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
-              {{ user.exchanges?.[0]?.origin ?? '-' }}
-            </td>
-            <!-- desti -->
-            <td class="px-4 py-6 text-hp-text-dim whitespace-nowrap">
-              {{ user.exchanges?.[0]?.destiny ?? '-' }}
+              {{ user.role }}
             </td>
             <td class="px-4 py-6">
               <span
