@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ExchangesSeeder::class,
             ActivitiesSeeder::class,
             LocationsSeeder::class,
+            defaultThemes::class,
         ]);
     }
 }

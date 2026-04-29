@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('themes', function (Blueprint $table){
+            $table->id();
             $table->string('name')->unique();
             $table->string('primary', 7);
             $table->string('primary_dark', 7);
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('text_secondary', 7);
             $table->string('background', 7);
             $table->string('background_card', 7);
+            $table->boolean('default')->default(false);
         });
     }
 

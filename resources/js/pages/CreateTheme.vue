@@ -20,19 +20,19 @@ const colors = [
     {
         key: 'primary',
         name: 'primary',
-        title: 'Primary',
+        title: 'Principal',
         preview: 'solid',
     },
     {
         key: 'primary_dark',
         name: 'primary_dark',
-        title: 'Primary Dark',
+        title: 'Principal fosc',
         preview: 'solid',
     },
     {
         key: 'secondary',
         name: 'secondary',
-        title: 'Secondary',
+        title: 'Secundari',
         preview: 'solid',
     },
     {
@@ -44,19 +44,19 @@ const colors = [
     {
         key: 'text_secondary',
         name: 'text_secondary',
-        title: 'Text Secondary',
+        title: 'Text secundari',
         preview: 'readability',
     },
     {
         key: 'background',
         name: 'background',
-        title: 'Background',
+        title: 'Fons',
         preview: 'canvas',
     },
     {
         key: 'background_card',
         name: 'background_card',
-        title: 'Background Card',
+        title: 'Fons de cartes',
         preview: 'card',
     },
 ];
