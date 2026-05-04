@@ -10,6 +10,17 @@ defineProps<{
 
 defineOptions({ layout: AppLayout });
 
+//eliminar user 
+const deleteUser = (id: number) => {
+  if (confirm('Segur que vols eliminar aquest usuari?')) {
+    router.delete(destroy(id)), {
+      onSuccess: () => {
+        console.log('Usuari eliminat');
+      }
+    };
+  }
+};
+
 </script>
 <template>
   <div class="mx-auto flex h-full w-full max-w-6xl flex-1 flex-col gap-6 p-6">
@@ -77,7 +88,8 @@ defineOptions({ layout: AppLayout });
                   title="Editar">
                   <Pencil class="w-4 h-4" />
                 </Link>
-                <button class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
+                <button @click="deleteUser(user.id)"
+                  class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                   title="Eliminar">
                   <Trash2 class="w-4 h-4" />
                 </button>
