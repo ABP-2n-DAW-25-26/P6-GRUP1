@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +15,7 @@ class AdminController extends Controller
     {
         $users = User::with('exchanges')->get();
         //return $users;
-        return Inertia::render('AdminDashboard',['users' => $users]);
+        return Inertia::render('Admin/AdminDashboard',['users' => $users]);
     }
 
     /**
@@ -42,23 +41,35 @@ class AdminController extends Controller
     {
         $user = User::with('exchanges')->findOrFail($id);
 
-        return Inertia::render('ShowUser', ["user" => $user]);
+        return Inertia::render('Admin/ShowUser', ["user" => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return Inertia::render('Admin/EditUser', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'role' => 'required|string'
+    ]);
+
+    $user->update($validated);
+
+    return redirect()->route('admin.show', $user->id);
     }
 
     /**

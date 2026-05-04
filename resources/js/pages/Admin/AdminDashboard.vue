@@ -72,7 +72,8 @@ defineOptions({ layout: AppLayout });
                   class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text" title="Veure">
                   <Eye class="w-4 h-4" />
                 </Link>
-                <Link class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
+                <Link :href="edit(user.id)"
+                  class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
                   title="Editar">
                   <Pencil class="w-4 h-4" />
                 </Link>
