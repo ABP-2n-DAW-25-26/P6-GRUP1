@@ -63,12 +63,14 @@ class ExchangeController extends Controller
         if ($exchange->user_id !== $user->id && ! $exchange->users()->where('user_id', $user->id)->where('role', 'teacher')->exists()) {
              return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');
         }
+        $students = $exchange->users()->where('role', 'student')->get();
         return Inertia::render('teacher/TeacherActivity', [
             'activity' => Activity::with('exchange.users')
                 ->where('exchange_id', $exchange->id)
                 ->orderBy('start_date', 'asc')
                 ->get(),
             'exchange' => $exchange->load('users'),
+            'studentsCount' => $students->count(),
         ]);
     }
 

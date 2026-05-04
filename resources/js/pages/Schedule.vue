@@ -68,7 +68,8 @@ function formatTime(dateString: string) {
 
     <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
         <h1 class="font-hp text-hp-primary text-6xl text-center">agenda</h1>
-        <div class="mx-auto flex gap-6 px-4 py-6 bg-stone-100 rounded-3xl uppercase sticky top-0 overflow-x-auto w-full">
+        <div v-if="exchange !== null"
+            class="mx-auto flex gap-6 px-4 py-6 bg-stone-100 rounded-3xl uppercase sticky top-0 overflow-x-auto w-full">
             <div class="mx-auto flex gap-2">
                 <div v-for="day in exchangeDays" :key="day.date" class="text-center font-bold">
                     <div v-if="day.day === currentDay()"
@@ -83,20 +84,24 @@ function formatTime(dateString: string) {
                 </div>
             </div>
         </div>
+        <div v-else class="text-center text-gray-500 px-30">
+            No hi ha cap intercanvi programat. Has d'esperar a que un professor creï un intercanvi i t'assigni a tu perquè puguis veure les activitats programades.
+        </div>
 
         <div class="flex flex-col gap-4">
             <div v-for="day in exchangeDays" :key="day.date" class="flex">
 
                 <div class="flex-1 rounded-2xl p-4">
                     <div class="flex gap-3 items-center mb-4">
-                        <h3 v-if="day.day === currentDay()" class="px-4 py-2 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-xl font-semibold text-xl">
+                        <h3 v-if="day.day === currentDay()"
+                            class="px-4 py-2 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-xl font-semibold text-xl">
                             Avui,
                         </h3>
                         <h3 v-else class="font-bold text-xl capitalize">
                             {{ formatDayName(day.date) }}
                         </h3>
                         <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)
-                            }}</time>
+                        }}</time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
