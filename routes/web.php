@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\GimcanaController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
@@ -30,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
+    Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('theme', ThemeController::class);
 
     // Route::get('/teacher/search/{query}', [TeacherController::class, 'searchAJAX'])->name('teacher.search');
