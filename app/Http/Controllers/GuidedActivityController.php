@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateGuidedActivityRequest;
 use App\Actions\Activities\CreateGuidedActivityAction;
+use App\Models\Theme;
 
 class GuidedActivityController extends Controller
 {
@@ -25,8 +26,9 @@ class GuidedActivityController extends Controller
     public function create()
     {
         $guidedActivity = GuidedActivity::all();
+        $themes = Theme::all();
 
-        return Inertia::render('Activities/CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
+        return Inertia::render('Activities/CreateGuidedActivity', ["guidedActivity" => $guidedActivity, "themes" => $themes]);
     }
 
     /**

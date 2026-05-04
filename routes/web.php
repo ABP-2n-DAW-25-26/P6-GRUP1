@@ -12,6 +12,7 @@ use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\ExchangeStudentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\ThemeController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
+    Route::resource('theme', ThemeController::class);
 
     // Route::get('/teacher/search/{query}', [TeacherController::class, 'searchAJAX'])->name('teacher.search');
     // Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');

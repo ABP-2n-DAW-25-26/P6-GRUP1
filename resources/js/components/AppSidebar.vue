@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder } from 'lucide-vue-next';
+import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder, Palette } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -37,6 +37,11 @@ const mainNavItems: NavItem[] = [
         title: 'Notificacions',
         href: "/notifications",
         icon: Bell,
+    },
+    {
+        title: 'Temes',
+        href: "/theme",
+        icon: Palette,
     },
 ];
 
