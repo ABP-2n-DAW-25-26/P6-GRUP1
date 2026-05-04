@@ -29,16 +29,6 @@ const mainNavItems: NavItem[] = [
         icon: Calendar,
     },
     {
-        title: 'Panell de professor',
-        href: "/teacher",
-        icon: LayoutDashboard,
-    },
-    {
-        title: 'Intercanvis',
-        href: "/exchange",
-        icon: Repeat,
-    },
-    {
         title: 'Llistat intercanvis',
         href: "/exchanges",
         icon: Folder,

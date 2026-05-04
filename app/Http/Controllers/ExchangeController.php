@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exchange;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateExchangeRequest;
@@ -21,17 +22,14 @@ class ExchangeController extends Controller
 
         $user = auth()->user();
 
-        if ($user && $user->role === 'teacher' || $user->role === 'admin')
-        {
+        if ($user && $user->role === 'teacher' || $user->role === 'admin') {
             if (! $exchange) {
                 return Inertia::render('teacher/TeacherActivity', [
-                    'activity' => [],
+                    'exchangeDays' => [],
                     'exchange' => null,
                 ]);
             }
-        }
-        elseif ($user && $user->role === 'student')
-        {
+        } elseif ($user && $user->role === 'student') {
             if (! $exchange) {
                 return Inertia::render('users/StudentActivity', [
                     'activity' => [],
@@ -49,8 +47,7 @@ class ExchangeController extends Controller
     public function show(Exchange $exchange)
     {
         $user = auth()->user();
-        if ($user && $user->role === 'student')
-        {
+        if ($user && $user->role === 'student') {
             return Inertia::render('users/StudentActivity', [
                 'activity' => Activity::with('exchange.users')
                     ->where('exchange_id', $exchange->id)
@@ -58,19 +55,44 @@ class ExchangeController extends Controller
                 'exchange' => $exchange->load('users'),
             ]);
         }
-        
+
         $user = Auth::user();
         if ($exchange->user_id !== $user->id && ! $exchange->users()->where('user_id', $user->id)->where('role', 'teacher')->exists()) {
-             return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');
+            return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');
         }
-        $students = $exchange->users()->where('role', 'student')->get();
+
+        $exchange->load('users', 'activities');
+        
+        // Estructurar actividades por días
+        $start = Carbon::parse($exchange->start_date)->startOfDay();
+        $end = Carbon::parse($exchange->end_date)->endOfDay();
+        
+        $days = [];
+        $current = $start->copy();
+        
+        while ($current->lte($end)) {
+            $date = $current->toDateString();
+            
+            $activitiesForDay = $exchange->activities
+                ->filter(function ($activity) use ($current) {
+                    return Carbon::parse($activity->start_date)->isSameDay($current);
+                })
+                ->sortBy('start_date')
+                ->values();
+                        
+            $days[] = [
+                'date' => $date,
+                'day' => $current->day,
+                'activities' => $activitiesForDay,
+            ];
+            
+            $current->addDay();
+        }
+        // dd(Activity::where('exchange_id', $exchange->id)->get());
+        // dd($days);
         return Inertia::render('teacher/TeacherActivity', [
-            'activity' => Activity::with('exchange.users')
-                ->where('exchange_id', $exchange->id)
-                ->orderBy('start_date', 'asc')
-                ->get(),
-            'exchange' => $exchange->load('users'),
-            'studentsCount' => $students->count(),
+            'exchangeDays' => $days,
+            'exchange' => $exchange,
         ]);
     }
 
@@ -122,12 +144,12 @@ class ExchangeController extends Controller
         $now = now();
 
         $exchanges = Exchange::orderBy('start_date', 'asc')->get()
-            ->map(fn ($e) => [
+            ->map(fn($e) => [
                 'id'         => $e->id,
                 'title'      => $e->title,
                 'start_date' => $e->start_date ? date('j M, Y', strtotime($e->start_date)) : '—',
                 'end_date'   => $e->end_date   ? date('j M, Y', strtotime($e->end_date))   : '—',
-                'status'     => match(true) {
+                'status'     => match (true) {
                     $e->end_date && $now->gt($e->end_date)     => 'Finalitzat',
                     $now->gte($e->start_date)                   => 'Actiu',
                     default                                     => 'Pendent',
