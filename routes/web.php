@@ -28,13 +28,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.addUser', AddUsersController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
+    Route::resource('theme', ThemeController::class);
 
     Route::get('/teacher/search/{query}', [TeacherController::class, 'searchAJAX'])->name('teacher.search');
     Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');
     Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');
     Route::delete('/exchange/{exchangeId}/removeTeacher/{teacherId}', [TeacherController::class, 'removeTeacherFromExchange'])->name('teacher.removeFromExchange');
 
-    Route::resource('theme', ThemeController::class);
 });
 
 
