@@ -6,8 +6,18 @@ use App\Models\Exchange;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class TeacherController extends Controller
+class ExchangeTeacherController extends Controller
 {
+
+    public function index(Exchange $exchange)
+    {
+        $teachers = $exchange->users()->where('role', 'teacher')->get();
+        return inertia('teacher/TeachersList', [
+            'exchange' => $exchange,
+            'teachers' => $teachers,
+        ]);
+    }
+
     public function searchAJAX(string $query, Request $request)
     {
         $exchangeId = $request->query('exchangeId');
