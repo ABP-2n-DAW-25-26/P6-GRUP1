@@ -6,6 +6,7 @@ use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\ExchangeStudentController;
@@ -40,5 +41,6 @@ Route::resource('guidedactivity', GuidedActivityController::class);
 Route::resource('interestpoint', InterestPointController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
+Route::resource('admin', AdminController::class);
 
 require __DIR__.'/settings.php';
