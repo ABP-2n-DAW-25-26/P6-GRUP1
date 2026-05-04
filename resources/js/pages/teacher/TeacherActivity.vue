@@ -15,6 +15,16 @@ interface Exchange {
     users?: { id: number }[];
 }
 
+interface Teacher {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface ExchangeTeachers {
+    users: Teacher[];
+}
+
 interface Activity {
     id: number;
     title: string;
