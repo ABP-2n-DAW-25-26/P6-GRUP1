@@ -60,10 +60,11 @@ const deleteUser = async (id: number) => {
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-bold text-hp-text">Llista usuaris</h1>
 
-      <button
+      <Link
+        :href="create()"
         class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:scale-95">
         + Nou usuari
-      </button>
+    </Link>
     </div>
 
     <!-- Taula -->

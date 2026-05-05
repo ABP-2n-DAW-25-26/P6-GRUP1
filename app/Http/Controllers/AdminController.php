@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/CreateUser');
     }
 
     /**
@@ -31,7 +32,17 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'role' => 'required|string',
+        ]);
+        
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+        return redirect()->route('admin.index');
     }
 
     /**
