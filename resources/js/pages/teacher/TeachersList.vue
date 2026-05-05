@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Eye, Trash2, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search, Plus } from 'lucide-vue-next';
+import { ChevronDown, Pencil, Eye, Trash2, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search, Plus, Copy } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import { schedule } from '@/routes';
@@ -35,6 +35,17 @@ defineOptions({
         ],
     },
 });
+
+const copied = ref<number | null>(null);
+
+const copyEmail = async (email: string, id: number) => {
+    await navigator.clipboard.writeText(email);
+    copied.value = id;
+
+    setTimeout(() => {
+        copied.value = null;
+    }, 1300);
+};
 </script>
 
 <template>
@@ -68,15 +79,30 @@ defineOptions({
                             <span class="font-semibold text-hp-text">{{ teacher.name }} {{ teacher.surname }}</span>
                         </td>
                         <td class="px-8 py-6">
-                            <span class="font-semibold text-hp-text">{{ teacher.email }}</span>
+                            <div class="relative flex items-center gap-4">
+                                <span class="text-gray-800">
+                                    {{ teacher.email }}
+                                </span>
+
+                                <button @click="copyEmail(teacher.email, teacher.id)"
+                                    class="relative group text-gray-500 hover:text-gray-800 transition">
+                                    <Copy class="w-4 h-4" />
+
+                                    <span
+                                        class="absolute left-1/2 -translate-x-1/2 -top-8 text-xs px-2 py-1 rounded-md text-white transition opacity-0 group-hover:opacity-100"
+                                        :class="copied === teacher.id ? 'bg-hp-primary opacity-100' : 'bg-black'">
+                                        {{ copied === teacher.id ? 'Copiat!' : 'Copia' }}
+                                    </span>
+                                </button>
+                            </div>
                         </td>
                         <td class="px-8 py-6">
                             <div class="flex items-center justify-end gap-2">
-                                <button
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
-                                    title="Eliminar">
-                                    <Trash2 class="w-4 h-4" />
-                                </button>
+                                <Link
+                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                    title="Veure">
+                                    <Eye class="w-4 h-4" />
+                                </Link>
                                 <button
                                     class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                                     title="Eliminar">

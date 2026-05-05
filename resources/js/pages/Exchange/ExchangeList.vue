@@ -12,16 +12,16 @@ interface Exchange {
     status: 'Actiu' | 'Finalitzat' | 'Pendent';
 }
 
-const props = defineProps<{ exchanges: Exchange[] }>();
+const props = defineProps<{ exchangesList: Exchange[] }>();
 
 defineOptions({ layout: AppLayout });
 
 const activeFilter = ref<'tots' | 'actius' | 'finalitzats'>('tots');
 
 const filteredExchanges = computed(() => {
-    if (activeFilter.value === 'actius')      return props.exchanges.filter(e => e.status === 'Actiu');
-    if (activeFilter.value === 'finalitzats') return props.exchanges.filter(e => e.status === 'Finalitzat');
-    return props.exchanges;
+    if (activeFilter.value === 'actius')      return props.exchangesList.filter(e => e.status === 'Actiu');
+    if (activeFilter.value === 'finalitzats') return props.exchangesList.filter(e => e.status === 'Finalitzat');
+    return props.exchangesList;
 });
 
 const statusClass: Record<string, string> = {
