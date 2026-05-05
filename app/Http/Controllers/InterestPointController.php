@@ -47,7 +47,7 @@ class InterestPointController extends Controller
      */
     public function show(InterestPoint $interestPoint)
     {
-        //
+        dd('show interestpoint TODO');
     }
 
     /**
