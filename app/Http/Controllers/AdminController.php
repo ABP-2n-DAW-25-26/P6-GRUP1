@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditUserRequest;
 
 class AdminController extends Controller
 {
@@ -30,14 +32,9 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
-        'role' => 'required|string',
-        ]);
+        $validated = $request->validated();
         
         $validated['password'] = Hash::make($validated['password']);
 
@@ -68,19 +65,13 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EditUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 
-        $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email',
-        'role' => 'required|string'
-    ]);
+        $user->update($request->validated());
 
-    $user->update($validated);
-
-    return redirect()->route('admin.show', $user->id);
+        return redirect()->route('admin.show', $user->id);
     }
 
     /**
