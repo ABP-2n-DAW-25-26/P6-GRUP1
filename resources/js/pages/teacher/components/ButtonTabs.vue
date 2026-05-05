@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { schedule } from '@/routes';
 import { show as activities } from '@/routes/exchange';
 import { index as teachersIndex } from '@/routes/exchange/teacher';
@@ -20,6 +21,21 @@ const props = defineProps<{
     activeTab: 'activities' | 'teachers' | 'students';
     exchange: Exchange | null;
 }>();
+
+const showActivityOptions = ref(false);
+
+const activityOptions = [
+    { label: 'Anunci', value: 'post' },
+    { label: 'Visita guiada', value: 'guided activity' },
+    { label: 'Punt d\'interes', value: 'interest point' },
+    { label: 'Gimcana', value: 'gimcana' }
+];
+
+const handleActivityOption = (option: string) => {
+    console.log('Selected activity:', option);
+    showActivityOptions.value = false;
+    // Aquí puedes añadir la lógica para crear una nueva actividad
+};
 </script>
 <template>
     <div class="flex justify-between border-b px-2 mx-2 text-lg">
@@ -31,20 +47,28 @@ const props = defineProps<{
             <Link :href="studentsIndex(exchange.id)" :class="props.activeTab === 'students' ? activeClass : ''">
                 Alumnes</Link>
         </div>
-        <button v-if="$props.activeTab === 'activities'" "
-            class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
-            text-white shadow-sm transition hover:opacity-90 active:scale-95">
-            <Plus class="w-4 h-4" />
-            Nova activitat
-        </button>
-        <Link v-else-if="$props.activeTab === 'teachers'"
-            class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+        <div v-if="$props.activeTab === 'activities'" class="relative">
+            <button @click="showActivityOptions = !showActivityOptions" class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+                text-white shadow-sm transition hover:opacity-90 active:scale-95">
+                <Plus class="w-4 h-4" />
+                Nova activitat
+            </button>
+
+            <div v-if="showActivityOptions"
+                class="absolute top-full right-0 mt-2 flex flex-col gap-2 bg-white rounded-lg shadow-lg p-2 z-10">
+                <button v-for="option in activityOptions" :key="option.value"
+                    @click="handleActivityOption(option.value)"
+                    class="px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-hp-primary hover:text-white rounded-lg transition">
+                    {{ option.label }}
+                </button>
+            </div>
+        </div>
+        <Link v-else-if="$props.activeTab === 'teachers'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
             text-white shadow-sm transition hover:opacity-90 active:scale-95">
             <Plus class="w-4 h-4" />
             Assigna professor
         </Link>
-        <Link v-else-if="$props.activeTab === 'students'"
-            class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+        <Link v-else-if="$props.activeTab === 'students'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
             text-white shadow-sm transition hover:opacity-90 active:scale-95">
             <Plus class="w-4 h-4" />
             Assigna alumne

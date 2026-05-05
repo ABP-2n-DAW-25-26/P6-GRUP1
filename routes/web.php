@@ -30,6 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
+    Route::resource('exchange.interestpoint', InterestPointController::class);
+    // Route::resource('exchange.gimcana', controlador gimcana resource::class);
     Route::resource('theme', ThemeController::class);
 
     // Route::get('/teacher/search/{query}', [TeacherController::class, 'searchAJAX'])->name('teacher.search');
