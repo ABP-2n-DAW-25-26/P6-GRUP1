@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditUserRequest;
 
 class AdminController extends Controller
 {
@@ -16,7 +18,7 @@ class AdminController extends Controller
     {
         $users = User::with('exchanges')->get();
         //return $users;
-        return Inertia::render('AdminDashboard',['users' => $users]);
+        return Inertia::render('Admin/AdminDashboard',['users' => $users]);
     }
 
     /**
@@ -24,15 +26,20 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/CreateUser');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $validated = $request->validated();
+        
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+        return redirect()->route('admin.index');
     }
 
     /**
@@ -42,30 +49,39 @@ class AdminController extends Controller
     {
         $user = User::with('exchanges')->findOrFail($id);
 
-        return Inertia::render('ShowUser', ["user" => $user]);
+        return Inertia::render('Admin/ShowUser', ["user" => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return Inertia::render('Admin/EditUser', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin)
+    public function update(EditUserRequest $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->update($request->validated());
+
+        return redirect()->route('admin.show', $user->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.index');
     }
 }
