@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder } from 'lucide-vue-next';
+import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder, Palette } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -30,16 +30,6 @@ const mainNavItems= computed<NavItem[]>(() => {
         icon: Calendar,
     },
     {
-        title: 'Panell de professor',
-        href: "/teacher",
-        icon: LayoutDashboard,
-    },
-    {
-        title: 'Intercanvis',
-        href: "/exchange",
-        icon: Repeat,
-    },
-    {
         title: 'Llistat intercanvis',
         href: "/exchanges",
         icon: Folder,
@@ -60,6 +50,12 @@ const mainNavItems= computed<NavItem[]>(() => {
 
     return items;
 });
+    {
+        title: 'Temes',
+        href: "/theme",
+        icon: Palette,
+    },
+];
 
 const footerNavItems: NavItem[] = [
 ];

@@ -197,26 +197,26 @@ defineOptions({
                                         </div>
                                         <div class="flex flex-col items-start ml-5">
                                             <p class="flex text-sm font-semibold text-hp-primary">{{ activity.title }}</p>
-                                            <p class="ml-3 text-xs font-medium font-hp text-hp-primary-dark uppercase">{{ activity.type }}</p>
+                                            <p class="ml-3 text-md font-medium font-hp text-hp-primary-dark uppercase">{{ activity.type }}</p>
                                         </div>
                                     </div>
                                     <div v-if="activity.type === 'post'" class="flex hover:text-hp-primary hover:bg-hp-primary/20 rounded-md items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/post/${activity.id}`" class="rounded p-1">
+                                        <Link :href="`/exchange/${currentExchange?.id}/post/${activity.id}`" class="rounded p-1">
                                             <Eye :size="16" />
                                         </Link>
                                     </div>
                                     <div v-if="activity.type === 'interest_point'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1">
+                                        <Link :href="`/exchange/${currentExchange?.id}/interestpoint/${activity.id}`" class="rounded p-1">
                                             <Eye :size="16" class="" />
                                         </Link>
                                     </div>
                                     <div v-if="activity.type === 'guided_visit'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1">
+                                        <Link :href="`/exchange/${currentExchange?.id}/guidedactivity/${activity.id}`" class="rounded p-1">
                                             <Eye :size="16" class="" />
                                         </Link>
                                     </div>
                                     <div v-if="activity.type === 'gimcana'" class="hover:text-hp-primary hover:bg-hp-primary/20 rounded-md flex items-center gap-2">
-                                        <Link :href="`${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1">
+                                        <Link :href="`/exchange/${currentExchange?.id}/gimcana/${activity.id}`" class="rounded p-1">
                                             <Eye :size="16" class="" />
                                         </Link>
                                     </div>

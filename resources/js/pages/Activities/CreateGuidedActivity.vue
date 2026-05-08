@@ -13,6 +13,9 @@ const handleFileChange = (event: Event) => {
     preview.value = URL.createObjectURL(input.files[0])
   }
 }
+const props = defineProps<{
+    exchangeId: number;
+}>();
 </script>
 
 
@@ -29,7 +32,7 @@ const handleFileChange = (event: Event) => {
 
       <!-- Card -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4">
-        <Form :action="store()" method="post" class="space-y-5">
+        <Form :action="store(exchangeId)" method="post" class="space-y-5">
           <!-- Títol -->
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Títol</label>

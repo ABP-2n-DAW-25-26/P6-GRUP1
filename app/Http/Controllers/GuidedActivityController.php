@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateGuidedActivityRequest;
 use App\Actions\Activities\CreateGuidedActivityAction;
+use App\Models\Exchange;
+use App\Models\Theme;
+use Illuminate\Support\Facades\Auth;
 
 class GuidedActivityController extends Controller
 {
@@ -22,11 +25,9 @@ class GuidedActivityController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Exchange $exchange)
     {
-        $guidedActivity = GuidedActivity::all();
-
-        return Inertia::render('Activities/CreateGuidedActivity', ["guidedActivity" => $guidedActivity]);
+        return Inertia::render('Activities/CreateGuidedActivity', ['exchangeId' => $exchange->id]);
     }
 
     /**
@@ -34,10 +35,9 @@ class GuidedActivityController extends Controller
      */
     public function store(CreateGuidedActivityRequest $request, CreateGuidedActivityAction $createGuidedActivity)
     {
-        $guidedActivity = new GuidedActivity();
-
         $validated = $request->validated();
-        $createGuidedActivity->execute($validated, auth()->id());
+        $guidedActivity = $createGuidedActivity->execute($validated, Auth::id(), $validated['exchange_id']);
+
 
         Inertia::flash(['message' => 'Activitat guiada creada correctament']);
         return to_route('guidedactivity.index');

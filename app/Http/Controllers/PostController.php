@@ -48,15 +48,14 @@ class PostController extends Controller
             $savedImages = [];
 
             foreach ($request->file('files') as $file) {
-                $filePath = $file->store('public/files');
-                $imageName = basename($filePath);
+                $filePath = $file->store('files', 'public');
 
                 ActivityImage::create([
                     'activity_id' => $post->id,
-                    'image_path' => $imageName,
+                    'image_path' => $filePath,
                 ]);
 
-                $savedImages[] = $imageName;
+                $savedImages[] = $filePath;
             }
 
             // Compatibility with existing views that still read activities.file.
@@ -68,15 +67,28 @@ class PostController extends Controller
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
-    public function show(Post $post)
+    public function edit(Exchange $exchange, Post $post)
     {
-        return Inertia::render('teacher/ShowPost', ["post" => $post]);
+        dd('edit post TODO');
     }
 
-    public function delete(Post $post)
+    public function show(Exchange $exchange, Post $post)
     {
-        $exchange = $post->exchange;
+        if ((int) $post->exchange_id !== (int) $exchange->id) {
+            abort(404);
+        }
 
-        $post->delete();
+        return Inertia::render('Activities/PostView' , [
+            'post' => $post->load('images'),
+        ]);
+    }
+
+    public function destroy(Exchange $exchange, Post $post)
+    {
+        $deleted = $post->delete();
+        if($deleted) {
+            Inertia::flash(['message' => 'Post eliminat correctament']);
+        }
+        return to_route('exchange.show', ['exchange' => $post->exchange_id]);
     }
 }
