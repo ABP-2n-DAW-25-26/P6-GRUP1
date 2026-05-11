@@ -38,8 +38,9 @@ const activityOptions = [
 const handleActivityOption = (option: string) => {
     console.log('Selected activity:', option);
     showActivityOptions.value = false;
-    // Aquí puedes añadir la lógica para crear una nueva actividad
 };
+
+const emit = defineEmits(['assign-teacher']);
 </script>
 <template>
     <div class="flex justify-between border-b px-2 mx-2 text-lg">
@@ -67,11 +68,15 @@ const handleActivityOption = (option: string) => {
                 </Link>
             </div>
         </div>
-        <Link v-else-if="$props.activeTab === 'teachers'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
-            text-white shadow-sm transition hover:opacity-90 active:scale-95">
+        <button
+            v-else-if="$props.activeTab === 'teachers'"
+            @click="emit('assign-teacher')"
+            class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+            text-white shadow-sm transition hover:opacity-90 active:scale-95"
+        >
             <Plus class="w-4 h-4" />
             Assigna professor
-        </Link>
+        </button>
         <Link v-else-if="$props.activeTab === 'students'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
             text-white shadow-sm transition hover:opacity-90 active:scale-95">
             <Plus class="w-4 h-4" />
