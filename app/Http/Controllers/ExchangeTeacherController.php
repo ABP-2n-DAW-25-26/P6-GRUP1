@@ -18,84 +18,49 @@ class ExchangeTeacherController extends Controller
         ]);
     }
 
-    public function searchAJAX(string $query, Request $request)
+    public function searchAJAX(Request $request)
     {
+        $query = $request->query('query');
         $exchangeId = $request->query('exchangeId');
-        
         $teachersQuery = User::where('name', 'like', '%' . $query . '%')
             ->where('role', 'teacher')
             ->orderBy('name', 'asc');
-
         if ($exchangeId) {
             $exchange = Exchange::findOrFail($exchangeId);
             $assignedTeacherIds = $exchange->users()
                 ->where('role', 'teacher')
                 ->pluck('user_id')
                 ->toArray();
-            
+
             if (!empty($assignedTeacherIds)) {
                 $teachersQuery->whereNotIn('id', $assignedTeacherIds);
             }
         }
-
         $exchangeTeachers = $teachersQuery->get();
-
         return response()->json([
             'teachers' => $exchangeTeachers
         ]);
     }
 
-    public function addTeacherToExchange($exchangeId, string $teacherId)
+    public function assign(Exchange $exchange, Request $request)
     {
-        $teacher = User::where('id', $teacherId)->where('role', 'teacher')->firstOrFail();
-        $exchange = Exchange::findOrFail($exchangeId);
-
-        if($exchange->users()->where('user_id', $teacher->id)->exists()) {
+        $userId = $request->input('user_id');
+        if ($exchange->users()->where('user_id', $userId)->exists()) {
             return response()->json([
-                'message' => 'El profesor ya está asignado a este intercambio',
-                'teacher' => $teacher,
-                'exchange' => $exchange
-            ], 400);
+                'message' => 'Aquest professor ja està assignat'
+            ], 409);
         }
-        
-        $exchange->users()->attach($teacher->id);
-
+        $exchange->users()->attach($userId);
         return response()->json([
-            'message' => 'Profesor agregado al intercambio exitosamente',
-            'teacher' => $teacher,
-            'exchange' => $exchange
-        ], 200);
-    }
-
-    public function getExchangeTeachers($exchangeId)
-    {
-        $exchange = Exchange::findOrFail($exchangeId);
-        
-        $teachers = $exchange->users()
-            ->where('role', 'teacher')
-            ->select('users.id', 'users.name', 'users.email')
-            ->get();
-
-        return response()->json([
-            'users' => $teachers
+            'message' => 'Professor assignat correctament'
         ]);
     }
 
-    public function removeTeacherFromExchange($exchangeId, string $teacherId)
+    public function destroy(Exchange $exchange, User $teacher)
     {
-        $teacher = User::where('id', $teacherId)->where('role', 'teacher')->firstOrFail();
-        $exchange = Exchange::findOrFail($exchangeId);
-
-        if(!$exchange->users()->where('user_id', $teacher->id)->exists()) {
-            return response()->json([
-                'message' => 'El profesor no está asignado a este intercambio',
-            ], 400);
-        }
-        
         $exchange->users()->detach($teacher->id);
-
         return response()->json([
-            'message' => 'Profesor eliminado del intercambio exitosamente',
-        ], 200);
+            'message' => 'Professor eliminat correctament'
+        ]);
     }
 }

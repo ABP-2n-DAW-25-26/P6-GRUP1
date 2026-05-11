@@ -67,6 +67,11 @@ class PostController extends Controller
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
+    public function edit(Exchange $exchange, Post $post)
+    {
+        dd('edit post TODO');
+    }
+
     public function show(Exchange $exchange, Post $post)
     {
         if ((int) $post->exchange_id !== (int) $exchange->id) {
@@ -78,10 +83,12 @@ class PostController extends Controller
         ]);
     }
 
-    public function delete(Post $post)
+    public function destroy(Exchange $exchange, Post $post)
     {
-        $exchange = $post->exchange;
-
-        $post->delete();
+        $deleted = $post->delete();
+        if($deleted) {
+            Inertia::flash(['message' => 'Post eliminat correctament']);
+        }
+        return to_route('exchange.show', ['exchange' => $post->exchange_id]);
     }
 }

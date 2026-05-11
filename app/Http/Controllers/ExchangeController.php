@@ -18,27 +18,24 @@ class ExchangeController extends Controller
      */
     public function index()
     {
-        $exchange = Exchange::query()->orderBy('start_date', 'asc')->first();
+        $now = now();
 
-        $user = auth()->user();
+        $exchanges = Exchange::orderBy('start_date', 'asc')->get()
+            ->map(fn($e) => [
+                'id'         => $e->id,
+                'title'      => $e->title,
+                'start_date' => $e->start_date ? date('j M, Y', strtotime($e->start_date)) : '—',
+                'end_date'   => $e->end_date   ? date('j M, Y', strtotime($e->end_date))   : '—',
+                'status'     => match (true) {
+                    $e->end_date && $now->gt($e->end_date)     => 'Finalitzat',
+                    $now->gte($e->start_date)                   => 'Actiu',
+                    default                                     => 'Pendent',
+                },
+            ]);
 
-        if ($user && $user->role === 'teacher' || $user->role === 'admin') {
-            if (! $exchange) {
-                return Inertia::render('teacher/TeacherActivity', [
-                    'exchangeDays' => [],
-                    'exchange' => null,
-                ]);
-            }
-        } elseif ($user && $user->role === 'student') {
-            if (! $exchange) {
-                return Inertia::render('users/StudentActivity', [
-                    'activity' => [],
-                    'exchange' => null,
-                ]);
-            }
-        }
-
-        return to_route('exchange.show', $exchange);
+        return Inertia::render('Exchange/ExchangeList', [
+            'exchanges' => $exchanges,
+        ]);
     }
 
     /**
@@ -157,7 +154,7 @@ class ExchangeController extends Controller
             ]);
 
         return Inertia::render('Exchange/ExchangeList', [
-            'exchanges' => $exchanges,
+            'exchangesList' => $exchanges,
         ]);
     }
 

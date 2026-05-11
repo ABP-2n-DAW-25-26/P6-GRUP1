@@ -2,6 +2,9 @@
 import { ChevronDown, Pencil, Eye, Trash2, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search, Plus } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
 import { schedule } from '@/routes';
+import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
+import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 import ButtonTabs from './components/ButtonTabs.vue';
 
@@ -75,11 +78,46 @@ function formatTime(dateString: string) {
     });
 }
 const activityTypeLabels: Record<string, string> = {
-    'post': 'anunci',
-    'guided_visit': 'visita guiada',
-    'gimcana': 'gimcana',
-    'interest_point': 'punt d\'interes',
+    'post': 'Anunci',
+    'guided_visit': 'Visita guiada',
+    'gimcana': 'Gimcana',
+    'interest_point': 'Punt d\'interes',
 };
+
+function getActivityRoutes(activity: Activity) {
+    const exchangeId = props.exchange?.id ?? 0;
+
+    switch (activity.type) {
+        case 'post':
+            return {
+                show: showPost({ exchange: exchangeId, post: activity.id }),
+                edit: editPost({ exchange: exchangeId, post: activity.id }),
+                delete: deletePost({ exchange: exchangeId, post: activity.id }),
+            };
+
+        case 'interest_point':
+            return {
+                show: showInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+                edit: editInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+                delete: deleteInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+            };
+
+        case 'guided_visit':
+        case 'gimcana':
+            return {
+                show: showGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+                edit: editGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+                delete: deleteGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+            };
+
+        default:
+            return {
+                show: '#',
+                edit: '#',
+                delete: '#',
+            };
+    }
+}
 
 defineOptions({
     layout: {
@@ -96,13 +134,12 @@ defineOptions({
 
     <Head title="Agenda" />
 
-    <!-- {{ exchangeDays }} -->
 
     <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
         <HeaderExchangeInfo :exchange="exchange" />
 
-        <ButtonTabs v-if="exchange" :active-tab="'activities'" :exchange="exchange"/>
-        
+        <ButtonTabs v-if="exchange" :active-tab="'activities'" :exchange="exchange" />
+
         <div class="flex flex-col gap-4">
             <div v-for="day in exchangeDays" :key="day.date" class="flex">
 
@@ -111,7 +148,8 @@ defineOptions({
                         <h3 class="font-bold text-xl capitalize">
                             {{ formatDayName(day.date) }}
                         </h3>
-                        <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date) }}</time>
+                        <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)
+                            }}</time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
@@ -129,31 +167,34 @@ defineOptions({
                                     class="p-4 bg-stone-100 border rounded-xl w-full flex justify-between items-center">
                                     <div class="min-w-0">
                                         <div class="flex gap-3">
-                                            <div class="w-20 ">
-                                                <span class="inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold badge-actiu">{{ activityTypeLabels[activity.type] }}</span>
-                                            </div>
+
                                             <h4 class="font-semibold text-gray-700">{{ activity.title }}</h4>
                                         </div>
                                         <p class="text-gray-500 line-clamp-1">{{ activity.description }}</p>
                                     </div>
-                                    <div class="flex gap-[10%] items-center">
+                                    <div class="flex items-center ">
                                         <div class="flex items-center gap-2">
-                                            <Link
-                                                :href="schedule()"
+                                            <span
+                                                class="inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold badge-actiu">
+                                                {{ activityTypeLabels[activity.type] }}
+                                            </span>
+                                            <Link :href="getActivityRoutes(activity).show"
                                                 class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
                                                 title="Veure">
                                                 <Eye class="w-4 h-4" />
                                             </Link>
-                                            <button
+
+                                            <Link :href="getActivityRoutes(activity).edit"
                                                 class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
                                                 title="Editar">
                                                 <Pencil class="w-4 h-4" />
-                                            </button>
-                                            <button
+                                            </Link>
+
+                                            <Link :href="getActivityRoutes(activity).delete"
                                                 class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                                                 title="Eliminar">
                                                 <Trash2 class="w-4 h-4" />
-                                            </button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
