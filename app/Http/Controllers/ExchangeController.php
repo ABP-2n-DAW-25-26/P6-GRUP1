@@ -154,7 +154,7 @@ class ExchangeController extends Controller
             ]);
 
         return Inertia::render('Exchange/ExchangeList', [
-            'exchanges' => $exchanges,
+            'exchangesList' => $exchanges,
         ]);
     }
 
