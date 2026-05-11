@@ -38,6 +38,10 @@ const mainNavItems= computed<NavItem[]>(() => {
         title: 'Notificacions',
         href: "/notifications",
         icon: Bell,
+    },    {
+        title: 'Temes',
+        href: "/theme",
+        icon: Palette,
     },
     ];
     if (user.value?.role === 'admin') {
@@ -50,12 +54,6 @@ const mainNavItems= computed<NavItem[]>(() => {
 
     return items;
 });
-    {
-        title: 'Temes',
-        href: "/theme",
-        icon: Palette,
-    },
-];
 
 const footerNavItems: NavItem[] = [
 ];
