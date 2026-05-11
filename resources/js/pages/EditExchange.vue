@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange';
-import { ref } from 'vue';
+import { store, update } from '@/routes/exchange';
+import { ref, type PropType } from 'vue';
 
-const selectedColor = ref('#10b981');
+const props = defineProps<{ exchange?: Record<string, any> }>();
+
+function formatForDatetimeLocal(dateStr: string | undefined) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  const mm = pad(d.getMonth() + 1);
+  const dd = pad(d.getDate());
+  const hh = pad(d.getHours());
+  const min = pad(d.getMinutes());
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
+
+const selectedColor = ref(props.exchange?.color ?? '#10b981');
 
 const colors = [
   '#a855f7',
@@ -18,11 +33,17 @@ const colors = [
   '#ec4899',
 ];
 
+const title = ref(props.exchange?.title ?? '');
+const origin = ref(props.exchange?.origin ?? '');
+const destiny = ref(props.exchange?.destiny ?? '');
+const start_date = ref(formatForDatetimeLocal(props.exchange?.start_date));
+const end_date = ref(formatForDatetimeLocal(props.exchange?.end_date));
+
 defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Crear un nou Intercanvi',
+                title: 'Editar Intercanvi',
                 // href: schedule(),
             },
         ],
@@ -35,22 +56,15 @@ defineOptions({
   <div class="flex items-center p-4 w-full">
     <div class="w-full max-w-lg mx-auto">
 
-      <!-- <div class="mb-6 text-center">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Completa la informació per registrar un nou intercanvi
-        </p>
-      </div> -->
-
       <!-- Card -->
       <p class="font-hp text-6xl text-hp-primary">Intercanvi</p>
 
       <div class="bg-white dark:bg-gray-800 rounded-2xl  p-4">
-        <Form :action="store()" method="post" class="space-y-5">
+        <Form :action="update(props.exchange?.id)" method="put" class="space-y-5">
           <!-- Títol -->
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Títol</label>
-            <input type="text" name="title" placeholder="Escandinavia-2026"
+            <input v-model="title" type="text" name="title" placeholder="Escandinavia-2026"
               class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
           <!-- Selector de color -->
@@ -68,14 +82,14 @@ defineOptions({
           <!-- Origen -->
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Origen</label>
-            <input type="text" name="origin" placeholder="Figueres"
+            <input v-model="origin" type="text" name="origin" placeholder="Figueres"
               class=" mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
 
           <!-- Desti -->
           <div>
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Desti</label>
-            <input type="text" name="destiny" placeholder="Italia"
+            <input v-model="destiny" type="text" name="destiny" placeholder="Italia"
               class="mt-1 w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
           </div>
 
@@ -83,13 +97,13 @@ defineOptions({
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Comença</label>
-              <input type="datetime-local" name="start_date"
+              <input v-model="start_date" type="datetime-local" name="start_date"
                 class="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
 
             <div>
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Acaba</label>
-              <input type="datetime-local" name="end_date"
+              <input v-model="end_date" type="datetime-local" name="end_date"
                 class="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700  bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
           </div>
@@ -101,7 +115,7 @@ defineOptions({
             </button>
             <button type="submit"
               class="flex-1 py-2 rounded-md bg-teal-400 hover:bg-teal-300 text-sm font-semibold">
-              Crear Intercanvi
+                Actualitzar intercanvi
             </button>
           </div>
         </Form>
