@@ -8,6 +8,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TranslationController;
 
 use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\ExchangeStudentController;
@@ -51,4 +52,6 @@ Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 Route::resource('admin', AdminController::class);
 
-require __DIR__ . '/settings.php';
+Route::post('/api/translate', [TranslationController::class, 'translatePage']);
+
+require __DIR__.'/settings.php';
