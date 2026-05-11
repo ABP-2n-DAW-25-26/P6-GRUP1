@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\GimcanaController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/exchange/{exchange}/teacher/{teacher}', [ExchangeTeacherController::class, 'destroy'])->name('exchange.teacher.destroy');
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
+    Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
     // Route::resource('exchange.gimcana', controlador gimcana resource::class);
     Route::resource('theme', ThemeController::class);

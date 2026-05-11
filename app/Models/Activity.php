@@ -17,6 +17,7 @@ class Activity extends Model
         'type',
         'file',
         'exchange_id',
+        'theme_id',
 
     ];
 
