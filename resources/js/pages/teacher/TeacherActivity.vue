@@ -78,10 +78,10 @@ function formatTime(dateString: string) {
     });
 }
 const activityTypeLabels: Record<string, string> = {
-    'post': 'anunci',
-    'guided_visit': 'visita guiada',
-    'gimcana': 'gimcana',
-    'interest_point': 'punt d\'interes',
+    'post': 'Anunci',
+    'guided_visit': 'Visita guiada',
+    'gimcana': 'Gimcana',
+    'interest_point': 'Punt d\'interes',
 };
 
 function getActivityRoutes(activity: Activity) {
@@ -149,7 +149,7 @@ defineOptions({
                             {{ formatDayName(day.date) }}
                         </h3>
                         <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)
-                        }}</time>
+                            }}</time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
@@ -167,17 +167,17 @@ defineOptions({
                                     class="p-4 bg-stone-100 border rounded-xl w-full flex justify-between items-center">
                                     <div class="min-w-0">
                                         <div class="flex gap-3">
-                                            <div class="w-20 ">
-                                                <span
-                                                    class="inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold badge-actiu">{{
-                                                        activityTypeLabels[activity.type] }}</span>
-                                            </div>
+
                                             <h4 class="font-semibold text-gray-700">{{ activity.title }}</h4>
                                         </div>
                                         <p class="text-gray-500 line-clamp-1">{{ activity.description }}</p>
                                     </div>
-                                    <div class="flex gap-[10%] items-center">
+                                    <div class="flex items-center ">
                                         <div class="flex items-center gap-2">
+                                            <span
+                                                class="inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold badge-actiu">
+                                                {{ activityTypeLabels[activity.type] }}
+                                            </span>
                                             <Link :href="getActivityRoutes(activity).show"
                                                 class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
                                                 title="Veure">

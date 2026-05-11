@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name',255);
             $table->string('latitude',255)->nullable();
             $table->string('longitude',255)->nullable();
+            $table->enum('question_type', ['open', 'multiple_choice', 'true_false', 'photo'])->nullable();
             $table->string('statement')->nullable();
             $table->string('answer')->nullable();
+            $table->string('correct_answer')->nullable();
             $table->string('file')->nullable();
             $table->integer('order')->nullable();
             $table->enum('type', ['post', 'interest_point', 'guided_visit', 'gimcana'])->default('post');

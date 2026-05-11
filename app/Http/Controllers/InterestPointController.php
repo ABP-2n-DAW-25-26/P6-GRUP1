@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\CreateInterestPointRequest;
 use App\Actions\Activities\CreateInterestPoint;
+use App\Models\Exchange;
+use Illuminate\Support\Facades\Auth;
 
 class InterestPointController extends Controller
 {
@@ -36,7 +38,7 @@ class InterestPointController extends Controller
         $interestPoint = new InterestPoint();
 
         $validated = $request->validated();
-        $createinterestPoint->execute($validated, auth()->id());
+        $createinterestPoint->execute($validated, Auth::id());
         //dd($request->all());
         Inertia::flash(['message' => 'Interestpoint creat correctament']);
         return to_route('interestpoint.index');
@@ -69,8 +71,22 @@ class InterestPointController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InterestPoint $interestPoint)
+    public function destroy(Exchange $exchange, int $id)
     {
-        //
+        $interestPoint = InterestPoint::findOrFail($id);
+        $deleted = $interestPoint->delete();
+        if ($deleted) {
+            Inertia::flash(['message' => 'Punt d\'interès eliminat correctament']);
+        }
+        return to_route('exchange.show', ['exchange' => $interestPoint->exchange_id]);
     }
 }
+
+// }    public function destroy(Exchange $exchange, Post $post)
+//     {
+//         $deleted = $post->delete();
+//         if($deleted) {
+//             Inertia::flash(['message' => 'Post eliminat correctament']);
+//         }
+//         return to_route('exchange.show', ['exchange' => $post->exchange_id]);
+//     }
