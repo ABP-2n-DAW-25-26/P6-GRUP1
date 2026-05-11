@@ -110,11 +110,9 @@ defineOptions({
 
           <!-- Botó enviar -->
           <div class="flex gap-3 pt-2 w-full lg:mt-20">
-            <button type="button" class="flex-1 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
-              Cancel·lar
-            </button>
+            <input type="button" onclick="history.back()" value="Cancel·lar" class="flex-1 py-2 rounded-md border hover:cursor-pointer border-gray-300 dark:border-gray-600 text-sm">
             <button type="submit"
-              class="flex-1 py-2 rounded-md bg-teal-400 hover:bg-teal-300 text-sm font-semibold">
+              class="flex-1 py-2 rounded-md bg-teal-400 hover:bg-teal-300 hover:cursor-pointer text-sm font-semibold">
                 Actualitzar intercanvi
             </button>
           </div>

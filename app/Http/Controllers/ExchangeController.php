@@ -151,6 +151,8 @@ class ExchangeController extends Controller
      */
     public function destroy(Exchange $exchange)
     {
-        //
+        $exchange->delete();
+
+        return redirect()->route('exchange.index')->with('success', 'Exchange deleted successfully.');
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, Form } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { destroy } from '@/routes/exchange';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 
@@ -17,12 +18,31 @@ const props = defineProps<{ exchangesList: Exchange[] }>();
 defineOptions({ layout: AppLayout });
 
 const activeFilter = ref<'tots' | 'actius' | 'finalitzats'>('tots');
+const deleteModalOpen = ref(false);
+const exchangeToDelete = ref<Exchange | null>(null);
+
+const openDeleteModal = (exchange: Exchange) => {
+    exchangeToDelete.value = exchange;
+    deleteModalOpen.value = true;
+};
+
+const closeDeleteModal = () => {
+    deleteModalOpen.value = false;
+    exchangeToDelete.value = null;
+};
 
 const filteredExchanges = computed(() => {
-    if (activeFilter.value === 'actius')      return props.exchangesList.filter(e => e.status === 'Actiu');
-    if (activeFilter.value === 'finalitzats') return props.exchangesList.filter(e => e.status === 'Finalitzat');
-    return props.exchangesList;
-});
+
+    if (activeFilter.value == 'actius') {
+        return props.exchangesList.filter((e) => e.status == 'Actiu')
+    }
+
+    if (activeFilter.value == 'finalitzats') {
+        return props.exchangesList.filter((e) => e.status == 'Finalitzat')
+    }
+
+    return props.exchangesList
+})
 
 const statusClass: Record<string, string> = {
     Actiu:      'badge-actiu',
@@ -106,8 +126,10 @@ const statusClass: Record<string, string> = {
                                     <Pencil class="w-4 h-4" />
                                 </Link>
                                 <button
+                                    type="button"
                                     class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                                     title="Eliminar"
+                                    @click="openDeleteModal(exchange)"
                                 >
                                     <Trash2 class="w-4 h-4" />
                                 </button>
@@ -123,5 +145,29 @@ const statusClass: Record<string, string> = {
             </table>
         </div>
 
+        <div v-if="deleteModalOpen && exchangeToDelete" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4" @click.self="closeDeleteModal">
+            <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <Form v-bind="destroy.form(exchangeToDelete.id)" class="space-y-6" :options="{ preserveScroll: true }">
+                    <div class="space-y-3">
+                        <h2 class="text-lg font-semibold ">Eliminar intercanvi</h2>
+                        <p class="text-sm leading-6 text-gray-600">
+                            Estàs segur de que desitges eliminar l'intercanvi <strong>{{ exchangeToDelete.title }}</strong>?
+                            Aquesta acció no es pot desfer.
+                        </p>
+                    </div>
+
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" class="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:cursor-pointer hover:bg-gray-50"
+                            @click="closeDeleteModal">
+                            Cancel·lar
+                        </button>
+
+                        <button type="submit" class="flex-1 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:cursor-pointer hover:bg-red-500">
+                            Eliminar
+                        </button>
+                    </div>
+                </Form>
+            </div>
+        </div>
     </div>
 </template>
