@@ -27,7 +27,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // PROFE
     Route::resource('exchange', ExchangeController::class);
-    Route::get('exchanges', [ExchangeController::class, 'list'])->name('exchange.list');
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
