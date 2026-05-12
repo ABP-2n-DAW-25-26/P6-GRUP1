@@ -37,7 +37,7 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
             <hr class="w-full mx-4">
             <div class="flex flex-row items-center w-full justify-center">
                 <p
-                    class="px-4 py-2 text-white bg-black bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark/20 rounded-xl font-semibold text-xl w-max">
+                    class="px-4 py-2 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-xl font-semibold text-xl w-max">
                     {{ exchange.title }}</p>
             </div>
             <hr class="w-full mx-4">

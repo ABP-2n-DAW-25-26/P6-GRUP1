@@ -108,10 +108,6 @@ const user = computed(() => page.props.auth.user);
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton as-child>
-                        <Link :href="home()">
-                            <LayoutGrid />
-                            <span>Inici</span>
-                        </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>

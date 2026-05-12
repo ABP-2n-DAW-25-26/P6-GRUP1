@@ -221,7 +221,7 @@ const removeTeacherFromExchange = (teacherId: number) => {
                                     <Eye class="h-4 w-4" />
                                 </Link>
                                 <button @click="removeTeacherFromExchange(teacher.id)"
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
+                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red cursor-pointer"
                                     title="Eliminar">
                                     <Trash2 class="h-4 w-4" />
                                 </button>
@@ -263,7 +263,7 @@ const removeTeacherFromExchange = (teacherId: number) => {
                                 </p>
                             </div>
 
-                            <button class="rounded-lg bg-hp-primary px-3 py-1 text-sm text-white"
+                            <button class="rounded-lg bg-hp-primary px-3 py-1 text-sm text-white cursor-pointer"
                                 @click="assignTeacher(teacher.id)">
                                 Assignar
                             </button>

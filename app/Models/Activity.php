@@ -11,6 +11,7 @@ class Activity extends Model
         'title',
         'description',
         'start_date',
+        'user_id',
         'end_date',
         'latitude',
         'longitude',
@@ -24,5 +25,10 @@ class Activity extends Model
     public function exchange(): BelongsTo
     {
         return $this->belongsTo(Exchange::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

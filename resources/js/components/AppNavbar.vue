@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { login, schedule } from '@/routes';
+import { home, login, schedule } from '@/routes';
 
 const page = usePage();
 const isLoggedIn = computed(() => !!page.props.auth?.user);
@@ -22,7 +22,7 @@ const isLoggedIn = computed(() => !!page.props.auth?.user);
             <div class="flex items-center gap-3">
                 <Link
                     v-if="isLoggedIn"
-                    :href="schedule()"
+                    :href="home()"
                     class="rounded-lg bg-hp-primary px-5 py-2 text-sm font-bold text-white hover:bg-hp-primary-dark transition-colors duration-200"
                 >
                     Agenda

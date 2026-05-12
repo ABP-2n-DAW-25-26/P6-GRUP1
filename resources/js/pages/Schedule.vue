@@ -4,9 +4,47 @@ import { schedule } from '@/routes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/composables/useInitials';
 import { computed } from 'vue';
+import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
+import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
+import { ChevronRight } from 'lucide-vue-next';
+
 
 const { getInitials } = useInitials();
 
+
+
+interface Exchange {
+    id: number;
+    title: string;
+    origin: string;
+    start_date: string;
+    end_date: string | null;
+    destiny: string;
+    users?: { id: number }[];
+}
+interface User {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    role: string;
+}
+
+interface Activity {
+    id: number;
+    title: string;
+    description: string;
+    start_date: string;
+    end_date: string;
+    latitude: string;
+    longitude: string;
+    type: string;
+    file: string;
+    user: User;
+    exchange_id: string;
+    exchange?: Exchange | null;
+}
 
 defineOptions({
     layout: {
@@ -24,9 +62,10 @@ const props = defineProps<{
     exchangeDays: Array<{
         date: string;
         day: number;
-        activities: any[];
+        activities: Activity[];
     }>;
 }>();
+
 
 const userImage = computed(() => props.exchange.user.image || props.exchange.user.avatar || '');
 const showUserImage = computed(() => userImage.value !== '');
@@ -60,6 +99,40 @@ function formatTime(dateString: string) {
     });
 }
 
+function getActivityRoutes(activity: Activity) {
+    const exchangeId = props.exchange?.id ?? 0;
+
+    switch (activity.type) {
+        case 'post':
+            return {
+                show: showPost({ exchange: exchangeId, post: activity.id }),
+                edit: editPost({ exchange: exchangeId, post: activity.id }),
+                delete: deletePost({ exchange: exchangeId, post: activity.id }),
+            };
+
+        case 'interest_point':
+            return {
+                show: showInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+                edit: editInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+                delete: deleteInterestPoint({ exchange: exchangeId, interestpoint: activity.id }),
+            };
+
+        case 'guided_visit':
+        case 'gimcana':
+            return {
+                show: showGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+                edit: editGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+                delete: deleteGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+            };
+
+        default:
+            return {
+                show: '#',
+                edit: '#',
+                delete: '#',
+            };
+    }
+}
 </script>
 
 <template>
@@ -105,7 +178,7 @@ function formatTime(dateString: string) {
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
-                        <div v-for="activity in day.activities" :key="activity.id" class="flex gap-3">
+                        <div v-for="activity in day.activities" :key="activity.id" class="flex gap-3 group">
                             <div class="flex flex-col justify-around w-18">
                                 <time class="text-gray-400">
                                     {{ formatTime(activity.start_date) }}
@@ -114,19 +187,24 @@ function formatTime(dateString: string) {
                                     {{ formatTime(activity.end_date) }}
                                 </time>
                             </div>
-                            <Link :href="schedule()"
-                                class="p-4 bg-stone-100 border rounded-xl w-full flex justify-between items-center">
-                                <div>
-                                    <h4 class="font-semibold text-gray-700">{{ activity.title }}</h4>
-                                    <p class="text-gray-500">{{ activity.description }}</p>
-                                </div>
-                                <Avatar class="h-12 w-12 overflow-hidden rounded-full">
-                                    <AvatarImage v-if="showUserImage" :src="userImage" :alt="exchange.user.name" />
-                                    <AvatarFallback class="rounded-full text-white dark:text-white font-bold">
-                                        {{ getInitials(exchange.user.name) }}
-                                    </AvatarFallback>
-                                </Avatar>
-                            </Link>
+                            <div class="flex w-full">
+                                <Link :href="getActivityRoutes(activity).show"
+                                    class="p-4 bg-stone-100 border rounded-xl w-full flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-700">{{ activity.title }}</h4>
+                                        <p class="text-gray-500">{{ activity.description }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <Avatar class="h-12 w-12 overflow-hidden rounded-full">
+                                            <AvatarImage v-if="showUserImage" :src="userImage" :alt="activity.user.name" />
+                                            <AvatarFallback class="rounded-full text-white dark:text-white font-bold">
+                                                {{ getInitials(activity.user.name) }}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <ChevronRight class="group-hover:text-gray-900 text-gray-500" :size="18"/>
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     <div v-else class="text-gray-600">

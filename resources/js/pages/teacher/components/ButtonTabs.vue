@@ -62,7 +62,7 @@ const emit = defineEmits(['assign-teacher']);
             <div v-if="showActivityOptions"
                 class="absolute top-full right-0 mt-2 flex flex-col gap-2 bg-white rounded-lg shadow-lg p-2 z-10">
                 <Link v-for="option in activityOptions" :key="option.label" :href="option.href(exchange.id)"
-                    class="px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-hp-primary hover:text-white rounded-lg transition"
+                    class="px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-hp-primary hover:text-white rounded-lg transition cursor-pointer"
                     @click="showActivityOptions = false">
                     {{ option.label }}
                 </Link>
@@ -72,13 +72,13 @@ const emit = defineEmits(['assign-teacher']);
             v-else-if="$props.activeTab === 'teachers'"
             @click="emit('assign-teacher')"
             class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
-            text-white shadow-sm transition hover:opacity-90 active:scale-95"
+            text-white shadow-sm transition hover:opacity-90 cursor-pointer active:scale-95"
         >
             <Plus class="w-4 h-4" />
             Assigna professor
         </button>
         <Link v-else-if="$props.activeTab === 'students'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
-            text-white shadow-sm transition hover:opacity-90 active:scale-95">
+            text-white shadow-sm transition hover:opacity-90 cursor-pointer active:scale-95">
             <Plus class="w-4 h-4" />
             Assigna alumne
         </Link>
