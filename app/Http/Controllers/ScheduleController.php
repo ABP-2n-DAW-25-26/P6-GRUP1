@@ -17,7 +17,7 @@ class ScheduleController extends Controller
             ->orWhereHas('users', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->with('activities', 'user')
+            ->with('activities.user', 'user')
             ->orderBy('start_date', 'asc')
             ->first();
 

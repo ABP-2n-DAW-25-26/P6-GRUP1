@@ -28,24 +28,36 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
 </script>
 <template>
     <div class="flex flex-col gap-4 w-full border rounded-lg p-4">
-        <div v-if="exchange" class="flex flex-row items-center  w-full">
-            <div class="text-center">
-                <p class="font-semibold text-nowrap">{{ formatDate(exchange.start_date).date }}
+        <div v-if="exchange" class="flex flex-wrap md:flex-nowrap items-center justify-center gap-4 w-full">
+            <div class="text-center shrink-0">
+                <p class="font-semibold whitespace-nowrap">
+                    {{ formatDate(exchange.start_date).date }}
                 </p>
-                <p class="text-sm text-gray-500">{{ formatDate(exchange.start_date).weekday }}</p>
+                <p class="text-sm text-gray-500">
+                    {{ formatDate(exchange.start_date).weekday }}
+                </p>
             </div>
-            <hr class="w-full mx-4">
-            <div class="flex flex-row items-center w-full justify-center">
+
+            <hr class="hidden md:block flex-1 border-gray-300">
+
+            <div class="flex justify-center">
                 <p
-                    class="px-4 py-2 text-white bg-black bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark/20 rounded-xl font-semibold text-xl w-max">
-                    {{ exchange.title }}</p>
+                    class="px-4 py-2 text-white bg-linear-to-br from-hp-primary-dark to-hp-secondary-dark rounded-xl font-semibold text-xl w-max">
+                    {{ exchange.title }}
+                </p>
             </div>
-            <hr class="w-full mx-4">
-            <div class="text-center">
-                <p class="font-semibold text-nowrap">{{
-                    formatDate(exchange.end_date).date }}</p>
-                <p class="text-sm text-gray-500">{{ formatDate(exchange.end_date).weekday }}</p>
+
+            <hr class="hidden md:block flex-1 border-gray-300">
+
+            <div class="text-center shrink-0">
+                <p class="font-semibold whitespace-nowrap">
+                    {{ formatDate(exchange.end_date).date }}
+                </p>
+                <p class="text-sm text-gray-500">
+                    {{ formatDate(exchange.end_date).weekday }}
+                </p>
             </div>
+
         </div>
         <div v-else class="text-center text-sm text-hp-text-dim">
             No hi ha activitats associades a aquest intercanvi. Crea una nova activitat per començar a planificar!

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { login, schedule } from '@/routes';
+import { home, login, schedule } from '@/routes';
 import { translatePage } from '@/composables/useTranslate';
 
 const page = usePage();

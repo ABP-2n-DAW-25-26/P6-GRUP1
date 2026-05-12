@@ -9,11 +9,11 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TranslationController;
-
 use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\ExchangeStudentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\CSVController;
 use App\Http\Controllers\ThemeController;
 
 Route::inertia('/', 'Home')->name('home');
@@ -28,6 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // PROFE
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.student', ExchangeStudentController::class);
+    Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
+    Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
     Route::post('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
