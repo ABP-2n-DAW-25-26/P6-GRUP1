@@ -231,6 +231,9 @@
     body {
         @apply bg-background text-foreground;
     }
+    input[type="date"] {
+        accent-color: #e74c3c;
+    }
 }
 
 @layer utilities {

@@ -31,7 +31,7 @@ const mainNavItems= computed<NavItem[]>(() => {
     },
     {
         title: 'Llistat intercanvis',
-        href: "/exchanges",
+        href: "/exchange",
         icon: Folder,
     },
     {

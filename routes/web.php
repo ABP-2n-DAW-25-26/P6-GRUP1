@@ -8,6 +8,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\ExchangeStudentController;
 use App\Http\Controllers\PostController;
@@ -26,7 +27,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // PROFE
     Route::resource('exchange', ExchangeController::class);
-    Route::get('exchanges', [ExchangeController::class, 'list'])->name('exchange.list');
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
@@ -53,4 +53,6 @@ Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 Route::resource('admin', AdminController::class);
 
-require __DIR__ . '/settings.php';
+Route::post('/api/translate', [TranslationController::class, 'translatePage']);
+
+require __DIR__.'/settings.php';
