@@ -16,8 +16,6 @@ import {
 } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { schedule } from '@/routes';
-import { destroy as removeTeacher } from '@/routes/exchange/teacher';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 

@@ -22,7 +22,7 @@ const isLoggedIn = computed(() => !!page.props.auth?.user);
             <div class="flex items-center gap-3">
                 <Link
                     v-if="isLoggedIn"
-                    :href="home()"
+                    :href="schedule()"
                     class="rounded-lg bg-hp-primary px-5 py-2 text-sm font-bold text-white hover:bg-hp-primary-dark transition-colors duration-200"
                 >
                     Agenda

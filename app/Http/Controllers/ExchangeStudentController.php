@@ -18,4 +18,12 @@ class ExchangeStudentController extends Controller
             'students' => $students,
         ]);
     }
+
+    public function destroy(Exchange $exchange, User $student)
+    {
+        $exchange->users()->detach($student->id);
+        return response()->json([
+            'message' => 'Estudiant eliminat correctament'
+        ]);
+    }
 }

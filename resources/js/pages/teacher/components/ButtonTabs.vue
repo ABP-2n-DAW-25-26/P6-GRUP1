@@ -40,11 +40,14 @@ const handleActivityOption = (option: string) => {
     showActivityOptions.value = false;
 };
 
-const emit = defineEmits(['assign-teacher']);
+const emit = defineEmits([
+    'assign-teacher',
+    'assign-student',
+]);
 </script>
 <template>
-    <div class="flex justify-between border-b px-2 mx-2 text-lg">
-        <div v-if="exchange" class="flex *:px-4 *:text-gray-700 hover:text-gray-300 transition-colors duration-200">
+    <div class="flex flex-wrap gap-6 justify-between border-b px-2 mx-2 text-lg">
+        <div v-if="exchange" class="flex *:px-2 *:md:px-4 *:text-gray-700 hover:text-gray-300 transition-colors duration-200">
             <Link :href="activities(exchange.id)" :class="props.activeTab === 'activities' ? activeClass : ''">
                 Activitats</Link>
             <Link :href="teachersIndex(exchange.id)" :class="props.activeTab === 'teachers' ? activeClass : ''">
@@ -53,7 +56,7 @@ const emit = defineEmits(['assign-teacher']);
                 Alumnes</Link>
         </div>
         <div v-if="$props.activeTab === 'activities'" class="relative">
-            <button @click="showActivityOptions = !showActivityOptions" class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+            <button @click="showActivityOptions = !showActivityOptions" class="text-nowrap inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
                 text-white shadow-sm transition hover:opacity-90 active:scale-95">
                 <Plus class="w-4 h-4" />
                 Nova activitat
@@ -68,19 +71,15 @@ const emit = defineEmits(['assign-teacher']);
                 </Link>
             </div>
         </div>
-        <button
-            v-else-if="$props.activeTab === 'teachers'"
-            @click="emit('assign-teacher')"
-            class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
-            text-white shadow-sm transition hover:opacity-90 cursor-pointer active:scale-95"
-        >
+        <button v-else-if="$props.activeTab === 'teachers'" @click="emit('assign-teacher')" class="text-nowrap inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+            text-white shadow-sm transition hover:opacity-90 cursor-pointer active:scale-95">
             <Plus class="w-4 h-4" />
             Assigna professor
         </button>
-        <Link v-else-if="$props.activeTab === 'students'" class=" inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
+        <button v-else-if="$props.activeTab === 'students'" @click="emit('assign-student')" class="text-nowrap inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold
             text-white shadow-sm transition hover:opacity-90 cursor-pointer active:scale-95">
             <Plus class="w-4 h-4" />
-            Assigna alumne
-        </Link>
+            Importa CSV
+        </button>
     </div>
 </template>

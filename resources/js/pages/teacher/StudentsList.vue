@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Eye, Trash2, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search, Plus } from 'lucide-vue-next';
+import {
+    Eye,
+    Trash2,
+    Copy,
+    X,
+    ArrowDownToLine,
+} from 'lucide-vue-next';
+import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import { downloadCSV, importCSV } from '@/routes'
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
-
 
 interface Exchange {
     id: number;
@@ -16,12 +24,7 @@ interface Exchange {
 
 const props = defineProps<{
     exchange?: Exchange | null;
-    students: Array<{
-        id: number;
-        name: string;
-        surname: string;
-        email: string;
-    }>;
+    students: any;
 }>();
 
 defineOptions({
@@ -33,6 +36,46 @@ defineOptions({
         ],
     },
 });
+
+const studentsList = ref([...props.students]);
+
+const copied = ref<number | null>(null);
+
+const copyEmail = async (email: string, id: number) => {
+    await navigator.clipboard.writeText(email);
+
+    copied.value = id;
+
+    setTimeout(() => {
+        copied.value = null;
+    }, 1300);
+};
+
+const showAssignStudentModal = ref(false);
+
+const removeStudentFromExchange = (studentId: number) => {
+    if (!props.exchange?.id) return;
+
+    fetch(`/exchange/${props.exchange.id}/student/${studentId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN':
+                document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute('content') || '',
+            Accept: 'application/json',
+        },
+    })
+        .then((res) => res.json())
+        .then(() => {
+            studentsList.value = studentsList.value.filter(
+                (t) => t.id !== studentId
+            );
+        })
+        .catch((err) => {
+            console.error('Error removing student', err);
+        });
+};
 </script>
 
 <template>
@@ -42,56 +85,119 @@ defineOptions({
     <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
         <HeaderExchangeInfo :exchange="exchange" />
 
-        <ButtonTabs v-if="exchange" :active-tab="'students'" :exchange="exchange" />
+        <ButtonTabs v-if="exchange" :active-tab="'students'" :exchange="exchange"
+            @assign-student="showAssignStudentModal = true" />
 
         <div class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
             <table class="min-w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-100 bg-gray-50">
-                        <th class="px-8 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
-                            Estudiant</th>
+                        <th class="px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                            Estudiant
+                        </th>
 
                         <th
-                            class="w-full px-8 py-4 text-left text-xs font-semibold uppercase tracking-widest text-gray-400">
-                            Correu</th>
+                            class="w-full px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                            Correu
+                        </th>
 
-                        <th class="px-8 py-4 text-right text-xs font-semibold uppercase tracking-widest text-gray-400">
-                            Accions</th>
+                        <th class="px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                            Accions
+                        </th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <tr v-for="student in students" :key="student.id"
+                    <tr v-for="student in studentsList" :key="student.id"
                         class="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/60">
                         <td class="px-8 py-6">
-                            <span class="font-semibold text-hp-text">{{ student.name }} {{ student.surname }}</span>
+                            <span class="font-semibold text-hp-text">
+                                {{ student.name }} {{ student.surname }}
+                            </span>
                         </td>
+
                         <td class="px-8 py-6">
-                            <span class="font-semibold text-hp-text">{{ student.email }}</span>
+                            <div class="relative flex items-center gap-4">
+                                <span class="text-gray-800">
+                                    {{ student.email }}
+                                </span>
+
+                                <button @click="
+                                    copyEmail(student.email, student.id)
+                                    " class="group relative text-gray-500 transition hover:text-gray-800">
+                                    <Copy class="h-4 w-4" />
+
+                                    <span
+                                        class="absolute -top-8 left-1/2 -translate-x-1/2 rounded-md px-2 py-1 text-xs text-white opacity-0 transition group-hover:opacity-100"
+                                        :class="copied === student.id
+                                            ? 'bg-hp-primary opacity-100'
+                                            : 'bg-black'
+                                            ">
+                                        {{
+                                            copied === student.id
+                                                ? 'Copiat!'
+                                                : 'Copia'
+                                        }}
+                                    </span>
+                                </button>
+                            </div>
                         </td>
+
                         <td class="px-8 py-6">
                             <div class="flex items-center justify-end gap-2">
-                                <button
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
+                                <Link
+                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                    title="Veure">
+                                    <Eye class="h-4 w-4" />
+                                </Link>
+
+                                <button @click="removeStudentFromExchange(student.id)"
+                                    class="cursor-pointer rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                                     title="Eliminar">
-                                    <Trash2 class="w-4 h-4" />
-                                </button>
-                                <button
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
-                                    title="Eliminar">
-                                    <Trash2 class="w-4 h-4" />
+                                    <Trash2 class="h-4 w-4" />
                                 </button>
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="students.length === 0">
+
+                    <tr v-if="studentsList.length === 0">
                         <td colspan="5" class="px-8 py-24 text-center text-hp-text-dim">
                             No hi ha cap estudiant assignat a aquest intercanvi.
                         </td>
                     </tr>
                 </tbody>
-
             </table>
+
+            <div v-if="showAssignStudentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold mr-auto">
+                                Importa un archiu CSV
+                            </h2>
+                            <button @click="showAssignStudentModal = false"
+                                class="p-2 text-gray-400 hover:text-gray-700">
+                                <X />
+                            </button>
+                        </div>
+                        <p class="mr-auto text-sm text-gray-600">Assegura't que el fitxer inclogui el nom, cognom i
+                            correu electrònic </p>
+
+
+                    </div>
+                    <Form :action="importCSV().url" method="post" class="space-y-5 flex flex-col"
+                        enctype="multipart/form-data">
+                        <input type="file" name="csv" accept=".csv" />
+                        <input type="hidden" name="exchangeId" :value="exchange?.id" />
+                        <button type="submit">send</button>
+                    </Form>
+                    <div class="mt-6 flex">
+                        <a :href="downloadCSV().url" class="text-sm underline text-gray-600 hover:text-gray-800">
+                            Descarrega un fitxer CSV de mostra
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </template>
