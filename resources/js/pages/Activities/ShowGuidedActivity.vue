@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import LeafletMap from '@/components/LeafletMap.vue'
 
 interface Locations {
@@ -25,7 +25,7 @@ interface GuidedActivity {
     locations: Locations[];
 }
 
-const props = defineProps<{
+defineProps<{
     guidedactivity: GuidedActivity;
 }>();
 </script>
