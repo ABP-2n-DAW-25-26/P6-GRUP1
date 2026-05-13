@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange';
+import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { store } from '@/routes/exchange';
 
 const selectedColor = ref('#10b981');
 
