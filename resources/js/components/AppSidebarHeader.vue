@@ -39,7 +39,7 @@ async function onLangChange(e: Event) {
         <select
             :disabled="loading"
             :value="selectedLang"
-            class="rounded-lg border border-hp-border bg-white px-3 py-1.5 text-sm text-hp-text cursor-pointer disabled:opacity-50"
+            class="cursor-pointer rounded-lg border border-hp-border bg-white px-3 py-1.5 text-sm text-hp-text disabled:opacity-50"
             @change="onLangChange"
         >
             <option value="ca">CA</option>

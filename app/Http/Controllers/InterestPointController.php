@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Activities\CreateInterestPoint;
+use App\Http\Requests\CreateInterestPointRequest;
+use App\Models\Exchange;
 use App\Models\InterestPoint;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Http\Requests\CreateInterestPointRequest;
-use App\Actions\Activities\CreateInterestPoint;
-use App\Models\Exchange;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class InterestPointController extends Controller
 {
@@ -27,7 +27,7 @@ class InterestPointController extends Controller
     {
         $interestPoint = InterestPoint::all();
 
-        return Inertia::render('Activities/CreateInterestPoint', ["interestPoint" => $interestPoint]);
+        return Inertia::render('Activities/CreateInterestPoint', ['interestPoint' => $interestPoint]);
     }
 
     /**
@@ -35,12 +35,13 @@ class InterestPointController extends Controller
      */
     public function store(CreateInterestPointRequest $request, CreateInterestPoint $createinterestPoint)
     {
-        $interestPoint = new InterestPoint();
+        $interestPoint = new InterestPoint;
 
         $validated = $request->validated();
         $createinterestPoint->execute($validated, Auth::id());
-        //dd($request->all());
+        // dd($request->all());
         Inertia::flash(['message' => 'Interestpoint creat correctament']);
+
         return to_route('interestpoint.index');
     }
 
@@ -78,6 +79,7 @@ class InterestPointController extends Controller
         if ($deleted) {
             Inertia::flash(['message' => 'Punt d\'interès eliminat correctament']);
         }
+
         return to_route('exchange.show', ['exchange' => $interestPoint->exchange_id]);
     }
 }

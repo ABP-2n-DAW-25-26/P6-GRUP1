@@ -8,6 +8,6 @@ defineOptions({ layout: PublicLayout });
 <template>
     <Head title="Home" />
     <main class="flex items-center justify-center py-24">
-        <h1 class="text-4xl font-bold text-hipatia-text">Home</h1>
+        <h1 class="text-hipatia-text text-4xl font-bold">Home</h1>
     </main>
 </template>

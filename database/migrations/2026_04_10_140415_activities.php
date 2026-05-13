@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->string('title',255);
+            $table->string('title', 255);
             $table->string('description')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
-            $table->string('latitude',255)->nullable();
-            $table->string('longitude',255)->nullable();
+            $table->string('latitude', 255)->nullable();
+            $table->string('longitude', 255)->nullable();
             $table->enum('type', ['post', 'interest_point', 'guided_visit', 'gimcana'])->default('post');
             $table->string('file')->nullable();
             $table->string('exchange_id')->nullable();

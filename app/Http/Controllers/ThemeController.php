@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Theme;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ThemeController extends Controller
@@ -13,7 +13,7 @@ class ThemeController extends Controller
         $theme = Theme::all();
 
         return Inertia::render('Themes', [
-            "theme" => $theme,
+            'theme' => $theme,
         ]);
     }
 
@@ -22,7 +22,7 @@ class ThemeController extends Controller
         $theme = Theme::all();
 
         return Inertia::render('CreateTheme', [
-            "theme" => $theme,
+            'theme' => $theme,
         ]);
     }
 
@@ -39,7 +39,7 @@ class ThemeController extends Controller
             'background_card' => ['required', 'string', 'size:7'],
         ]);
 
-        $theme = new Theme();
+        $theme = new Theme;
         $theme->name = $validated['name'];
         $theme->primary = $validated['primary'];
         $theme->primary_dark = $validated['primary_dark'];
@@ -58,7 +58,7 @@ class ThemeController extends Controller
         $theme = Theme::findOrFail($id);
 
         return Inertia::render('ShowTheme', [
-            "theme" => $theme,
+            'theme' => $theme,
         ]);
     }
 
@@ -67,14 +67,14 @@ class ThemeController extends Controller
         $theme = Theme::findOrFail($id);
 
         return Inertia::render('EditTheme', [
-            "theme" => $theme,
+            'theme' => $theme,
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:themes,name,' . $id],
+            'name' => ['required', 'string', 'max:255', 'unique:themes,name,'.$id],
             'primary' => ['required', 'string', 'size:7'],
             'primary_dark' => ['required', 'string', 'size:7'],
             'secondary' => ['required', 'string', 'size:7'],

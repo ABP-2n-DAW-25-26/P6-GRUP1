@@ -7,11 +7,7 @@ import { initializeFlashToast } from '@/lib/flashToast';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-import.meta.glob([
-
-'../fonts/**',
-
-]);
+import.meta.glob(['../fonts/**']);
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

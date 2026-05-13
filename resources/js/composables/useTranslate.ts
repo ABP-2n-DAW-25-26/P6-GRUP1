@@ -5,7 +5,9 @@ let savedNodes: { node: Text; originalText: string }[] = [];
 export const currentLang = ref('ca');
 
 function getCsrf(): string {
-    const meta = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+    const meta = document.querySelector(
+        'meta[name="csrf-token"]',
+    ) as HTMLMetaElement | null;
 
     return meta?.content ?? '';
 }
@@ -15,12 +17,12 @@ const SKIP_TAGS = ['SCRIPT', 'STYLE', 'SELECT', 'OPTION'];
 
 function isTranslatable(text: string, tag: string): boolean {
     if (text.length < 2) {
-return false;
-}
+        return false;
+    }
 
     if (SKIP_TAGS.includes(tag)) {
-return false;
-}
+        return false;
+    }
 
     return true;
 }
@@ -57,10 +59,10 @@ async function applyTranslation(lang: string) {
     const nodes = getTextNodes();
 
     if (nodes.length === 0) {
-return;
-}
+        return;
+    }
 
-    const texts = nodes.map(n => n.textContent!);
+    const texts = nodes.map((n) => n.textContent!);
     const url = window.location.pathname;
 
     const response = await fetch('/api/translate', {
@@ -90,8 +92,8 @@ export async function translatePage(lang: string) {
     currentLang.value = lang;
 
     if (lang === 'ca') {
-return;
-}
+        return;
+    }
 
     await applyTranslation(lang);
 }
@@ -99,8 +101,8 @@ return;
 // Re-translate after an Inertia navigation
 router.on('navigate', () => {
     if (currentLang.value === 'ca') {
-return;
-}
+        return;
+    }
 
     restoreOriginals();
     setTimeout(() => applyTranslation(currentLang.value), 150);
@@ -111,12 +113,12 @@ let timer: ReturnType<typeof setTimeout> | null = null;
 
 function onDomChange() {
     if (currentLang.value === 'ca') {
-return;
-}
+        return;
+    }
 
     if (timer) {
-clearTimeout(timer);
-}
+        clearTimeout(timer);
+    }
 
     timer = setTimeout(() => {
         restoreOriginals();

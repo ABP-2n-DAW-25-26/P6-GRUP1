@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExchangeController;
-use App\Http\Controllers\GuidedActivityController;
-use App\Http\Controllers\GimcanaController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\TranslationController;
-use App\Http\Controllers\ExchangeTeacherController;
-use App\Http\Controllers\ExchangeStudentController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\ExchangeStudentController;
+use App\Http\Controllers\ExchangeTeacherController;
+use App\Http\Controllers\GimcanaController;
+use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\TranslationController;
+use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -45,7 +44,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');
     // Route::delete('/exchange/{exchangeId}/removeTeacher/{teacherId}', [TeacherController::class, 'removeTeacherFromExchange'])->name('teacher.removeFromExchange');
 });
-
 
 Route::resource('guidedactivity', GuidedActivityController::class);
 Route::resource('interestpoint', InterestPointController::class);

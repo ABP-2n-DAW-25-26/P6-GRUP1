@@ -13,7 +13,9 @@ defineProps<{
 <template>
     <div class="flex min-h-svh flex-col bg-background">
         <AppNavbar />
-        <div class="flex flex-1 flex-col items-center justify-center gap-6 p-6 pt-24 md:p-10 md:pt-24">
+        <div
+            class="flex flex-1 flex-col items-center justify-center gap-6 p-6 pt-24 md:p-10 md:pt-24"
+        >
             <div class="w-full max-w-sm">
                 <div class="flex flex-col gap-8">
                     <div class="flex flex-col items-center gap-4">
@@ -32,7 +34,9 @@ defineProps<{
                         </Link>
                         <div class="space-y-2 text-center">
                             <h1 class="text-xl font-medium">{{ title }}</h1>
-                            <p class="text-center text-sm text-muted-foreground">
+                            <p
+                                class="text-center text-sm text-muted-foreground"
+                            >
                                 {{ description }}
                             </p>
                         </div>

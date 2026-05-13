@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Activity;
 use App\Models\Exchange;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class ActivitiesSeeder extends Seeder
 {
