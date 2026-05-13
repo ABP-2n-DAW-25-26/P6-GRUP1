@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { home, login, schedule } from '@/routes';
+import { computed, ref } from 'vue';
 import { translatePage } from '@/composables/useTranslate';
+import { login, schedule } from '@/routes';
 
 const page = usePage();
 const isLoggedIn = computed(() => !!page.props.auth?.user);
