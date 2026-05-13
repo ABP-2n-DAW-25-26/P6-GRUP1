@@ -33,7 +33,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
     Route::post('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
-    Route::delete('/exchange/{exchange}/teacher/{teacher}', [ExchangeTeacherController::class, 'destroy'])->name('exchange.teacher.destroy');
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);

@@ -92,7 +92,7 @@ const searchTeachers = () => {
 const assignTeacher = (userId: number) => {
     if (!props.exchange?.id) return;
 
-    fetch(`/exchange/${props.exchange.id}/teacher/assign`, {
+    fetch(`/exchange/${props.exchange.id}/teacher/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
