@@ -14,6 +14,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\ThemeController;
+use App\Mail\StudentCredentialsMail;
+use Illuminate\Support\Facades\Mail;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -39,6 +41,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.interestpoint', InterestPointController::class);
     // Route::resource('exchange.gimcana', controlador gimcana resource::class);
     Route::resource('theme', ThemeController::class);
+
+    Route::get('/test-mail', function () {
+        Mail::to('ybakouh@cendrassos.net')->send(new StudentCredentialsMail('ybakouh@cendrassos.net', '12345678'));
+        return 'Correo enviado';
+    });
 
     // Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');
     // Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');

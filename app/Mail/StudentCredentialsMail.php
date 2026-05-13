@@ -10,16 +10,23 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TestMail extends Mailable
+class StudentCredentialsMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public string $email;
+    public ?string $password;
+    public bool $isNewUser;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+
+    public function __construct(string $email, $password = null, $isNewUser = false)
     {
-        //
+        $this->email = $email;
+        $this->password = $password;
+        $this->isNewUser = $isNewUser;
     }
 
     /**
@@ -28,7 +35,7 @@ class TestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Test Mail',
+            subject: 'Comença el teu intercanvi a ' . config('app.name'),
         );
     }
 

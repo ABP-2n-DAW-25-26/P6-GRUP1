@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\TestMail;
+use App\Mail\StudentCredentialsMail;
 use App\Models\Exchange;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,6 +45,8 @@ class CSVController extends Controller
         while (($row = fgetcsv($handle)) !== false) {
             [$name, $surname, $email] = $row;
 
+            //if(usuario no existe en exchange_user)
+
             $password = Str::random(12);
 
             $user = User::firstOrCreate(
@@ -58,8 +60,10 @@ class CSVController extends Controller
             );
 
             if ($user->wasRecentlyCreated) {
-                // Mail::to($email)->send(...) TODO
-                Mail::to($email)->send(new TestMail());
+                Mail::to($email)->send(new StudentCredentialsMail($email, $password));
+            }
+            else {
+                Mail::to($email)->send(new StudentCredentialsMail($email));
             }
 
             $exchange->users()->syncWithoutDetaching([$user->id]);
