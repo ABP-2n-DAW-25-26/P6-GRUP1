@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder, Palette } from 'lucide-vue-next';
+import { usePage } from '@inertiajs/vue3';
+import { Bell, Calendar, LayoutDashboard, Folder, Palette } from 'lucide-vue-next';
+import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -20,7 +21,6 @@ import {
 } from '@/components/ui/sidebar';
 import { schedule, home } from '@/routes';
 import type { NavItem } from '@/types';
-import { usePage } from '@inertiajs/vue3';
 
 const mainNavItems= computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -44,6 +44,7 @@ const mainNavItems= computed<NavItem[]>(() => {
         icon: Palette,
     },
     ];
+
     if (user.value?.role === 'admin') {
         items.push({
             title: 'Panell admin',
