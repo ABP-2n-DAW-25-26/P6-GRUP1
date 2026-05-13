@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange/guidedactivity';
+import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { store } from '@/routes/exchange/guidedactivity';
 
 
 // Guarda la imatge seleccionada
 const preview = ref<string | null>(null)
 const handleFileChange = (event: Event) => {
   const input = event.target as HTMLInputElement
+
   if (input.files && input.files[0]) {
     // Crear URL temporal 
     preview.value = URL.createObjectURL(input.files[0])
   }
 }
-const props = defineProps<{
+defineProps<{
     exchangeId: number;
 }>();
 </script>
