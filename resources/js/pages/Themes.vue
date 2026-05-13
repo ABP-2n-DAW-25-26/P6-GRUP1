@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { Trash } from 'lucide-vue-next';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy } from '@/routes/theme';
 
 interface Theme {
