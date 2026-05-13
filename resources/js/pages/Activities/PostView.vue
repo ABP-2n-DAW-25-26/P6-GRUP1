@@ -17,15 +17,20 @@ interface Post {
 	images?: PostImage[];
 }
 
-const props = defineProps<{
+defineProps<{
 	post: Post;
 }>();
 
 const formatDate = (value: string | null): string => {
-	if (!value) return '--';
+	if (!value) {
+return '--';
+}
 
 	const date = new Date(value);
-	if (Number.isNaN(date.getTime())) return value;
+
+	if (Number.isNaN(date.getTime())) {
+return value;
+}
 
 	return date.toLocaleString('ca-ES', {
 		day: '2-digit',
@@ -35,10 +40,15 @@ const formatDate = (value: string | null): string => {
 };
 
 const formatTime = (value: string | null): string => {
-	if (!value) return '--';
+	if (!value) {
+return '--';
+}
 
 	const date = new Date(value);
-	if (Number.isNaN(date.getTime())) return value;
+
+	if (Number.isNaN(date.getTime())) {
+return value;
+}
 
 	return date.toLocaleString('ca-ES', {
 		hour: '2-digit',
@@ -48,7 +58,10 @@ const formatTime = (value: string | null): string => {
 
 const getDescription = (description: string | null): string => {
 	const text = description?.trim();
-	if (!text) return '—';
+
+	if (!text) {
+return '—';
+}
 
 	const withoutHtmlTags = text
 		.replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -61,7 +74,10 @@ const getDescription = (description: string | null): string => {
 };
 
 const imageUrl = (imagePath: string | null | undefined): string => {
-	if (!imagePath) return '';
+	if (!imagePath) {
+return '';
+}
+
 	return `/storage/${imagePath}`;
 };
 </script>
