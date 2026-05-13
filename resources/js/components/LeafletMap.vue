@@ -3,8 +3,8 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import L from 'leaflet'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import 'leaflet/dist/leaflet.css'
 
 const props = defineProps({
@@ -19,7 +19,9 @@ let map
 let markerLayer
 
 const createMarkerLayer = () => {
-  if (!map) return
+  if (!map) {
+return
+}
 
   if (markerLayer) {
     markerLayer.clearLayers()
@@ -57,7 +59,9 @@ const createMarkerLayer = () => {
 }
 
 onMounted(() => {
-  if (!mapElement.value) return
+  if (!mapElement.value) {
+return
+}
 
   const first = props.markers[0]
   const center = first ? [parseFloat(first.latitude), parseFloat(first.longitude)] : [42.2655, 2.9581]

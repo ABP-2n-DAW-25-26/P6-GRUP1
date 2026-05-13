@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
 import gmailIcon from '@iconify-icons/logos/google-gmail';
+import { Form, Head } from '@inertiajs/vue3';
 import AppNavbar from '@/components/AppNavbar.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';

@@ -1,21 +1,12 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import {
-    ChevronDown,
-    Pencil,
     Eye,
     Trash2,
-    Users,
-    MonitorCog,
-    UserPlus,
-    User2Icon,
-    UserCog,
-    Search,
-    Plus,
     Copy,
     X,
 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 
@@ -70,6 +61,7 @@ const loadingTeachers = ref(false);
 const searchTeachers = () => {
     if (!searchTeacher.value.trim()) {
         foundTeachers.value = [];
+
         return;
     }
 
@@ -90,7 +82,9 @@ const searchTeachers = () => {
 };
 
 const assignTeacher = (userId: number) => {
-    if (!props.exchange?.id) return;
+    if (!props.exchange?.id) {
+return;
+}
 
     fetch(`/exchange/${props.exchange.id}/teacher/assign`, {
         method: 'POST',
@@ -128,7 +122,9 @@ const assignTeacher = (userId: number) => {
 };
 
 const removeTeacherFromExchange = (teacherId: number) => {
-    if (!props.exchange?.id) return;
+    if (!props.exchange?.id) {
+return;
+}
 
     fetch(`/exchange/${props.exchange.id}/teacher/${teacherId}`, {
         method: 'DELETE',

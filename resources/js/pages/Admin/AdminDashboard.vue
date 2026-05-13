@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3';
-import { edit, destroy, show, create, } from '@/routes/admin';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
+import { Link, router } from '@inertiajs/vue3';
+import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import Swal from 'sweetalert2';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { edit, destroy, show, create, } from '@/routes/admin';
 
 defineProps<{
   users: Array<any>

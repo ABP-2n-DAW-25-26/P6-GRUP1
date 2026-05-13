@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import {
     Eye,
     Trash2,
     Copy,
     X,
-    ArrowDownToLine,
 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
 import { downloadCSV, importCSV } from '@/routes'
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
@@ -54,7 +53,9 @@ const copyEmail = async (email: string, id: number) => {
 const showAssignStudentModal = ref(false);
 
 const removeStudentFromExchange = (studentId: number) => {
-    if (!props.exchange?.id) return;
+    if (!props.exchange?.id) {
+return;
+}
 
     fetch(`/exchange/${props.exchange.id}/student/${studentId}`, {
         method: 'DELETE',

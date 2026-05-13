@@ -10,15 +10,20 @@ interface Exchange {
     users?: { id: number }[];
 }
 
-const props = defineProps<{
+defineProps<{
     exchange?: Exchange | null;
 }>();
 
 const formatDate = (value: string | null | undefined): { weekday: string; date: string } => {
-    if (!value) return { weekday: '—', date: '' };
+    if (!value) {
+return { weekday: '—', date: '' };
+}
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return { weekday: '—', date: '' };
+
+    if (Number.isNaN(date.getTime())) {
+return { weekday: '—', date: '' };
+}
 
     const weekday = date.toLocaleDateString('ca-ES', { weekday: 'long' });
     const dateStr = date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' });

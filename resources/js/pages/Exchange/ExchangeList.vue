@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Head, Link, Form } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { destroy } from '@/routes/exchange';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { destroy } from '@/routes/exchange';
 
 interface Exchange {
     id: number;
