@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
-import { Menu } from 'lucide-vue-next';
 defineProps<{
     icon: Component;
     title: string;
