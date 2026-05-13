@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Form, Link } from '@inertiajs/vue3';
-import { store, index } from '@/routes/theme';
 import { reactive } from 'vue';
+import { store, index } from '@/routes/theme';
 
 const themeIndexUrl = index().url;
 
