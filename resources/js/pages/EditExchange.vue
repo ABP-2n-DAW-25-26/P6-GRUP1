@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { Link, Form } from '@inertiajs/vue3';
-import { store, update } from '@/routes/exchange';
-import { ref, type PropType } from 'vue';
+import { Form } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { update } from '@/routes/exchange';
 
 const props = defineProps<{ exchange?: Record<string, any> }>();
 
 function formatForDatetimeLocal(dateStr: string | undefined) {
-  if (!dateStr) return '';
+  if (!dateStr) {
+return '';
+}
+
   const d = new Date(dateStr);
-  if (Number.isNaN(d.getTime())) return '';
+
+  if (Number.isNaN(d.getTime())) {
+return '';
+}
+
   const pad = (n: number) => String(n).padStart(2, '0');
   const yyyy = d.getFullYear();
   const mm = pad(d.getMonth() + 1);
   const dd = pad(d.getDate());
   const hh = pad(d.getHours());
   const min = pad(d.getMinutes());
+
   return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }
 
