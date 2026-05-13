@@ -31,7 +31,7 @@ public function store(Request $request, Exchange $exchange)
     $data = $request->validate([
         'title' => ['required', 'string', 'max:255'],
         'description' => ['nullable', 'string'],
-        'start_date' => ['nullable', 'date'],
+        'start_date' => ['required', 'date'],
         'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
         'theme_id' => ['nullable', 'exists:themes,id'],
         'type' => ['required', 'string', 'max:50'],
@@ -39,7 +39,7 @@ public function store(Request $request, Exchange $exchange)
         'locations.*.name' => ['required', 'string', 'max:255'],
         'locations.*.description' => ['nullable', 'string'],
         'locations.*.statement' => ['required', 'string'],
-        'locations.*.question_type' => ['required', Rule::in(['open', 'multiple_choice', 'true_false'])],
+        'locations.*.question_type' => ['required', 'in:open,multiple_choice,true_false'],
         'locations.*.correct_answer' => ['required_if:locations.*.question_type,multiple_choice,true_false', 'string'],
         'locations.*.answers' => ['required_if:locations.*.question_type,multiple_choice', 'array', 'min:2'],
         'locations.*.answers.*' => ['required_if:locations.*.question_type,multiple_choice', 'string', 'max:255'],

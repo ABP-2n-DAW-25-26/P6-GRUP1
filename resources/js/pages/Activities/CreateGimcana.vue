@@ -67,17 +67,28 @@ const overviewMarkers = computed(() => {
 })
 
 const createGimcana = () => {
-  const locations = []
+  const locations = form.value.locations.map((loc, index) => {
+    const location = {
+      name: loc.name,
+      description: loc.description,
+      statement: loc.statement,
+      question_type: loc.question_type,
+      latitude: loc.latitude,
+      longitude: loc.longitude,
+      order: index + 1,
+    } as Record<string, unknown>
 
-  for (let i = 0; i < form.value.locations.length; i++) {
-    const loc = form.value.locations[i]
-
-    if (loc.question_type !== 'multiple_choice') {
-      loc.answers = []
+    if (loc.question_type === 'multiple_choice') {
+      location.answers = loc.answers
+      location.correct_answer = loc.correct_answer
     }
 
-    locations.push(loc)
-  }
+    if (loc.question_type === 'true_false') {
+      location.correct_answer = loc.correct_answer
+    }
+
+    return location
+  })
 
   const payload = {
     title: form.value.title,
@@ -131,7 +142,8 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                 <div>
                   <label for="start_date">Data d'inici</label>
                   <input v-model="form.start_date" type="datetime-local" id="start_date"
-                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50" />
+                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50"
+                    required />
                 </div>
                 <div>
                   <label for="end_date">Data de fi</label>
