@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\EditUserRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
@@ -17,8 +16,9 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::with('exchanges')->get();
-        //return $users;
-        return Inertia::render('Admin/AdminDashboard',['users' => $users]);
+
+        // return $users;
+        return Inertia::render('Admin/AdminDashboard', ['users' => $users]);
     }
 
     /**
@@ -35,10 +35,11 @@ class AdminController extends Controller
     public function store(CreateUserRequest $request)
     {
         $validated = $request->validated();
-        
+
         $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
+
         return redirect()->route('admin.index');
     }
 
@@ -49,7 +50,7 @@ class AdminController extends Controller
     {
         $user = User::with('exchanges')->findOrFail($id);
 
-        return Inertia::render('Admin/ShowUser', ["user" => $user]);
+        return Inertia::render('Admin/ShowUser', ['user' => $user]);
     }
 
     /**

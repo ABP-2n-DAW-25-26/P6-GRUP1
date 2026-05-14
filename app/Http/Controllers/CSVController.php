@@ -33,7 +33,7 @@ class CSVController extends Controller
     {
         $validated = $request->validate([
             'csv' => 'required|file|mimes:csv,txt',
-            'exchangeId' => 'required|integer'
+            'exchangeId' => 'required|integer',
         ]);
         $exchange = Exchange::findorFail($validated['exchangeId']);
 

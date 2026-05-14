@@ -2,39 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Exchanges\CreateExchangeAction;
+use App\Http\Requests\CreateExchangeRequest;
+use App\Models\Activity;
 use App\Models\Exchange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Http\Requests\CreateExchangeRequest;
-use App\Actions\Exchanges\CreateExchangeAction;
-use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ExchangeController extends Controller
 {
     /**
-     * Display a listing of the resource. 
+     * Display a listing of the resource.
      */
     public function index()
     {
         $now = now();
 
         $exchanges = Exchange::orderBy('start_date', 'asc')->get()
-            ->map(fn($e) => [
-                'id'         => $e->id,
-                'title'      => $e->title,
+            ->map(fn ($e) => [
+                'id' => $e->id,
+                'title' => $e->title,
                 'start_date' => $e->start_date ? date('j M, Y', strtotime($e->start_date)) : '—',
-                'end_date'   => $e->end_date   ? date('j M, Y', strtotime($e->end_date))   : '—',
-                'status'     => match (true) {
-                    $e->end_date && $now->gt($e->end_date)     => 'Finalitzat',
-                    $now->gte($e->start_date)                   => 'Actiu',
-                    default                                     => 'Pendent',
+                'end_date' => $e->end_date ? date('j M, Y', strtotime($e->end_date)) : '—',
+                'status' => match (true) {
+                    $e->end_date && $now->gt($e->end_date) => 'Finalitzat',
+                    $now->gte($e->start_date) => 'Actiu',
+                    default => 'Pendent',
                 },
             ]);
 
         return Inertia::render('Exchange/ExchangeList', [
-            'exchanges' => $exchanges,
+            'exchangesList' => $exchanges,
         ]);
     }
 
@@ -43,7 +43,7 @@ class ExchangeController extends Controller
      */
     public function show(Exchange $exchange)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user && $user->role === 'student') {
             return Inertia::render('users/StudentActivity', [
                 'activity' => Activity::with('exchange.users')
@@ -59,32 +59,33 @@ class ExchangeController extends Controller
         }
 
         $exchange->load('users', 'activities');
-        
+
         // Estructurar actividades por días
         $start = Carbon::parse($exchange->start_date)->startOfDay();
         $end = Carbon::parse($exchange->end_date)->endOfDay();
-        
+
         $days = [];
         $current = $start->copy();
-        
+
         while ($current->lte($end)) {
             $date = $current->toDateString();
-            
+
             $activitiesForDay = $exchange->activities
                 ->filter(function ($activity) use ($current) {
                     return Carbon::parse($activity->start_date)->isSameDay($current);
                 })
                 ->sortBy('start_date')
                 ->values();
-                        
+
             $days[] = [
                 'date' => $date,
                 'day' => $current->day,
                 'activities' => $activitiesForDay,
             ];
-            
+
             $current->addDay();
         }
+
         // dd(Activity::where('exchange_id', $exchange->id)->get());
         // dd($days);
         return Inertia::render('teacher/TeacherActivity', [
@@ -100,7 +101,7 @@ class ExchangeController extends Controller
     {
         $exchanges = Exchange::all();
 
-        return Inertia::render('CreateExchange', ["exchanges" => $exchanges]);
+        return Inertia::render('CreateExchange', ['exchanges' => $exchanges]);
     }
 
     /**
@@ -108,12 +109,13 @@ class ExchangeController extends Controller
      */
     public function store(CreateExchangeRequest $request, CreateExchangeAction $createExchange)
     {
-        $exchange = new Exchange();
+        $exchange = new Exchange;
 
         $validated = $request->validated();
         $createExchange->execute($validated, auth()->id());
 
         Inertia::flash(['message' => 'Exchange creat correctament']);
+
         return to_route('exchange.index');
     }
 
@@ -122,7 +124,9 @@ class ExchangeController extends Controller
      */
     public function edit(Exchange $exchange)
     {
-        //
+        return Inertia::render('EditExchange', [
+            'exchange' => $exchange,
+        ]);
     }
 
     /**
@@ -130,32 +134,18 @@ class ExchangeController extends Controller
      */
     public function update(Request $request, Exchange $exchange)
     {
-        //
-    }
-
-    /**
-     * Display a full list of all exchanges.
-     */
-    public function list()
-    {
-        $now = now();
-
-        $exchanges = Exchange::orderBy('start_date', 'asc')->get()
-            ->map(fn($e) => [
-                'id'         => $e->id,
-                'title'      => $e->title,
-                'start_date' => $e->start_date ? date('j M, Y', strtotime($e->start_date)) : '—',
-                'end_date'   => $e->end_date   ? date('j M, Y', strtotime($e->end_date))   : '—',
-                'status'     => match (true) {
-                    $e->end_date && $now->gt($e->end_date)     => 'Finalitzat',
-                    $now->gte($e->start_date)                   => 'Actiu',
-                    default                                     => 'Pendent',
-                },
-            ]);
-
-        return Inertia::render('Exchange/ExchangeList', [
-            'exchangesList' => $exchanges,
+        $validate = $request->validate([
+            'title' => 'required|string|max:255',
+            'origin' => 'nullable|string',
+            'destiny' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
+
+        $exchange->update($validate);
+
+        return redirect()->route('exchange.index')->with('success', 'Exchange updated successfully.');
     }
 
     /**
@@ -163,6 +153,8 @@ class ExchangeController extends Controller
      */
     public function destroy(Exchange $exchange)
     {
-        //
+        $exchange->delete();
+
+        return redirect()->route('exchange.index')->with('success', 'Exchange deleted successfully.');
     }
 }

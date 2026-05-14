@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Activities\CreateGuidedActivityAction;
+use App\Http\Requests\CreateGuidedActivityRequest;
+use App\Models\Exchange;
 use App\Models\GuidedActivity;
 use App\Models\Locations;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Http\Requests\CreateGuidedActivityRequest;
-use App\Actions\Activities\CreateGuidedActivityAction;
-use App\Models\Exchange;
-use App\Models\Theme;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class GuidedActivityController extends Controller
 {
@@ -38,8 +37,8 @@ class GuidedActivityController extends Controller
         $validated = $request->validated();
         $guidedActivity = $createGuidedActivity->execute($validated, Auth::id(), $validated['exchange_id']);
 
-
         Inertia::flash(['message' => 'Activitat guiada creada correctament']);
+
         return to_route('guidedactivity.index');
     }
 
@@ -50,7 +49,7 @@ class GuidedActivityController extends Controller
     {
         // dd($guidedActivity);
         // $guidedactivity = GuidedActivity::with('locations')->findOrFail($id);
-        return Inertia::render('Activities/ShowGuidedActivity', ["guidedactivity" => $guidedActivity]);
+        return Inertia::render('Activities/ShowGuidedActivity', ['guidedactivity' => $guidedActivity]);
     }
 
     /**

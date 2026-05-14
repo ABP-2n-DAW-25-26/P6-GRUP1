@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,7 +22,7 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         User::create([
             'name' => 'Dani Prados',
             'email' => 'dani.prados@test.com',
@@ -32,7 +31,7 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         User::create([
             'name' => 'Silvia Llado',
             'email' => 'silvia.llado@test.com',
@@ -41,7 +40,7 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         User::create([
             'name' => 'Bal',
             'surname' => 'Singh',
@@ -51,7 +50,7 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         User::create([
             'name' => 'Robert',
             'surname' => 'Poenaru',

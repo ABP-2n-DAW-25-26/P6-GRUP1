@@ -32,13 +32,14 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
-    public function exchanges() : HasMany
+
+    public function exchanges(): HasMany
     {
         return $this->hasMany(Exchange::class);
     }
-    public function activities() : HasMany
+
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class);
     }
-    
 }

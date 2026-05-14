@@ -3,7 +3,7 @@ import AppNavbar from '@/components/AppNavbar.vue';
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col bg-hipatia-bg">
+    <div class="bg-hipatia-bg flex min-h-screen flex-col">
         <AppNavbar />
         <div class="pt-24">
             <slot />

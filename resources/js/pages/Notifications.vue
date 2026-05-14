@@ -8,7 +8,7 @@ defineOptions({ layout: AppLayout });
 <template>
     <Head title="Notificacions" />
     <div class="p-6">
-        <h1 class="text-2xl font-semibold mb-4">Notificacions</h1>
+        <h1 class="mb-4 text-2xl font-semibold">Notificacions</h1>
         <p class="text-muted-foreground">Pròximament...</p>
     </div>
 </template>

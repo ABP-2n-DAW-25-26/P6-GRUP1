@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Theme;
 use Illuminate\Database\Seeder;
 
 class defaultThemes extends Seeder
@@ -49,7 +49,7 @@ class defaultThemes extends Seeder
         ];
 
         foreach ($themes as $theme) {
-            \App\Models\Theme::create($theme);
+            Theme::create($theme);
         }
     }
 }

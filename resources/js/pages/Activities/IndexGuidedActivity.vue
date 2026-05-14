@@ -15,10 +15,13 @@ defineProps<{
 </script>
 
 <template>
-    <div class="p-6 w-full">
-        <h1 class="text-2xl font-bold text-hp-text mb-6">Activitats guiades</h1>
+    <div class="w-full p-6">
+        <h1 class="mb-6 text-2xl font-bold text-hp-text">Activitats guiades</h1>
 
-        <div v-if="guidedActivities.length === 0" class="text-hp-text-dim text-sm">
+        <div
+            v-if="guidedActivities.length === 0"
+            class="text-sm text-hp-text-dim"
+        >
             No hi ha activitats
         </div>
 
@@ -27,10 +30,19 @@ defineProps<{
                 v-for="activity in guidedActivities"
                 :key="activity.id"
                 :href="`/guidedactivity/${activity.id}`"
-                class="block bg-white border border-hp-border rounded-xl p-4 hover:shadow-md transition">
+                class="block rounded-xl border border-hp-border bg-white p-4 transition hover:shadow-md"
+            >
                 <h2 class="font-semibold text-hp-text">{{ activity.title }}</h2>
-                <p v-if="activity.description" class="text-sm text-hp-text-dim mt-1">{{ activity.description }}</p>
-                <div v-if="activity.start_date" class="text-xs text-hp-text-dim mt-2">
+                <p
+                    v-if="activity.description"
+                    class="mt-1 text-sm text-hp-text-dim"
+                >
+                    {{ activity.description }}
+                </p>
+                <div
+                    v-if="activity.start_date"
+                    class="mt-2 text-xs text-hp-text-dim"
+                >
                     {{ activity.start_date }} — {{ activity.end_date }}
                 </div>
             </Link>

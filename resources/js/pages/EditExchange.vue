@@ -1,9 +1,32 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { store } from '@/routes/exchange';
+import { update } from '@/routes/exchange';
 
-const selectedColor = ref('#10b981');
+const props = defineProps<{ exchange?: Record<string, any> }>();
+
+function formatForDatetimeLocal(dateStr: string | undefined) {
+    if (!dateStr) {
+        return '';
+    }
+
+    const d = new Date(dateStr);
+
+    if (Number.isNaN(d.getTime())) {
+        return '';
+    }
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const min = pad(d.getMinutes());
+
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
+
+const selectedColor = ref(props.exchange?.color ?? '#10b981');
 
 const colors = [
     '#a855f7',
@@ -18,11 +41,17 @@ const colors = [
     '#ec4899',
 ];
 
+const title = ref(props.exchange?.title ?? '');
+const origin = ref(props.exchange?.origin ?? '');
+const destiny = ref(props.exchange?.destiny ?? '');
+const start_date = ref(formatForDatetimeLocal(props.exchange?.start_date));
+const end_date = ref(formatForDatetimeLocal(props.exchange?.end_date));
+
 defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Crear un nou Intercanvi',
+                title: 'Editar Intercanvi',
                 // href: schedule(),
             },
         ],
@@ -33,18 +62,15 @@ defineOptions({
 <template>
     <div class="flex w-full items-center p-4">
         <div class="mx-auto w-full max-w-lg">
-            <!-- <div class="mb-6 text-center">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Completa la informació per registrar un nou intercanvi
-        </p>
-      </div> -->
-
             <!-- Card -->
             <p class="font-hp text-6xl text-hp-primary">Intercanvi</p>
 
             <div class="rounded-2xl bg-white p-4 dark:bg-gray-800">
-                <Form :action="store()" method="post" class="space-y-5">
+                <Form
+                    :action="update(props.exchange?.id)"
+                    method="put"
+                    class="space-y-5"
+                >
                     <!-- Títol -->
                     <div>
                         <label
@@ -52,6 +78,7 @@ defineOptions({
                             >Títol</label
                         >
                         <input
+                            v-model="title"
                             type="text"
                             name="title"
                             placeholder="Escandinavia-2026"
@@ -93,6 +120,7 @@ defineOptions({
                             >Origen</label
                         >
                         <input
+                            v-model="origin"
                             type="text"
                             name="origin"
                             placeholder="Figueres"
@@ -107,6 +135,7 @@ defineOptions({
                             >Desti</label
                         >
                         <input
+                            v-model="destiny"
                             type="text"
                             name="destiny"
                             placeholder="Italia"
@@ -122,6 +151,7 @@ defineOptions({
                                 >Comença</label
                             >
                             <input
+                                v-model="start_date"
                                 type="datetime-local"
                                 name="start_date"
                                 class="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
@@ -134,6 +164,7 @@ defineOptions({
                                 >Acaba</label
                             >
                             <input
+                                v-model="end_date"
                                 type="datetime-local"
                                 name="end_date"
                                 class="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
@@ -143,17 +174,17 @@ defineOptions({
 
                     <!-- Botó enviar -->
                     <div class="flex w-full gap-3 pt-2 lg:mt-20">
-                        <button
+                        <input
                             type="button"
-                            class="flex-1 rounded-md border border-gray-300 py-2 text-sm dark:border-gray-600"
-                        >
-                            Cancel·lar
-                        </button>
+                            onclick="history.back()"
+                            value="Cancel·lar"
+                            class="flex-1 rounded-md border border-gray-300 py-2 text-sm hover:cursor-pointer dark:border-gray-600"
+                        />
                         <button
                             type="submit"
-                            class="flex-1 rounded-md bg-teal-400 py-2 text-sm font-semibold hover:bg-teal-300"
+                            class="flex-1 rounded-md bg-teal-400 py-2 text-sm font-semibold hover:cursor-pointer hover:bg-teal-300"
                         >
-                            Crear Intercanvi
+                            Actualitzar intercanvi
                         </button>
                     </div>
                 </Form>

@@ -26,7 +26,7 @@ class SocialAuthController extends Controller
         $googleUser = Socialite::driver('google')->stateless()->user();
 
         // Restrict access to @cendrassos.net domain only
-        if (!str_ends_with($googleUser->getEmail(), '@cendrassos.net')) {
+        if (! str_ends_with($googleUser->getEmail(), '@cendrassos.net')) {
             return redirect()->route('login')->withErrors([
                 'email' => 'Necessites un correu @cendrassos.net per accedir a CendraQuest.',
             ]);
@@ -38,24 +38,26 @@ class SocialAuthController extends Controller
 
         if ($existingUser) {
             // Link google_id if the user registered manually before
-            if (!$existingUser->google_id) {
+            if (! $existingUser->google_id) {
                 $existingUser->update([
                     'google_id' => $googleUser->getId(),
                 ]);
             }
             Auth::login($existingUser);
+
             return redirect()->intended('/schedule');
         }
 
         $user = User::create([
-            'name'      => $googleUser->getName(),
-            'email'     => $googleUser->getEmail(),
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
             'google_id' => $googleUser->getId(),
-            'password'  => bcrypt(Str::random(24)),
-            'role'      => 'student',
+            'password' => bcrypt(Str::random(24)),
+            'role' => 'student',
         ]);
 
         Auth::login($user);
+
         return redirect()->intended('/schedule');
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Exchange;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
-use App\Models\Exchange;
-use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,12 +29,12 @@ class AppServiceProvider extends ServiceProvider
         // $this->configureDefaults();
         Inertia::share('exchanges', function () {
             $user = Auth::user();
-            
-            if (!$user) {
+
+            if (! $user) {
                 return [];
             }
-            
-            return \App\Models\Exchange::where('user_id', $user->id)
+
+            return Exchange::where('user_id', $user->id)
                 ->orWhereHas('users', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 })

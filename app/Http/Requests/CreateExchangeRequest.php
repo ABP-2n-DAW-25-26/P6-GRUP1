@@ -23,12 +23,12 @@ class CreateExchangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-        'origin' => 'required|string|max:255',
-        'destiny' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-        'title' => 'required|string|max:255',
-        'color' => 'required|string|max:7',
+            'origin' => 'required|string|max:255',
+            'destiny' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'title' => 'required|string|max:255',
+            'color' => 'required|string|max:7',
         ];
     }
 }

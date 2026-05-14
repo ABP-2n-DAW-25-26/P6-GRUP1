@@ -1,21 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExchangeController;
-use App\Http\Controllers\GuidedActivityController;
-use App\Http\Controllers\GimcanaController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ExchangeTeacherController;
-use App\Http\Controllers\ExchangeStudentController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\ExchangeStudentController;
+use App\Http\Controllers\ExchangeTeacherController;
+use App\Http\Controllers\GimcanaController;
+use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
 use App\Mail\StudentCredentialsMail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\TranslationController;
+use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -28,7 +28,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // PROFE
     Route::resource('exchange', ExchangeController::class);
-    Route::get('exchanges', [ExchangeController::class, 'list'])->name('exchange.list');
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
@@ -42,11 +41,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('theme', ThemeController::class);
 });
 
-
 Route::resource('guidedactivity', GuidedActivityController::class);
 Route::resource('interestpoint', InterestPointController::class);
 Route::inertia('notifications', 'Notifications')->name('notifications');
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 Route::resource('admin', AdminController::class);
 
-require __DIR__ . '/settings.php';
+Route::post('/api/translate', [TranslationController::class, 'translatePage']);
+
+require __DIR__.'/settings.php';

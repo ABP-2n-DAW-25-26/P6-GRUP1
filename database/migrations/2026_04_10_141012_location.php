@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('name',255);
-            $table->string('latitude',255)->nullable();
-            $table->string('longitude',255)->nullable();
+            $table->string('name', 255);
+            $table->string('latitude', 255)->nullable();
+            $table->string('longitude', 255)->nullable();
             $table->enum('question_type', ['open', 'multiple_choice', 'true_false', 'photo'])->nullable();
             $table->string('statement')->nullable();
             $table->string('answer')->nullable();

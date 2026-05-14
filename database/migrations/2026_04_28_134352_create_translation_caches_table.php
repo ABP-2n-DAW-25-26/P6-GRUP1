@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exchanges', function (Blueprint $table) {
+        Schema::create('translation_caches', function (Blueprint $table) {
             $table->id();
-            $table->string('origin', 255);
-            $table->dateTime('start_date');
-            $table->dateTime('end_date')->nullable();
-            $table->string('destiny', 255);
+            $table->string('lang', 10);
+            $table->string('url');
+            $table->string('original', 500);
+            $table->text('translated');
             $table->timestamps();
+            $table->unique(['lang', 'url', 'original'], 'translation_unique');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exchanges');
+        Schema::dropIfExists('translation_caches');
     }
 };

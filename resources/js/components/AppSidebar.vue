@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, Calendar, LayoutDashboard, LayoutGrid, Repeat, Folder, Palette } from 'lucide-vue-next';
+import { usePage } from '@inertiajs/vue3';
+import {
+    Bell,
+    Calendar,
+    LayoutDashboard,
+    Folder,
+    Palette,
+} from 'lucide-vue-next';
+import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -18,36 +25,37 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { schedule, home } from '@/routes';
 import type { NavItem } from '@/types';
-import { usePage } from '@inertiajs/vue3';
+import { schedule, home } from '@/routes';
 
-const mainNavItems= computed<NavItem[]>(() => {
+const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
-    {
-        title: 'Agenda',
-        href: schedule(),
-        icon: Calendar,
-    },
-    {
-        title: 'Llistat intercanvis',
-        href: "/exchanges",
-        icon: Folder,
-    },
-    {
-        title: 'Notificacions',
-        href: "/notifications",
-        icon: Bell,
-    },    {
-        title: 'Temes',
-        href: "/theme",
-        icon: Palette,
-    },
+        {
+            title: 'Agenda',
+            href: schedule(),
+            icon: Calendar,
+        },
+        {
+            title: 'Llistat intercanvis',
+            href: '/exchange',
+            icon: Folder,
+        },
+        {
+            title: 'Notificacions',
+            href: '/notifications',
+            icon: Bell,
+        },
+        {
+            title: 'Temes',
+            href: '/theme',
+            icon: Palette,
+        },
     ];
+
     if (user.value?.role === 'admin') {
         items.push({
             title: 'Panell admin',
-            href: "/admin",
+            href: '/admin',
             icon: LayoutDashboard,
         });
     }
@@ -55,8 +63,7 @@ const mainNavItems= computed<NavItem[]>(() => {
     return items;
 });
 
-const footerNavItems: NavItem[] = [
-];
+const footerNavItems: NavItem[] = [];
 
 type ExchangeSidebarItem = {
     id: number | string;
@@ -64,7 +71,10 @@ type ExchangeSidebarItem = {
     color?: string | null;
 };
 
-const page = usePage<{ exchanges?: ExchangeSidebarItem[],auth: { user: { role: string } } }>();
+const page = usePage<{
+    exchanges?: ExchangeSidebarItem[];
+    auth: { user: { role: string } };
+}>();
 const exchanges = computed(() => page.props.exchanges ?? []);
 const user = computed(() => page.props.auth.user);
 </script>
@@ -102,13 +112,11 @@ const user = computed(() => page.props.auth.user);
             </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-
             <NavFooter :items="footerNavItems" />
-            
+
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton as-child>
-                    </SidebarMenuButton>
+                    <SidebarMenuButton as-child> </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
             <NavUser />

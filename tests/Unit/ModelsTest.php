@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
-use App\Models\Exchange;
 use App\Models\Activity;
+use App\Models\Exchange;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

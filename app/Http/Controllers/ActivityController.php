@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Activity;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class activityController extends Controller
 {
-//     public function index(int $id)
-//     {
-//         return Inertia::render('teacher/TeacherActivity', [
-//             'activity' => Activity::with('exchange.users')
-//                 ->where('exchange_id', $id)
-//                 ->get(),
-//         ]);
-//    }
+    //     public function index(int $id)
+    //     {
+    //         return Inertia::render('teacher/TeacherActivity', [
+    //             'activity' => Activity::with('exchange.users')
+    //                 ->where('exchange_id', $id)
+    //                 ->get(),
+    //         ]);
+    //    }
 
     public function create()
     {
@@ -29,7 +29,7 @@ class activityController extends Controller
             'type' => 'required|in:post,interest_point,guided_visit,gimcana',
             'file' => 'nullable|string|max:255',
             'exchange_id' => 'nullable|string|max:255',
-            ]);
+        ]);
 
         return Inertia::render('activity/Create', [
             'activity' => Activity::get(),
