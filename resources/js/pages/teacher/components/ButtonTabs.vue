@@ -80,7 +80,7 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
                 <Link
                     v-for="option in activityOptions"
                     :key="option.label"
-                    :href="option.href(exchange.id)"
+                    :href="option.href(exchange!.id)"
                     class="cursor-pointer rounded-lg px-4 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-hp-primary hover:text-white"
                     @click="showActivityOptions = false"
                 >

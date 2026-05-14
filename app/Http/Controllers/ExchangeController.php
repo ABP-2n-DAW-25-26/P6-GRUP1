@@ -43,7 +43,7 @@ class ExchangeController extends Controller
      */
     public function show(Exchange $exchange)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user && $user->role === 'student') {
             return Inertia::render('users/StudentActivity', [
                 'activity' => Activity::with('exchange.users')
