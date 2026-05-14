@@ -39,17 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
-    // Route::resource('exchange.gimcana', controlador gimcana resource::class);
     Route::resource('theme', ThemeController::class);
-
-    Route::get('/test-mail', function () {
-        Mail::to('ybakouh@cendrassos.net')->send(new StudentCredentialsMail('ybakouh@cendrassos.net', '12345678'));
-        return 'Correo enviado';
-    });
-
-    // Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');
-    // Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');
-    // Route::delete('/exchange/{exchangeId}/removeTeacher/{teacherId}', [TeacherController::class, 'removeTeacherFromExchange'])->name('teacher.removeFromExchange');
 });
 
 

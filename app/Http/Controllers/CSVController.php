@@ -45,8 +45,6 @@ class CSVController extends Controller
         while (($row = fgetcsv($handle)) !== false) {
             [$name, $surname, $email] = $row;
 
-            //if(usuario no existe en exchange_user)
-
             $password = Str::random(12);
 
             $user = User::firstOrCreate(
@@ -59,18 +57,16 @@ class CSVController extends Controller
                 ]
             );
 
-            if ($user->wasRecentlyCreated) {
-                Mail::to($email)->send(new StudentCredentialsMail($email, $password));
+            if (!$user->wasRecentlyCreated) {
+                $password = null;
             }
-            else {
-                Mail::to($email)->send(new StudentCredentialsMail($email));
-            }
+            // Mail::to($email)->send(new StudentCredentialsMail($email, $password, $user->wasRecentlyCreated));
 
             $exchange->users()->syncWithoutDetaching([$user->id]);
         }
 
         fclose($handle);
 
-        return back()->with('success', 'Usuarios importados correctamente');
+        return to_route('exchange.student.index', $exchange);
     }
 }

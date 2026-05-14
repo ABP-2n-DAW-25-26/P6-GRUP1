@@ -169,14 +169,14 @@ const removeStudentFromExchange = (studentId: number) => {
             </table>
 
             <div v-if="showAssignStudentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <div class="w-full max-w-md rounded-2xl bg-white p-6 mx-4 shadow-xl">
                     <div class="mb-8">
                         <div class="flex items-center justify-between">
                             <h2 class="text-lg font-semibold mr-auto">
                                 Importa un archiu CSV
                             </h2>
                             <button @click="showAssignStudentModal = false"
-                                class="p-2 text-gray-400 hover:text-gray-700">
+                                class="p-2 text-gray-400 hover:text-gray-700 cursor-pointer">
                                 <X />
                             </button>
                         </div>
@@ -187,11 +187,23 @@ const removeStudentFromExchange = (studentId: number) => {
                     </div>
                     <Form :action="importCSV().url" method="post" class="space-y-5 flex flex-col"
                         enctype="multipart/form-data">
-                        <input type="file" name="csv" accept=".csv" />
+                        <div class="w-full">
+                            <label for="csv" class="mb-2 block text-sm font-medium text-gray-900">
+                                Pujar archiu
+                            </label>
+
+                            <input id="csv" type="file" name="csv" accept=".csv"
+                                class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 file:mr-4 file:border-0 file:bg-hp-primary file:px-4  file:cursor-pointer file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-hp-primary-dark focus:outline-none focus:ring-teal-500/20" />
+                        </div>
                         <input type="hidden" name="exchangeId" :value="exchange?.id" />
-                        <button type="submit">send</button>
+                        <button type="submit"
+                            class="px-6 py-1 bg-hp-primary w-full rounded-lg text-white cursor-pointer">Enviar!</button>
                     </Form>
-                    <div class="mt-6 flex">
+                    <div class="mt-6">
+                        <p class="text-sm text-gray-600">
+                            En enviar el CSV, s’enviarà un correu electrònic als estudiants amb les credencials d’accés
+                            a l’aplicació.
+                        </p>
                         <a :href="downloadCSV().url" class="text-sm underline text-gray-600 hover:text-gray-800">
                             Descarrega un fitxer CSV de mostra
                         </a>
