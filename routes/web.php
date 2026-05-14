@@ -12,8 +12,6 @@ use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
-use App\Mail\StudentCredentialsMail;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
 

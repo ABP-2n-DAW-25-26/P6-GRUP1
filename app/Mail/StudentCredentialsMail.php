@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -15,13 +14,14 @@ class StudentCredentialsMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $email;
+
     public ?string $password;
+
     public bool $isNewUser;
 
     /**
      * Create a new message instance.
      */
-
     public function __construct(string $email, $password = null, $isNewUser = false)
     {
         $this->email = $email;
@@ -35,7 +35,7 @@ class StudentCredentialsMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Comença el teu intercanvi a ' . config('app.name'),
+            subject: 'Comença el teu intercanvi a '.config('app.name'),
         );
     }
 

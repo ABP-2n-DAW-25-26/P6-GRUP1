@@ -57,7 +57,7 @@ class CSVController extends Controller
                 ]
             );
 
-            if (!$user->wasRecentlyCreated) {
+            if (! $user->wasRecentlyCreated) {
                 $password = null;
             }
             // Mail::to($email)->send(new StudentCredentialsMail($email, $password, $user->wasRecentlyCreated));
