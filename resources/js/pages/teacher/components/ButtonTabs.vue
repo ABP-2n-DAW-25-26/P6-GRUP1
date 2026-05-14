@@ -6,9 +6,9 @@ import { show as activities } from '@/routes/exchange';
 import { create as createGuided } from '@/routes/exchange/guidedactivity';
 import { create as createInterest } from '@/routes/exchange/interestpoint';
 import { create as createPost } from '@/routes/exchange/post';
+import { create as createGimcana } from '@/routes/exchange/gimcana';
 import { index as studentsIndex } from '@/routes/exchange/student';
 import { index as teachersIndex } from '@/routes/exchange/teacher';
-// import { create as createGimcana } from '@/routes/exchange/activity/gimcana';
 const activeClass =
     'font-bold border-b-3 border-hp-primary-dark text-hp-primary-dark!';
 
@@ -32,7 +32,7 @@ const activityOptions = [
     { label: 'Anunci', href: (id: number) => createPost(id) },
     { label: 'Visita guiada', href: (id: number) => createGuided(id) },
     { label: "Punt d'interès", href: (id: number) => createInterest(id) },
-    // { label: 'Gimcana', href: (id: number) => createGimcana(id) }
+    { label: 'Gimcana', href: (id: number) => createGimcana(id) }
 ];
 
 const emit = defineEmits(['assign-teacher', 'assign-student']);
