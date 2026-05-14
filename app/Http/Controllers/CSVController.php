@@ -60,7 +60,7 @@ class CSVController extends Controller
             if (! $user->wasRecentlyCreated) {
                 $password = null;
             }
-            // Mail::to($email)->send(new StudentCredentialsMail($email, $password, $user->wasRecentlyCreated));
+            Mail::to($email)->send(new StudentCredentialsMail($email, $password, $user->wasRecentlyCreated));
 
             $exchange->users()->syncWithoutDetaching([$user->id]);
         }
