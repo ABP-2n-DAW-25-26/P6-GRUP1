@@ -48,9 +48,16 @@ const copyEmail = async (email: string, id: number) => {
     }, 1300);
 };
 
+interface Teacher {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+}
+
 const showAssignTeacherModal = ref(false);
 const searchTeacher = ref('');
-const foundTeachers = ref([]);
+const foundTeachers = ref<Teacher[]>([]);
 const loadingTeachers = ref(false);
 
 const searchTeachers = () => {
