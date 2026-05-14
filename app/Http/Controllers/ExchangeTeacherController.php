@@ -43,7 +43,7 @@ class ExchangeTeacherController extends Controller
         ]);
     }
 
-    public function assign(Exchange $exchange, Request $request)
+    public function store(Exchange $exchange, Request $request)
     {
         $userId = $request->input('user_id');
         if ($exchange->users()->where('user_id', $userId)->exists()) {

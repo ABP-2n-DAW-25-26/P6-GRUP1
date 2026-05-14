@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\StudentCredentialsMail;
 use App\Models\Exchange;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CSVController extends Controller
 {
@@ -42,21 +45,28 @@ class CSVController extends Controller
         while (($row = fgetcsv($handle)) !== false) {
             [$name, $surname, $email] = $row;
 
+            $password = Str::random(12);
+
             $user = User::firstOrCreate(
                 ['email' => $email],
                 [
                     'name' => $name,
                     'surname' => $surname,
                     'role' => 'student',
-                    'password' => Hash::make('12345678'),
+                    'password' => Hash::make($password),
                 ]
             );
+
+            if (!$user->wasRecentlyCreated) {
+                $password = null;
+            }
+            // Mail::to($email)->send(new StudentCredentialsMail($email, $password, $user->wasRecentlyCreated));
 
             $exchange->users()->syncWithoutDetaching([$user->id]);
         }
 
         fclose($handle);
 
-        return back()->with('success', 'Usuarios importados correctamente');
+        return to_route('exchange.student.index', $exchange);
     }
 }
