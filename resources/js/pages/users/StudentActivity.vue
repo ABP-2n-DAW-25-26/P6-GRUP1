@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown, Eye, Trash, Users, MonitorCog, UserPlus } from 'lucide-vue-next';
+import { Link } from '@inertiajs/vue3';
+import { Eye } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import { router, Link } from '@inertiajs/vue3';
-import PageTopBar from '@/components/PageTopBar.vue';
 
 interface Exchange {
     id: number;
@@ -34,24 +33,10 @@ const props = defineProps<{
 
 const expandedId = ref<number | null>(null);
 const isCreateMenuOpen = ref(false);
-const isUploadModalOpen = ref(false);
-const fileInput = ref<HTMLInputElement | null>(null);
-const selectedFile = ref<File | null>(null);
-const isUploadingCsv = ref(false);
-const uploadError = ref('');
 const currentExchange = props.exchange ?? props.activity[0]?.exchange ?? null;
 
 const toggleExpand = (id: number) => {
     expandedId.value = expandedId.value === id ? null : id;
-};
-
-const closeUploadModal = () => {
-    isUploadModalOpen.value = false;
-    selectedFile.value = null;
-    uploadError.value = '';
-    if (fileInput.value) {
-        fileInput.value.value = '';
-    }
 };
 
 const createOptions = [
@@ -62,17 +47,26 @@ const createOptions = [
 ];
 
 const formatTime = (value: string | null | undefined): string => {
-    if (!value) return '--:--';
+    if (!value) {
+return '--:--';
+}
+
     const parts = value.split(/[Time ]/);
     const timePart = parts[1];
+
     return timePart ? timePart.slice(0, 5) : '--:--';
 };
 
 const formatDate = (value: string | null | undefined): { weekday: string; date: string } => {
-    if (!value) return { weekday: '—', date: '' };
+    if (!value) {
+return { weekday: '—', date: '' };
+}
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return { weekday: '—', date: '' };
+
+    if (Number.isNaN(date.getTime())) {
+return { weekday: '—', date: '' };
+}
 
     const weekday = date.toLocaleDateString('ca-ES', { weekday: 'long' });
     const dateStr = date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' });
@@ -81,13 +75,21 @@ const formatDate = (value: string | null | undefined): { weekday: string; date: 
 };
 
 const parseDateTime = (value: string | null | undefined): Date | null => {
-    if (!value) return null;
+    if (!value) {
+return null;
+}
 
     const directDate = new Date(value);
-    if (!Number.isNaN(directDate.getTime())) return directDate;
+
+    if (!Number.isNaN(directDate.getTime())) {
+return directDate;
+}
 
     const normalizedDate = new Date(value.replace(' ', 'T'));
-    if (!Number.isNaN(normalizedDate.getTime())) return normalizedDate;
+
+    if (!Number.isNaN(normalizedDate.getTime())) {
+return normalizedDate;
+}
 
     return null;
 };
@@ -99,10 +101,16 @@ const nextActivityId = computed<number | null>(() => {
 
     for (const activity of props.activity) {
         const activityDate = parseDateTime(activity.start_date);
-        if (!activityDate) continue;
+
+        if (!activityDate) {
+continue;
+}
 
         const diff = activityDate.getTime() - now;
-        if (diff < 0) continue;
+
+        if (diff < 0) {
+continue;
+}
 
         if (diff < closestDiff) {
             closestDiff = diff;
@@ -119,17 +127,27 @@ const groupedActivities = () => {
     const grouped: { [key: string]: Activity[] } = {};
     props.activity.forEach(act => {
         const date = act.start_date.split(/[Time ]/)[0];
-        if (!grouped[date]) grouped[date] = [];
+
+        if (!grouped[date]) {
+grouped[date] = [];
+}
+
         grouped[date].push(act);
     });
+
     return grouped;
 };
 
 const getActivityDescription = (activity: Activity): string => {
     const description = activity.description?.trim();
-    if (!description) return '—';
 
-    if (activity.type !== 'post') return description;
+    if (!description) {
+return '—';
+}
+
+    if (activity.type !== 'post') {
+return description;
+}
 
     const withoutHtmlTags = description
         .replace(/<style[\s\S]*?<\/style>/gi, ' ')

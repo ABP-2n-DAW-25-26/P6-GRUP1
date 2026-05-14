@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { schedule } from '@/routes';
+import { ChevronRight } from 'lucide-vue-next';
+import { computed } from 'vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/composables/useInitials';
-import { computed } from 'vue';
-import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
-import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { schedule } from '@/routes';
 import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
-import { ChevronRight } from 'lucide-vue-next';
+import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
 
 
 const { getInitials } = useInitials();
@@ -92,6 +92,7 @@ function formatMonthName(dateString: string) {
 
 function formatTime(dateString: string) {
     const date = new Date(dateString);
+
     return date.toLocaleTimeString('ca-ES', {
         hour: '2-digit',
         minute: '2-digit',

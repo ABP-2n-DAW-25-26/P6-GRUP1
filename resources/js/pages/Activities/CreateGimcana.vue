@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange/gimcana';
+import { computed, ref } from 'vue';
 import Map from '@/components/AddLocationsMap.vue'
 import OverviewMap from '@/components/LeafletMap.vue'
+import { store } from '@/routes/exchange/gimcana';
 
 const form = ref({
   title: '',

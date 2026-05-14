@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Link, Form } from '@inertiajs/vue3';
-import { store } from '@/routes/exchange/post';
-import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { Form } from '@inertiajs/vue3';
 import Quill from 'quill';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { store } from '@/routes/exchange/post';
 import 'quill/dist/quill.snow.css';
 
 const props = defineProps<{
@@ -46,6 +46,7 @@ const handleFileChange = (event: Event) => {
 
   incomingFiles.forEach((file) => {
     const signature = fileSignature(file)
+
     if (!existingSignatures.has(signature)) {
       selectedFiles.value.push(file)
       existingSignatures.add(signature)

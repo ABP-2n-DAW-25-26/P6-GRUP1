@@ -7,9 +7,9 @@
   </div>
 </template>
 
-<script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+<script setup lang="js">
 import L from 'leaflet'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import 'leaflet/dist/leaflet.css'
 
 const emit = defineEmits(['location-selected'])
@@ -21,7 +21,9 @@ let map
 let marker
 
 onMounted(() => {
-  if (!mapEl.value) return
+  if (!mapEl.value) {
+return
+}
 
   map = L.map(mapEl.value).setView([42.2655, 2.9581], 13)
 

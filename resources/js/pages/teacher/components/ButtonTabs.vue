@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { schedule } from '@/routes';
-import { show as activities } from '@/routes/exchange';
-import { index as teachersIndex } from '@/routes/exchange/teacher';
-import { index as studentsIndex } from '@/routes/exchange/student';
-import { create as createPost } from '@/routes/exchange/post';
-import { create as createGuided } from '@/routes/exchange/guidedactivity';
-import { create as createInterest } from '@/routes/exchange/interestpoint';
-// import { create as createGimcana } from '@/routes/exchange/activity/gimcana';
 import { Link } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { show as activities } from '@/routes/exchange';
+import { create as createGuided } from '@/routes/exchange/guidedactivity';
+import { create as createInterest } from '@/routes/exchange/interestpoint';
+import { create as createPost } from '@/routes/exchange/post';
+import { index as studentsIndex } from '@/routes/exchange/student';
+import { index as teachersIndex } from '@/routes/exchange/teacher';
+// import { create as createGimcana } from '@/routes/exchange/activity/gimcana';
 const activeClass = 'font-bold border-b-3 border-hp-primary-dark text-hp-primary-dark!';
 
 interface Exchange {
@@ -35,8 +34,8 @@ const activityOptions = [
     // { label: 'Gimcana', href: (id: number) => createGimcana(id) }
 ];
 
-const handleActivityOption = (option: string) => {
-    console.log('Selected activity:', option);
+const handleActivityOption = (_option: string) => {
+    console.log('Selected activity:', _option);
     showActivityOptions.value = false;
 };
 

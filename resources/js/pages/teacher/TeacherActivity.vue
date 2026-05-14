@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ChevronDown, Pencil, Eye, Trash2, Users, MonitorCog, UserPlus, User2Icon, UserCog, Search, Plus } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
-import { schedule } from '@/routes';
-import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
-import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { Pencil, Eye, Trash2 } from 'lucide-vue-next';
 import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
-import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
+import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
+import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
 import ButtonTabs from './components/ButtonTabs.vue';
+import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 
 interface Exchange {
     id: number;
@@ -22,10 +21,6 @@ interface Teacher {
     id: number;
     name: string;
     email: string;
-}
-
-interface ExchangeTeachers {
-    users: Teacher[];
 }
 
 interface Activity {
@@ -71,6 +66,7 @@ function formatMonthName(dateString: string) {
 
 function formatTime(dateString: string) {
     const date = new Date(dateString);
+
     return date.toLocaleTimeString('ca-ES', {
         hour: '2-digit',
         minute: '2-digit',
