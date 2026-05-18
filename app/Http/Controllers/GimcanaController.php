@@ -80,10 +80,21 @@ public function store(Request $request, Exchange $exchange)
     return to_route('exchange.show', ['exchange' => $exchange->id]);
 }
 
-    public function show(string $id)
+    public function show(Exchange $exchange, string $gimcana)
     {
-        $locations = Locations::where('activity_id', $id)->get();
-        return Inertia::render('Activities/ShowGimcana', ["locations" => $locations]);
+        $activity = Activity::where('exchange_id', $exchange->id)
+            ->where('type', 'gimcana')
+            ->findOrFail($gimcana);
+
+        $locations = Locations::where('activity_id', $activity->id)
+            ->orderBy('order')
+            ->orderBy('id')
+            ->get();
+
+        return Inertia::render('Activities/ShowGimcana', [
+            "gimcana" => $activity,
+            "locations" => $locations,
+        ]);
     }
 
     public function edit(string $id)

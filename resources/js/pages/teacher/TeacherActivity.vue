@@ -5,6 +5,7 @@ import { schedule } from '@/routes';
 import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
 import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
 import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
+import { show as showGimcana, edit as editGimcana, destroy as deleteGimcana } from '@/routes/exchange/gimcana';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 import ButtonTabs from './components/ButtonTabs.vue';
 
@@ -103,11 +104,17 @@ function getActivityRoutes(activity: Activity) {
             };
 
         case 'guided_visit':
-        case 'gimcana':
             return {
                 show: showGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
                 edit: editGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
                 delete: deleteGuidedActivity({ exchange: exchangeId, guidedactivity: activity.id }),
+            };
+
+        case 'gimcana':
+            return {
+                show: showGimcana({ exchange: exchangeId, gimcana: activity.id }),
+                edit: editGimcana({ exchange: exchangeId, gimcana: activity.id }),
+                delete: deleteGimcana({ exchange: exchangeId, gimcana: activity.id }),
             };
 
         default:

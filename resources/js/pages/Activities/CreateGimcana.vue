@@ -5,6 +5,18 @@ import { store } from '@/routes/exchange/gimcana';
 import Map from '@/components/AddLocationsMap.vue'
 import OverviewMap from '@/components/LeafletMap.vue'
 
+type GimcanaLocationPayload = {
+  name: string
+  description: string
+  statement: string
+  question_type: string
+  latitude: string
+  longitude: string
+  order: number
+  answers?: string[]
+  correct_answer?: string
+}
+
 const form = ref({
   title: '',
   description: '',
@@ -68,7 +80,7 @@ const overviewMarkers = computed(() => {
 
 const createGimcana = () => {
   const locations = form.value.locations.map((loc, index) => {
-    const location = {
+    const location: GimcanaLocationPayload = {
       name: loc.name,
       description: loc.description,
       statement: loc.statement,
@@ -76,7 +88,7 @@ const createGimcana = () => {
       latitude: loc.latitude,
       longitude: loc.longitude,
       order: index + 1,
-    } as Record<string, unknown>
+    }
 
     if (loc.question_type === 'multiple_choice') {
       location.answers = loc.answers
