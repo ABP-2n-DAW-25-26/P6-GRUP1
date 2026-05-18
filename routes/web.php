@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExchangeController;
-use App\Http\Controllers\GuidedActivityController;
-use App\Http\Controllers\GimcanaController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\InterestPointController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\TranslationController;
-use App\Http\Controllers\ExchangeTeacherController;
-use App\Http\Controllers\ExchangeStudentController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\ExchangeStudentController;
+use App\Http\Controllers\ExchangeTeacherController;
+use App\Http\Controllers\GimcanaController;
+use App\Http\Controllers\GuidedActivityController;
+use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\TranslationController;
+use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -25,7 +24,6 @@ Route::get('/auth/gmail/callback', [SocialAuthController::class, 'handleGoogleCa
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
 
-    // PROFE
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
@@ -33,19 +31,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
     Route::post('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
-    Route::delete('/exchange/{exchange}/teacher/{teacher}', [ExchangeTeacherController::class, 'destroy'])->name('exchange.teacher.destroy');
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
-    // Route::resource('exchange.gimcana', controlador gimcana resource::class);
     Route::resource('theme', ThemeController::class);
-
-    // Route::get('/exchange/{exchangeId}/addTeacher/{teacherId}', [TeacherController::class, 'addTeacherToExchange'])->name('teacher.addToExchange');
-    // Route::get('/exchange/{exchangeId}/teachers', [TeacherController::class, 'getExchangeTeachers'])->name('exchange.teachers');
-    // Route::delete('/exchange/{exchangeId}/removeTeacher/{teacherId}', [TeacherController::class, 'removeTeacherFromExchange'])->name('teacher.removeFromExchange');
 });
-
 
 Route::resource('guidedactivity', GuidedActivityController::class);
 Route::resource('interestpoint', InterestPointController::class);

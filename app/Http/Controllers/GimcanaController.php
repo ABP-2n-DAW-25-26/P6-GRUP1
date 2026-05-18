@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Models\Activity;
 use App\Models\Exchange;
 use App\Models\Locations;
-use Inertia\Inertia;
-use App\Models\Activity;
 use App\Models\Theme;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class GimcanaController extends Controller
 {
@@ -23,7 +22,8 @@ class GimcanaController extends Controller
         $activities = Activity::all();
         $locations = Locations::all();
         $themes = Theme::all();
-        return Inertia::render('Activities/CreateGimcana', ["activities" => $activities, "locations" => $locations, "themes" => $themes, "exchange" => $exchange]);
+
+        return Inertia::render('Activities/CreateGimcana', ['activities' => $activities, 'locations' => $locations, 'themes' => $themes, 'exchange' => $exchange]);
     }
 
 public function store(Request $request, Exchange $exchange)
@@ -68,12 +68,9 @@ public function store(Request $request, Exchange $exchange)
             $newLocation['answer'] = json_encode($location['answers'] ?? []);
         }
 
-        unset($newLocation['answers']);
+        session()->flash('message', 'Gimcana creada correctament');
 
-        $newLocation['activity_id'] = $gimcana->id;
-        $newLocation['type'] = 'gimcana';
-
-        Locations::create($newLocation);
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
     session()->flash('message', 'Gimcana creada correctament');
@@ -111,9 +108,9 @@ public function store(Request $request, Exchange $exchange)
     {
         $gimcana = Activity::findOrFail($id);
         $gimcana->delete();
-        
+
         Inertia::flash(['message' => 'Gimcana eliminada correctament']);
+
         return to_route('gimcana.index');
     }
-    
 }

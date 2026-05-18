@@ -5,7 +5,10 @@ let savedNodes: { node: Text; originalText: string }[] = [];
 export const currentLang = ref('ca');
 
 function getCsrf(): string {
-    const meta = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+    const meta = document.querySelector(
+        'meta[name="csrf-token"]',
+    ) as HTMLMetaElement | null;
+
     return meta?.content ?? '';
 }
 
@@ -13,8 +16,14 @@ function getCsrf(): string {
 const SKIP_TAGS = ['SCRIPT', 'STYLE', 'SELECT', 'OPTION'];
 
 function isTranslatable(text: string, tag: string): boolean {
-    if (text.length < 2) return false;
-    if (SKIP_TAGS.includes(tag)) return false;
+    if (text.length < 2) {
+        return false;
+    }
+
+    if (SKIP_TAGS.includes(tag)) {
+        return false;
+    }
+
     return true;
 }
 
@@ -28,6 +37,7 @@ function getTextNodes(): Text[] {
     while ((node = walker.nextNode())) {
         const text = node.textContent?.trim() ?? '';
         const tag = node.parentElement?.tagName ?? '';
+
         if (isTranslatable(text, tag)) {
             nodes.push(node as Text);
         }
@@ -40,15 +50,19 @@ function restoreOriginals() {
     for (const item of savedNodes) {
         item.node.textContent = item.originalText;
     }
+
     savedNodes = [];
 }
 
 // Sends texts to the backend, applies returned translations to the DOM
 async function applyTranslation(lang: string) {
     const nodes = getTextNodes();
-    if (nodes.length === 0) return;
 
-    const texts = nodes.map(n => n.textContent!);
+    if (nodes.length === 0) {
+        return;
+    }
+
+    const texts = nodes.map((n) => n.textContent!);
     const url = window.location.pathname;
 
     const response = await fetch('/api/translate', {
@@ -64,6 +78,7 @@ async function applyTranslation(lang: string) {
 
     for (const node of nodes) {
         const translation = translations[node.textContent!];
+
         if (translation && translation !== node.textContent) {
             savedNodes.push({ node, originalText: node.textContent! });
             node.textContent = translation;
@@ -75,13 +90,20 @@ async function applyTranslation(lang: string) {
 export async function translatePage(lang: string) {
     restoreOriginals();
     currentLang.value = lang;
-    if (lang === 'ca') return;
+
+    if (lang === 'ca') {
+        return;
+    }
+
     await applyTranslation(lang);
 }
 
 // Re-translate after an Inertia navigation
 router.on('navigate', () => {
-    if (currentLang.value === 'ca') return;
+    if (currentLang.value === 'ca') {
+        return;
+    }
+
     restoreOriginals();
     setTimeout(() => applyTranslation(currentLang.value), 150);
 });
@@ -90,15 +112,23 @@ router.on('navigate', () => {
 let timer: ReturnType<typeof setTimeout> | null = null;
 
 function onDomChange() {
-    if (currentLang.value === 'ca') return;
-    if (timer) clearTimeout(timer);
+    if (currentLang.value === 'ca') {
+        return;
+    }
+
+    if (timer) {
+        clearTimeout(timer);
+    }
+
     timer = setTimeout(() => {
         restoreOriginals();
         applyTranslation(currentLang.value);
     }, 300);
 }
 
-new MutationObserver(onDomChange).observe(
-    document.getElementById('app') ?? document.body,
-    { childList: true, subtree: true },
-);
+if (typeof window !== 'undefined') {
+    new MutationObserver(onDomChange).observe(
+        document.getElementById('app') ?? document.body,
+        { childList: true, subtree: true },
+    );
+}

@@ -24,7 +24,7 @@ class TranslationController extends Controller
         $cached = $this->getCached($texts, $lang, $url);
         $missing = $this->findMissing($texts, $cached);
 
-        if (!empty($missing)) {
+        if (! empty($missing)) {
             $translated = $this->callGroq($missing, $lang);
             $this->saveTranslations($missing, $translated, $lang, $url, $cached);
         }
@@ -51,10 +51,11 @@ class TranslationController extends Controller
     {
         $missing = [];
         foreach ($texts as $text) {
-            if (!isset($cached[$text]) || $cached[$text] === $text) {
+            if (! isset($cached[$text]) || $cached[$text] === $text) {
                 $missing[] = $text;
             }
         }
+
         return $missing;
     }
 
@@ -97,7 +98,7 @@ class TranslationController extends Controller
         $count = count($texts);
 
         $response = Http::timeout(30)->withHeaders([
-            'Authorization' => 'Bearer ' . $apiKey,
+            'Authorization' => 'Bearer '.$apiKey,
         ])->post('https://api.groq.com/openai/v1/chat/completions', [
             'model' => 'llama-3.1-8b-instant',
             'temperature' => 0.1,
@@ -109,12 +110,12 @@ class TranslationController extends Controller
                 ],
                 [
                     'role' => 'user',
-                    'content' => "Translate these {$count} Catalan texts to {$langName}. Return JSON: {\"translations\": [\"...\", \"...\"]} with exactly {$count} elements in same order.\n\nRules:\n- Translate ALL words including menu items, UI labels, and common words.\n- Only keep unchanged: school names, people names, and place names (e.g. 'Lycée Victor Hugo', 'Cendrassos', 'Itàlia 2026').\n- Dates and numbers: keep unchanged.\n- Everything else MUST be translated.\n\nTexts:\n" . json_encode($texts, JSON_UNESCAPED_UNICODE),
+                    'content' => "Translate these {$count} Catalan texts to {$langName}. Return JSON: {\"translations\": [\"...\", \"...\"]} with exactly {$count} elements in same order.\n\nRules:\n- Translate ALL words including menu items, UI labels, and common words.\n- Only keep unchanged: school names, people names, and place names (e.g. 'Lycée Victor Hugo', 'Cendrassos', 'Itàlia 2026').\n- Dates and numbers: keep unchanged.\n- Everything else MUST be translated.\n\nTexts:\n".json_encode($texts, JSON_UNESCAPED_UNICODE),
                 ],
             ],
         ]);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             return $texts;
         }
 

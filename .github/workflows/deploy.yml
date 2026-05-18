@@ -1,37 +1,103 @@
-name: Deploy
+name: Pint-Lint-Test-Deploy
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+    branches:
+      - develop
   workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  PHP_VERSION: '8.4'
+  NODE_VERSION: '22'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  laravel-pint-lint:
+   if: github.event.pull_request.merged == true || github.event_name == 'push'
+   runs-on: ubuntu-latest
+   permissions:
+    contents: write
+   steps:
+     - name: Checkout code
+       uses: actions/checkout@v6
+       with:
+        ref: ${{ github.head_ref }}
+     - name: Setup PHP and Composer
+       uses: shivammathur/setup-php@v2
+       with:
+        php-version: ${{ env.PHP_VERSION }}
+        tools: composer
+     - name: Install Laravel Pint
+       run: composer global require laravel/pint
+     - name: Install Dependencies
+       run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm install
+     - name: Run Pint
+       run: pint
+     - name: Format Frontend
+       run: npm run format
+     - name: Lint Frontend
+       run: npm run lint --fix
+     - name: Commit Changes
+       uses: stefanzweifel/git-auto-commit-action@v7
+       with:
+          commit_message: fix pint code style
+          commit_options: '--no-verify'
 
+  tests:
+    runs-on: ubuntu-latest
+    needs: laravel-pint-lint
     steps:
-    # Fa un git clone de la branca que ha generat l'acció a la màquina ubuntu
-    - uses: actions/checkout@v4
-    # Instal·la el php
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: xdebug
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Node Dependencies
+        run: npm i
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - name: Copy Environment File
+        run: cp .env.example .env
+      - name: Generate Application Key
+        run: php artisan key:generate
+      - name: Build Assets
+        run: npm run build
+      - name: Tests
+        run: php artisan test --coverage --coverage-text --coverage-html=coverage.html
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+         name: coverage-report
+         path: coverage.html
+         retention-days: 7
+
+  deploy:
+   runs-on: ubuntu-latest
+   needs: tests
+   steps:
+    - uses: actions/checkout@v6
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
+        php-version: ${{ env.PHP_VERSION }}
         extensions: curl, mbstring, pdo_mysql, tokenizer, xml, zip, zlib, ctype, openssl, fileinfo, bcmath
-    # Instal·la les dependències de php
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    # Instal·la el Node JS
     - name: Node JS
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
-        node-version: 20
-    # Instal·la les dependències Node.js
+        node-version: ${{ env.NODE_VERSION }}
     - name: Instal·la les dependències de Node JS
       run: npm install
-    # Configura el .env amb els secrets abans del build de Vite
-    # (el .env.example té sqlite i les línies de DB comentades, les sobreescrivim)
     - name: Configura .env per al build
       run: |
         cp .env.example .env
@@ -44,12 +110,12 @@ jobs:
         echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
         echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
         echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
-    # Compila el Vue
+        echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
     - name: Compila frontend amb Vite
       run: npm run build
     - name: Fent neteja
       run: rm -rf node_modules
-    - name: Comprimir el projecte (incloent els ocults)
+    - name: Comprimir el projecte  (incloent els ocults)
       run: tar -czf app.tgz $(ls -A)
     - name: Envia app.tgz al servidor
       uses: appleboy/scp-action@v0.1.7
@@ -71,11 +137,6 @@ jobs:
           echo "Descomprimint el fitxer app.tgz"
           cd ${{ secrets.DOCUMENT_ROOT }}
           tar -xzf app.tgz
-          pwd
-          ls -lisa
-          echo "Copiar el fitxer env si no el tenim"
-          $(which php84) -r "file_exists('.env') || copy('.env.example', '.env');"
-          echo "Canvia el fitxer env"
           sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
           sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
@@ -87,11 +148,12 @@ jobs:
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
           echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+          sed -i "/^GROQ_API_KEY=/d" .env
+          echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
           $(which php84) artisan config:clear
           $(which php84) artisan key:generate
           echo "Executar migracions, cache i altres operacions de Laravel"
           $(which php84) artisan migrate --force
-          $(which php84) artisan db:seed --force
           $(which php84) artisan optimize:clear
           $(which php84) artisan optimize
           $(which php84) artisan storage:unlink

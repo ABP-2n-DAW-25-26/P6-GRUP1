@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('exchanges', function (Blueprint $table) {
             $table->id();
-            $table->string('origin',255);
+            $table->string('origin', 255);
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
-            $table->string('destiny',255);
+            $table->string('destiny', 255);
             $table->timestamps();
         });
     }

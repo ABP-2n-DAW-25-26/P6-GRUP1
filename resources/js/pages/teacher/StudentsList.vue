@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import {
-    Eye,
-    Trash2,
-    Copy,
-    X,
-    ArrowDownToLine,
-} from 'lucide-vue-next';
-import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { downloadCSV, importCSV } from '@/routes'
+import { Eye, Trash2, Copy, X } from 'lucide-vue-next';
+import { ref } from 'vue';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
+import { downloadCSV, importCSV } from '@/routes';
 
 interface Exchange {
     id: number;
@@ -54,7 +48,9 @@ const copyEmail = async (email: string, id: number) => {
 const showAssignStudentModal = ref(false);
 
 const removeStudentFromExchange = (studentId: number) => {
-    if (!props.exchange?.id) return;
+    if (!props.exchange?.id) {
+        return;
+    }
 
     fetch(`/exchange/${props.exchange.id}/student/${studentId}`, {
         method: 'DELETE',
@@ -69,7 +65,7 @@ const removeStudentFromExchange = (studentId: number) => {
         .then((res) => res.json())
         .then(() => {
             studentsList.value = studentsList.value.filter(
-                (t) => t.id !== studentId
+                (t) => t.id !== studentId,
             );
         })
         .catch((err) => {
@@ -79,37 +75,52 @@ const removeStudentFromExchange = (studentId: number) => {
 </script>
 
 <template>
-
     <Head title="Agenda" />
 
-    <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
+    <div
+        class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4"
+    >
         <HeaderExchangeInfo :exchange="exchange" />
 
-        <ButtonTabs v-if="exchange" :active-tab="'students'" :exchange="exchange"
-            @assign-student="showAssignStudentModal = true" />
+        <ButtonTabs
+            v-if="exchange"
+            :active-tab="'students'"
+            :exchange="exchange"
+            @assign-student="showAssignStudentModal = true"
+        />
 
-        <div class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div
+            class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm"
+        >
             <table class="min-w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-100 bg-gray-50">
-                        <th class="px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                        <th
+                            class="px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
+                        >
                             Estudiant
                         </th>
 
                         <th
-                            class="w-full px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                            class="w-full px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
+                        >
                             Correu
                         </th>
 
-                        <th class="px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                        <th
+                            class="px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase"
+                        >
                             Accions
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr v-for="student in studentsList" :key="student.id"
-                        class="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/60">
+                    <tr
+                        v-for="student in studentsList"
+                        :key="student.id"
+                        class="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/60"
+                    >
                         <td class="px-8 py-6">
                             <span class="font-semibold text-hp-text">
                                 {{ student.name }} {{ student.surname }}
@@ -122,17 +133,22 @@ const removeStudentFromExchange = (studentId: number) => {
                                     {{ student.email }}
                                 </span>
 
-                                <button @click="
-                                    copyEmail(student.email, student.id)
-                                    " class="group relative text-gray-500 transition hover:text-gray-800">
+                                <button
+                                    @click="
+                                        copyEmail(student.email, student.id)
+                                    "
+                                    class="group relative text-gray-500 transition hover:text-gray-800"
+                                >
                                     <Copy class="h-4 w-4" />
 
                                     <span
                                         class="absolute -top-8 left-1/2 -translate-x-1/2 rounded-md px-2 py-1 text-xs text-white opacity-0 transition group-hover:opacity-100"
-                                        :class="copied === student.id
-                                            ? 'bg-hp-primary opacity-100'
-                                            : 'bg-black'
-                                            ">
+                                        :class="
+                                            copied === student.id
+                                                ? 'bg-hp-primary opacity-100'
+                                                : 'bg-black'
+                                        "
+                                    >
                                         {{
                                             copied === student.id
                                                 ? 'Copiat!'
@@ -147,13 +163,18 @@ const removeStudentFromExchange = (studentId: number) => {
                             <div class="flex items-center justify-end gap-2">
                                 <Link
                                     class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
-                                    title="Veure">
+                                    title="Veure"
+                                >
                                     <Eye class="h-4 w-4" />
                                 </Link>
 
-                                <button @click="removeStudentFromExchange(student.id)"
+                                <button
+                                    @click="
+                                        removeStudentFromExchange(student.id)
+                                    "
                                     class="cursor-pointer rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
-                                    title="Eliminar">
+                                    title="Eliminar"
+                                >
                                     <Trash2 class="h-4 w-4" />
                                 </button>
                             </div>
@@ -161,38 +182,84 @@ const removeStudentFromExchange = (studentId: number) => {
                     </tr>
 
                     <tr v-if="studentsList.length === 0">
-                        <td colspan="5" class="px-8 py-24 text-center text-hp-text-dim">
+                        <td
+                            colspan="5"
+                            class="px-8 py-24 text-center text-hp-text-dim"
+                        >
                             No hi ha cap estudiant assignat a aquest intercanvi.
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div v-if="showAssignStudentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+            <div
+                v-if="showAssignStudentModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            >
+                <div
+                    class="mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+                >
                     <div class="mb-8">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold mr-auto">
+                            <h2 class="mr-auto text-lg font-semibold">
                                 Importa un archiu CSV
                             </h2>
-                            <button @click="showAssignStudentModal = false"
-                                class="p-2 text-gray-400 hover:text-gray-700">
+                            <button
+                                @click="showAssignStudentModal = false"
+                                class="cursor-pointer p-2 text-gray-400 hover:text-gray-700"
+                            >
                                 <X />
                             </button>
                         </div>
-                        <p class="mr-auto text-sm text-gray-600">Assegura't que el fitxer inclogui el nom, cognom i
-                            correu electrònic </p>
-
-
+                        <p class="mr-auto text-sm text-gray-600">
+                            Assegura't que el fitxer inclogui el nom, cognom i
+                            correu electrònic
+                        </p>
                     </div>
-                    <Form :action="importCSV().url" method="post" class="space-y-5 flex flex-col"
-                        enctype="multipart/form-data">
-                        <input type="file" name="csv" accept=".csv" />
-                        <input type="hidden" name="exchangeId" :value="exchange?.id" />
-                        <button type="submit">send</button>
+                    <Form
+                        :action="importCSV().url"
+                        method="post"
+                        class="flex flex-col space-y-5"
+                        enctype="multipart/form-data"
+                    >
+                        <div class="w-full">
+                            <label
+                                for="csv"
+                                class="mb-2 block text-sm font-medium text-gray-900"
+                            >
+                                Pujar archiu
+                            </label>
+
+                            <input
+                                id="csv"
+                                type="file"
+                                name="csv"
+                                accept=".csv"
+                                class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 file:mr-4 file:cursor-pointer file:border-0 file:bg-hp-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-hp-primary-dark focus:ring-teal-500/20 focus:outline-none"
+                            />
+                        </div>
+                        <input
+                            type="hidden"
+                            name="exchangeId"
+                            :value="exchange?.id"
+                        />
+                        <button
+                            type="submit"
+                            class="w-full cursor-pointer rounded-lg bg-hp-primary px-6 py-1 text-white"
+                        >
+                            Enviar!
+                        </button>
                     </Form>
-                    <div class="mt-6 flex">
-                        <a :href="downloadCSV().url" class="text-sm underline text-gray-600 hover:text-gray-800">
+                    <div class="mt-6">
+                        <p class="text-sm text-gray-600">
+                            En enviar el CSV, s’enviarà un correu electrònic als
+                            estudiants amb les credencials d’accés a
+                            l’aplicació.
+                        </p>
+                        <a
+                            :href="downloadCSV().url"
+                            class="text-sm text-gray-600 underline hover:text-gray-800"
+                        >
                             Descarrega un fitxer CSV de mostra
                         </a>
                     </div>

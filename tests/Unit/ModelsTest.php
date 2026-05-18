@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
-use App\Models\Exchange;
 use App\Models\Activity;
+use App\Models\Exchange;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,6 +24,7 @@ test('user has a role assigned', function () {
 });
 
 test('exchange can be created', function () {
+    $user = User::factory()->create();
     $exchange = new Exchange([
         'origin' => 'Barcelona',
         'destiny' => 'Paris',
@@ -31,13 +32,14 @@ test('exchange can be created', function () {
         'color' => '#FF5733',
         'start_date' => now(),
         'end_date' => now()->addDays(7),
-        'user_id' => 1,
+        'user_id' => $user->id,
     ]);
     $exchange->save();
     expect($exchange->id)->toBeGreaterThan(0);
 });
 
 test('exchange has a title', function () {
+    $user = User::factory()->create();
     $exchange = new Exchange([
         'origin' => 'Barcelona',
         'destiny' => 'Paris',
@@ -45,7 +47,7 @@ test('exchange has a title', function () {
         'color' => '#FF5733',
         'start_date' => now(),
         'end_date' => now()->addDays(7),
-        'user_id' => 1,
+        'user_id' => $user->id,
     ]);
     $exchange->save();
     expect($exchange->title)->toBe('My Exchange');
@@ -67,6 +69,7 @@ test('exchange belongs to a user', function () {
 });
 
 test('exchange has origin and destination cities', function () {
+    $user = User::factory()->create();
     $exchange = new Exchange([
         'origin' => 'Barcelona',
         'destiny' => 'Paris',
@@ -74,7 +77,7 @@ test('exchange has origin and destination cities', function () {
         'color' => '#FF5733',
         'start_date' => now(),
         'end_date' => now()->addDays(7),
-        'user_id' => 1,
+        'user_id' => $user->id,
     ]);
     $exchange->save();
     expect($exchange->origin)->toBe('Barcelona');

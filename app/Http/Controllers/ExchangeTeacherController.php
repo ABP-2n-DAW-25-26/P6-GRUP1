@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class ExchangeTeacherController extends Controller
 {
-
     public function index(Exchange $exchange)
     {
         $teachers = $exchange->users()->where('role', 'teacher')->get();
+
         return inertia('teacher/TeachersList', [
             'exchange' => $exchange,
             'teachers' => $teachers,
@@ -22,7 +22,7 @@ class ExchangeTeacherController extends Controller
     {
         $query = $request->query('query');
         $exchangeId = $request->query('exchangeId');
-        $teachersQuery = User::where('name', 'like', '%' . $query . '%')
+        $teachersQuery = User::where('name', 'like', '%'.$query.'%')
             ->where('role', 'teacher')
             ->orderBy('name', 'asc');
         if ($exchangeId) {
@@ -32,35 +32,38 @@ class ExchangeTeacherController extends Controller
                 ->pluck('user_id')
                 ->toArray();
 
-            if (!empty($assignedTeacherIds)) {
+            if (! empty($assignedTeacherIds)) {
                 $teachersQuery->whereNotIn('id', $assignedTeacherIds);
             }
         }
         $exchangeTeachers = $teachersQuery->get();
+
         return response()->json([
-            'teachers' => $exchangeTeachers
+            'teachers' => $exchangeTeachers,
         ]);
     }
 
-    public function assign(Exchange $exchange, Request $request)
+    public function store(Exchange $exchange, Request $request)
     {
         $userId = $request->input('user_id');
         if ($exchange->users()->where('user_id', $userId)->exists()) {
             return response()->json([
-                'message' => 'Aquest professor ja està assignat'
+                'message' => 'Aquest professor ja està assignat',
             ], 409);
         }
         $exchange->users()->attach($userId);
+
         return response()->json([
-            'message' => 'Professor assignat correctament'
+            'message' => 'Professor assignat correctament',
         ]);
     }
 
     public function destroy(Exchange $exchange, User $teacher)
     {
         $exchange->users()->detach($teacher->id);
+
         return response()->json([
-            'message' => 'Professor eliminat correctament'
+            'message' => 'Professor eliminat correctament',
         ]);
     }
 }
