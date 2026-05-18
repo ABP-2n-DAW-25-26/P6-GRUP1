@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { schedule } from '@/routes';
-import { show as showPost, edit as editPost, destroy as deletePost } from '@/routes/exchange/post';
-import { show as showInterestPoint, edit as editInterestPoint, destroy as deleteInterestPoint } from '@/routes/exchange/interestpoint';
-import { show as showGuidedActivity, edit as editGuidedActivity, destroy as deleteGuidedActivity } from '@/routes/exchange/guidedactivity';
-import { show as showGimcana, edit as editGimcana, destroy as deleteGimcana } from '@/routes/exchange/gimcana';
-import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 import {
