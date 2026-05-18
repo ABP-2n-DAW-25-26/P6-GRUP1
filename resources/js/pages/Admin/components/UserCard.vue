@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
-import UserAvatar from './UserAvatar.vue';
 import RoleBadge from './RoleBadge.vue';
+import UserAvatar from './UserAvatar.vue';
 
 defineProps<{
     user: any;
