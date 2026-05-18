@@ -24,7 +24,6 @@ Route::get('/auth/gmail/callback', [SocialAuthController::class, 'handleGoogleCa
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
 
-    // PROFE
     Route::resource('exchange', ExchangeController::class);
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
