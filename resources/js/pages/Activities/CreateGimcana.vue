@@ -5,6 +5,18 @@ import Map from '@/components/AddLocationsMap.vue';
 import OverviewMap from '@/components/LeafletMap.vue';
 import { store } from '@/routes/exchange/gimcana';
 
+type GimcanaLocationPayload = {
+  name: string
+  description: string
+  statement: string
+  question_type: string
+  latitude: string
+  longitude: string
+  order: number
+  answers?: string[]
+  correct_answer?: string
+}
+
 const form = ref({
     title: '',
     description: '',
@@ -88,17 +100,28 @@ const overviewMarkers = computed(() => {
 });
 
 const createGimcana = () => {
-    const locations = [];
-
-    for (let i = 0; i < form.value.locations.length; i++) {
-        const loc = form.value.locations[i];
-
-        if (loc.question_type !== 'multiple_choice') {
-            loc.answers = [];
-        }
-
-        locations.push(loc);
+  const locations = form.value.locations.map((loc, index) => {
+    const location: GimcanaLocationPayload = {
+      name: loc.name,
+      description: loc.description,
+      statement: loc.statement,
+      question_type: loc.question_type,
+      latitude: loc.latitude,
+      longitude: loc.longitude,
+      order: index + 1,
     }
+
+    if (loc.question_type === 'multiple_choice') {
+      location.answers = loc.answers
+      location.correct_answer = loc.correct_answer
+    }
+
+    if (loc.question_type === 'true_false') {
+      location.correct_answer = loc.correct_answer
+    }
+
+    return location
+  })
 
     const payload = {
         title: form.value.title,
@@ -133,6 +156,32 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                         Crea gimcana
                     </h1>
                 </div>
+                <div class="sm:col-span-2">
+                  <label for="description">Descripcio</label>
+                  <textarea v-model="form.description" id="description" rows="3" placeholder="Descripcio de la gimcana"
+                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50"></textarea>
+                </div>
+                <div>
+                  <label for="start_date">Data d'inici</label>
+                  <input v-model="form.start_date" type="datetime-local" id="start_date"
+                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50"
+                    required />
+                </div>
+                <div>
+                  <label for="end_date">Data de fi</label>
+                  <input v-model="form.end_date" type="datetime-local" id="end_date"
+                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="theme_id">Tema</label>
+                  <select v-model="form.theme_id" id="theme_id"
+                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50">
+                    <option value="">Selecciona un tema</option>
+                    <option v-for="theme in props.themes" :key="theme.id" :value="theme.id">{{ theme.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
                 <form
                     @submit.prevent="createGimcana"
