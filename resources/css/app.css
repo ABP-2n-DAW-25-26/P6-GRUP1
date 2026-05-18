@@ -85,6 +85,14 @@
     --color-hp-bg-icon: var(--hp-bg-icon);
     --color-hp-bg-card: var(--hp-bg-card);
 
+    /* Hipatia role colors */
+    --color-hp-role-admin: var(--hp-role-admin);
+    --color-hp-role-admin-bg: var(--hp-role-admin-bg);
+    --color-hp-role-teacher: var(--hp-role-teacher);
+    --color-hp-role-teacher-bg: var(--hp-role-teacher-bg);
+    --color-hp-role-student: var(--hp-role-student);
+    --color-hp-role-student-bg: var(--hp-role-student-bg);
+
     /* Font */
     --font-hp: 'Catalona', sans-serif;
 }
@@ -186,6 +194,12 @@
     --hp-bg-icon: #d8d9dc;
     --hp-bg: #edf1f7;
     --font-hp: 'Catalona', sans-serif;
+    --hp-role-admin: #4dbcad;
+    --hp-role-admin-bg: #d0f0ec;
+    --hp-role-teacher: #1d4ed8;
+    --hp-role-teacher-bg: #dbeafe;
+    --hp-role-student: #5a5a6a;
+    --hp-role-student-bg: #ebebed;
 }
 
 .dark {
@@ -246,18 +260,18 @@
 
     /* Badges d'estat dels intercanvis */
     .badge-actiu {
-        color: var(--hp-primary);
-        background: color-mix(in srgb, var(--hp-primary) 12%, white);
-        border: 1px solid color-mix(in srgb, var(--hp-primary) 30%, white);
+        color: #4dbcad;
+        background: #d0f0ec;
+        border: 1px solid #a3ddd7;
     }
     .badge-pendent {
-        color: var(--hp-red);
-        background: color-mix(in srgb, var(--hp-red) 12%, white);
-        border: 1px solid color-mix(in srgb, var(--hp-red) 30%, white);
+        color: #e84c4c;
+        background: #fde8e8;
+        border: 1px solid #f4b8b8;
     }
     .badge-finalitzat {
-        color: var(--hp-text-dim);
-        background: color-mix(in srgb, var(--hp-text-dim) 10%, white);
-        border: 1px solid color-mix(in srgb, var(--hp-text-dim) 20%, white);
+        color: #5a5a6a;
+        background: #ebebed;
+        border: 1px solid #d4d4d8;
     }
 }

@@ -1,39 +1,36 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
-import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { Plus } from 'lucide-vue-next';
 import Swal from 'sweetalert2';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { edit, destroy, show, create } from '@/routes/admin';
+import { destroy, show, edit, create } from '@/routes/admin';
+import UserCard from './components/UserCard.vue';
 
 defineProps<{
     users: Array<any>;
+    stats: { users: number; exchanges: number; activities: number; themes: number };
 }>();
 
 defineOptions({ layout: AppLayout });
 
-// eliminar user
+// Delete user
 const deleteUser = async (id: number) => {
     const result = await Swal.fire({
         title: 'Eliminar usuari?',
         text: 'Aquesta acció no es pot desfer.',
-
         showCancelButton: true,
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancel·lar',
-
         icon: undefined,
         background: '#fff',
         color: '#111827',
         buttonsStyling: false,
-
         customClass: {
             popup: 'rounded-xl border border-gray-100',
             title: 'text-base font-medium',
             htmlContainer: 'text-sm text-gray-400',
-            confirmButton:
-                'text-red-600 font-medium px-3 py-2 rounded-lg transition hover:bg-red-50 hover:text-red-700 focus:outline-none',
-            cancelButton:
-                'text-gray-500 px-3 py-2 rounded-lg transition hover:bg-gray-100 hover:text-gray-700 ml-2 focus:outline-none',
+            confirmButton: 'text-red-600 font-medium px-3 py-2 rounded-lg transition hover:bg-red-50 hover:text-red-700 focus:outline-none',
+            cancelButton: 'text-gray-500 px-3 py-2 rounded-lg transition hover:bg-gray-100 hover:text-gray-700 ml-2 focus:outline-none',
         },
     });
 
@@ -46,120 +43,65 @@ const deleteUser = async (id: number) => {
                     showConfirmButton: false,
                     background: '#fff',
                     color: '#111827',
-                    customClass: {
-                        popup: 'rounded-xl border border-gray-100',
-                    },
+                    customClass: { popup: 'rounded-xl border border-gray-100' },
                 });
             },
         });
     }
 };
 </script>
-<template>
-    <div class="mx-auto flex h-full w-full max-w-6xl flex-1 flex-col gap-6 p-6">
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold text-hp-text">Llista usuaris</h1>
 
+<template>
+    <Head title="Tauler d'administració" />
+
+    <div class="flex h-full flex-1 flex-col gap-6 p-6">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-hp-text">Tauler d'administració</h1>
+                <p class="mt-1 text-sm text-hp-text-dim">Gestió global de la plataforma.</p>
+            </div>
             <Link
                 :href="create()"
                 class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:scale-95"
             >
-                + Nou usuari
+                <Plus class="h-4 w-4" />
+                Nou usuari
             </Link>
         </div>
 
-        <!-- Taula -->
-        <div
-            class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm"
-        >
-            <table class="min-w-full text-sm">
-                <thead>
-                    <tr class="border-b border-gray-100 bg-gray-50">
-                        <th
-                            class="px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
-                            Usuari
-                        </th>
-                        <th
-                            class="px-4 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
-                            Intercanvi
-                        </th>
-                        <th
-                            class="px-4 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
-                            Rol
-                        </th>
-                        <th
-                            class="px-4 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
-                            Estat
-                        </th>
-                        <th
-                            class="px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
-                            Accions
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr
-                        v-for="user in users"
-                        :key="user.id"
-                        class="border-b border-gray-100 hover:bg-gray-50/60"
-                    >
-                        <!-- nom -->
-                        <td class="px-8 py-6 font-semibold text-hp-text">
-                            {{ user.name }}
-                        </td>
-                        <!-- intercanvi -->
-                        <td
-                            class="px-4 py-6 whitespace-nowrap text-hp-text-dim"
-                        >
-                            {{ user.exchanges?.[0]?.title ?? '-' }}
-                        </td>
-                        <!-- rol -->
-                        <td
-                            class="px-4 py-6 whitespace-nowrap text-hp-text-dim"
-                        >
-                            {{ user.role }}
-                        </td>
-                        <td class="px-4 py-6">
-                            <span
-                                class="inline-flex items-center rounded-full bg-green-100 px-4 py-1.5 text-xs font-semibold text-green-700"
-                            >
-                                actiu
-                            </span>
-                        </td>
-                        <td class="px-8 py-6">
-                            <div class="flex items-center justify-end gap-2">
-                                <Link
-                                    :href="show(user.id)"
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
-                                    title="Veure"
-                                >
-                                    <Eye class="h-4 w-4" />
-                                </Link>
-                                <Link
-                                    :href="edit(user.id)"
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
-                                    title="Editar"
-                                >
-                                    <Pencil class="h-4 w-4" />
-                                </Link>
-                                <button
-                                    @click="deleteUser(user.id)"
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
-                                    title="Eliminar"
-                                >
-                                    <Trash2 class="h-4 w-4" />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Stats -->
+        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div
+                v-for="[label, value] in [['Usuaris', stats.users], ['Intercanvis', stats.exchanges], ['Activitats', stats.activities], ['Temes', stats.themes]]"
+                :key="label"
+                class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+            >
+                <p class="text-2xl font-bold text-hp-text">{{ value }}</p>
+                <p class="mt-1 text-xs text-hp-text-dim">{{ label }}</p>
+            </div>
         </div>
+
+        <!-- User cards -->
+        <div v-if="users.length > 0" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <UserCard
+                v-for="user in users"
+                :key="user.id"
+                :user="user"
+                :show-href="show(user.id).url"
+                :edit-href="edit(user.id).url"
+                @delete="deleteUser"
+            />
+        </div>
+
+        <!-- Empty state -->
+        <div
+            v-else
+            class="rounded-xl border border-dashed border-gray-200 bg-white p-12 text-center text-sm text-hp-text-dim"
+        >
+            No hi ha usuaris registrats.
+        </div>
+
     </div>
 </template>

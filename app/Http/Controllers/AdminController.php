@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\EditUserRequest;
+use App\Models\Activity;
+use App\Models\Exchange;
+use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -17,8 +20,17 @@ class AdminController extends Controller
     {
         $users = User::with('exchanges')->get();
 
-        // return $users;
-        return Inertia::render('Admin/AdminDashboard', ['users' => $users]);
+        $stats = [
+            'users'      => User::count(),
+            'exchanges'  => Exchange::count(),
+            'activities' => Activity::count(),
+            'themes'     => Theme::count(),
+        ];
+
+        return Inertia::render('Admin/AdminDashboard', [
+            'users' => $users,
+            'stats' => $stats,
+        ]);
     }
 
     /**

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { Trash } from 'lucide-vue-next';
+import { Trash, Plus } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy } from '@/routes/theme';
 
@@ -20,6 +20,12 @@ interface Theme {
 const props = defineProps<{ theme: Theme[] }>();
 
 defineOptions({ layout: AppLayout });
+
+// Palette colors come from the DB at runtime,
+// so dynamic :style is required — Tailwind cannot generate classes with unknown values at build time.
+function bg(color: string) {
+    return { backgroundColor: color };
+}
 </script>
 <template>
     <Head title="Temes" />
@@ -28,21 +34,22 @@ defineOptions({ layout: AppLayout });
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-hp-text">Temes</h1>
-                <p class="text-sm text-hp-text-dim">
+                <p class="mt-1 text-sm text-hp-text-dim">
                     Paletes disponibles a la base de dades.
                 </p>
             </div>
             <Link
                 href="/theme/create"
-                class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-hp-primary/90"
+                class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:scale-95"
             >
+                <Plus class="h-4 w-4" />
                 Nou tema
             </Link>
         </div>
 
         <div
             v-if="props.theme.length === 0"
-            class="rounded-xl border border-dashed border-gray-200 bg-white p-8 text-center text-hp-text-dim"
+            class="rounded-xl border border-dashed border-gray-200 bg-white p-12 text-center text-sm text-hp-text-dim"
         >
             Encara no hi ha temes.
         </div>
@@ -51,7 +58,7 @@ defineOptions({ layout: AppLayout });
             <div
                 v-for="item in props.theme"
                 :key="item.id"
-                class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+                class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
             >
                 <div class="flex items-start justify-between">
                     <div>
@@ -70,83 +77,45 @@ defineOptions({ layout: AppLayout });
                             :href="destroy(item.id)"
                             method="delete"
                             as="button"
-                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition hover:bg-gray-200"
+                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-500"
                         >
-                            <Trash />
+                            <Trash class="h-4 w-4" />
                         </Link>
                     </div>
                 </div>
 
-                <div class="mt-4 grid grid-cols-6 grid-rows-3 gap-2">
+                <!-- Color palette -->
+                <div class="mt-4 flex flex-col gap-2">
                     <div
-                        class="col-span-6 row-span-2 rounded-2xl border border-gray-200 p-3"
-                        :style="{ backgroundColor: item.primary }"
+                        class="group relative h-16 w-full cursor-default rounded-xl border border-black/5"
+                        :style="bg(item.primary)"
+                        :title="`Primary · ${item.primary}`"
                     >
-                        <div class="text-xs font-semibold text-white/90">
-                            Primary
-                        </div>
-                        <div class="text-[11px] text-white/80">
-                            {{ item.primary }}
+                        <div class="absolute inset-0 flex flex-col items-center justify-center rounded-xl opacity-0 transition group-hover:opacity-100">
+                            <span class="text-xs font-semibold text-white/90">Primary</span>
+                            <span class="text-[11px] text-white/70">{{ item.primary }}</span>
                         </div>
                     </div>
-                    <div
-                        class="col-span-3 row-span-1 rounded-xl border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.primary_dark }"
-                    >
-                        <div class="text-[11px] font-semibold text-white/90">
-                            Primary Dark
-                        </div>
-                        <div class="text-[10px] text-white/80">
-                            {{ item.primary_dark }}
-                        </div>
-                    </div>
-                    <div
-                        class="col-span-3 row-span-1 rounded-xl border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.secondary }"
-                    >
-                        <div class="text-[11px] font-semibold text-white/90">
-                            Secondary
-                        </div>
-                        <div class="text-[10px] text-white/80">
-                            {{ item.secondary }}
-                        </div>
-                    </div>
-                    <div
-                        class="col-span-2 row-span-1 rounded-lg border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.text }"
-                    >
-                        <div class="text-[10px] font-semibold text-white/90">
-                            Text
-                        </div>
-                        <div class="text-[10px] text-white/80">
-                            {{ item.text }}
-                        </div>
-                    </div>
-                    <div
-                        class="col-span-2 row-span-1 rounded-lg border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.text_secondary }"
-                    >
-                        <div class="text-[10px] font-semibold text-white/90">
-                            Text Sec.
-                        </div>
-                        <div class="text-[10px] text-white/80">
-                            {{ item.text_secondary }}
-                        </div>
-                    </div>
-                    <div
-                        class="col-span-1 row-span-1 rounded-md border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.background }"
-                    >
-                        <div class="text-[10px] font-semibold text-hp-text">
-                            Bg
-                        </div>
-                    </div>
-                    <div
-                        class="col-span-1 row-span-1 rounded-md border border-gray-200 p-2"
-                        :style="{ backgroundColor: item.background_card }"
-                    >
-                        <div class="text-[10px] font-semibold text-hp-text">
-                            Card
+
+                    <!-- Remaining colors -->
+                    <div class="grid grid-cols-5 gap-2">
+                        <div
+                            v-for="[label, value] in [
+                                ['Primary Dark', item.primary_dark],
+                                ['Secondary', item.secondary],
+                                ['Text', item.text],
+                                ['Text Sec.', item.text_secondary],
+                                ['Background', item.background],
+                            ]"
+                            :key="label"
+                            class="group relative h-10 cursor-default rounded-lg border border-black/5"
+                            :style="bg(value as string)"
+                            :title="`${label} · ${value}`"
+                        >
+                            <div class="absolute inset-0 flex flex-col items-center justify-center rounded-lg opacity-0 transition group-hover:opacity-100">
+                                <span class="text-center text-[9px] font-semibold leading-tight text-white/90">{{ label }}</span>
+                                <span class="text-[8px] text-white/70">{{ value }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
