@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Pencil, Eye, Trash2 } from 'lucide-vue-next';
-import ButtonTabs from './components/ButtonTabs.vue';
-import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 import {
     show as showGuidedActivity,
     edit as editGuidedActivity,
@@ -18,6 +16,8 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import ButtonTabs from './components/ButtonTabs.vue';
+import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
 
 interface Exchange {
     id: number;

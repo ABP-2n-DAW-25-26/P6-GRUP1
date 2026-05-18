@@ -2,7 +2,6 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { store, index } from '@/routes/admin';
-import UserFormCard from './components/UserFormCard.vue';
 
 defineOptions({ layout: AppLayout });
 
@@ -13,9 +12,7 @@ const form = useForm({
     role: '',
 });
 
-const submit = () => {
-    form.post(store().url);
-};
+const submit = () => form.post(store().url);
 </script>
 
 <template>
@@ -37,12 +34,54 @@ const submit = () => {
             </Link>
         </div>
 
-        <UserFormCard
-            :form="form"
-            submit-label="Crear usuari"
-            :with-password="true"
-            @submit="submit"
-        />
+        <!-- Form -->
+        <div class="max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div class="space-y-5">
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wide text-gray-400">Nom</label>
+                    <input v-model="form.name" type="text" placeholder="Nom complet"
+                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0" />
+                    <p v-if="form.errors.name" class="text-xs text-red-500">{{ form.errors.name }}</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wide text-gray-400">Correu</label>
+                    <input v-model="form.email" type="email" placeholder="correu@exemple.com"
+                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0" />
+                    <p v-if="form.errors.email" class="text-xs text-red-500">{{ form.errors.email }}</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wide text-gray-400">Contrasenya</label>
+                    <input v-model="form.password" type="password" placeholder="********"
+                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0" />
+                    <p v-if="form.errors.password" class="text-xs text-red-500">{{ form.errors.password }}</p>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wide text-gray-400">Rol</label>
+                    <select v-model="form.role"
+                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white">
+                        <option value="">Selecciona rol</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <p v-if="form.errors.role" class="text-xs text-red-500">{{ form.errors.role }}</p>
+                </div>
+
+            </div>
+
+            <div class="mt-6 flex items-center justify-between border-t border-gray-100 pt-5">
+                <p v-if="form.wasSuccessful" class="text-xs text-green-600">Desat correctament.</p>
+                <div v-else />
+                <button type="button" :disabled="form.processing" @click="submit"
+                    class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:scale-95 disabled:opacity-50">
+                    {{ form.processing ? 'Desant...' : 'Crear usuari' }}
+                </button>
+            </div>
+        </div>
 
     </div>
 </template>

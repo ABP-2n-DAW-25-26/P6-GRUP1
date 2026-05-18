@@ -2,8 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { edit, index } from '@/routes/admin';
-import UserAvatar from './components/UserAvatar.vue';
 import RoleBadge from './components/RoleBadge.vue';
+import UserAvatar from './components/UserAvatar.vue';
 
 defineProps<{
     user: any;

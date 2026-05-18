@@ -7,6 +7,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     submit: [];
+    change: [field: string, value: string];
 }>();
 </script>
 
@@ -18,11 +19,11 @@ const emit = defineEmits<{
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Nom</label>
                 <input
-                    :value="props.form.name"
+                    :value="form.name"
                     type="text"
                     placeholder="Nom complet"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
-                    @input="props.form.name = ($event.target as HTMLInputElement).value"
+                    @input="emit('change', 'name', ($event.target as HTMLInputElement).value)"
                 />
                 <p v-if="props.form.errors.name" class="text-xs text-red-500">{{ props.form.errors.name }}</p>
             </div>
@@ -31,11 +32,11 @@ const emit = defineEmits<{
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Correu</label>
                 <input
-                    :value="props.form.email"
+                    :value="form.email"
                     type="email"
                     placeholder="correu@exemple.com"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
-                    @input="props.form.email = ($event.target as HTMLInputElement).value"
+                    @input="emit('change', 'email', ($event.target as HTMLInputElement).value)"
                 />
                 <p v-if="props.form.errors.email" class="text-xs text-red-500">{{ props.form.errors.email }}</p>
             </div>
@@ -44,11 +45,11 @@ const emit = defineEmits<{
             <div v-if="withPassword" class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Contrasenya</label>
                 <input
-                    :value="props.form.password"
+                    :value="form.password"
                     type="password"
                     placeholder="********"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
-                    @input="props.form.password = ($event.target as HTMLInputElement).value"
+                    @input="emit('change', 'password', ($event.target as HTMLInputElement).value)"
                 />
                 <p v-if="props.form.errors.password" class="text-xs text-red-500">{{ props.form.errors.password }}</p>
             </div>
@@ -57,9 +58,9 @@ const emit = defineEmits<{
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Rol</label>
                 <select
-                    :value="props.form.role"
+                    :value="form.role"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white"
-                    @change="props.form.role = ($event.target as HTMLSelectElement).value"
+                    @change="emit('change', 'role', ($event.target as HTMLSelectElement).value)"
                 >
                     <option value="">Selecciona rol</option>
                     <option value="student">Student</option>

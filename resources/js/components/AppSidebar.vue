@@ -25,8 +25,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem } from '@/types';
 import { schedule, home } from '@/routes';
+import type { NavItem } from '@/types';
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
