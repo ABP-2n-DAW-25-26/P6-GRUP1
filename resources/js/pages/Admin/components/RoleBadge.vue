@@ -4,9 +4,18 @@ defineProps<{
 }>();
 
 const colors: Record<string, { color: string; background: string }> = {
-    admin:   { color: 'var(--color-hp-role-admin)',   background: 'var(--color-hp-role-admin-bg)' },
-    teacher: { color: 'var(--color-hp-role-teacher)', background: 'var(--color-hp-role-teacher-bg)' },
-    student: { color: 'var(--color-hp-role-student)', background: 'var(--color-hp-role-student-bg)' },
+    admin: {
+        color: 'var(--color-hp-role-admin)',
+        background: 'var(--color-hp-role-admin-bg)',
+    },
+    teacher: {
+        color: 'var(--color-hp-role-teacher)',
+        background: 'var(--color-hp-role-teacher-bg)',
+    },
+    student: {
+        color: 'var(--color-hp-role-student)',
+        background: 'var(--color-hp-role-student-bg)',
+    },
 };
 </script>
 

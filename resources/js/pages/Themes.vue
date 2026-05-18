@@ -91,9 +91,15 @@ function bg(color: string) {
                         :style="bg(item.primary)"
                         :title="`Primary · ${item.primary}`"
                     >
-                        <div class="absolute inset-0 flex flex-col items-center justify-center rounded-xl opacity-0 transition group-hover:opacity-100">
-                            <span class="text-xs font-semibold text-white/90">Primary</span>
-                            <span class="text-[11px] text-white/70">{{ item.primary }}</span>
+                        <div
+                            class="absolute inset-0 flex flex-col items-center justify-center rounded-xl opacity-0 transition group-hover:opacity-100"
+                        >
+                            <span class="text-xs font-semibold text-white/90"
+                                >Primary</span
+                            >
+                            <span class="text-[11px] text-white/70">{{
+                                item.primary
+                            }}</span>
                         </div>
                     </div>
 
@@ -112,9 +118,16 @@ function bg(color: string) {
                             :style="bg(value as string)"
                             :title="`${label} · ${value}`"
                         >
-                            <div class="absolute inset-0 flex flex-col items-center justify-center rounded-lg opacity-0 transition group-hover:opacity-100">
-                                <span class="text-center text-[9px] font-semibold leading-tight text-white/90">{{ label }}</span>
-                                <span class="text-[8px] text-white/70">{{ value }}</span>
+                            <div
+                                class="absolute inset-0 flex flex-col items-center justify-center rounded-lg opacity-0 transition group-hover:opacity-100"
+                            >
+                                <span
+                                    class="text-center text-[9px] leading-tight font-semibold text-white/90"
+                                    >{{ label }}</span
+                                >
+                                <span class="text-[8px] text-white/70">{{
+                                    value
+                                }}</span>
                             </div>
                         </div>
                     </div>

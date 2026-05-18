@@ -21,10 +21,10 @@ class AdminController extends Controller
         $users = User::with('exchanges')->get();
 
         $stats = [
-            'users'      => User::count(),
-            'exchanges'  => Exchange::count(),
+            'users' => User::count(),
+            'exchanges' => Exchange::count(),
             'activities' => Activity::count(),
-            'themes'     => Theme::count(),
+            'themes' => Theme::count(),
         ];
 
         return Inertia::render('Admin/AdminDashboard', [

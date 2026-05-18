@@ -16,21 +16,28 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-
+    <div
+        class="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+    >
         <!-- Avatar + name -->
         <div class="flex items-center gap-3">
             <UserAvatar :name="user.name" size="sm" />
             <div class="min-w-0">
-                <p class="truncate font-semibold text-hp-text">{{ user.name }}</p>
+                <p class="truncate font-semibold text-hp-text">
+                    {{ user.name }}
+                </p>
                 <RoleBadge :role="user.role" />
             </div>
         </div>
 
         <!-- Info -->
-        <div class="mt-3 space-y-1 border-t border-gray-100 pt-3 text-sm text-hp-text-dim">
+        <div
+            class="mt-3 space-y-1 border-t border-gray-100 pt-3 text-sm text-hp-text-dim"
+        >
             <p class="truncate">{{ user.email }}</p>
-            <p class="truncate text-xs">{{ user.exchanges?.[0]?.title ?? 'Sense intercanvi' }}</p>
+            <p class="truncate text-xs">
+                {{ user.exchanges?.[0]?.title ?? 'Sense intercanvi' }}
+            </p>
         </div>
 
         <!-- Actions -->

@@ -3,12 +3,17 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
 import Swal from 'sweetalert2';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { destroy, show, edit, create } from '@/routes/admin';
 import UserCard from './components/UserCard.vue';
+import { destroy, show, edit, create } from '@/routes/admin';
 
 defineProps<{
     users: Array<any>;
-    stats: { users: number; exchanges: number; activities: number; themes: number };
+    stats: {
+        users: number;
+        exchanges: number;
+        activities: number;
+        themes: number;
+    };
 }>();
 
 defineOptions({ layout: AppLayout });
@@ -29,8 +34,10 @@ const deleteUser = async (id: number) => {
             popup: 'rounded-xl border border-gray-100',
             title: 'text-base font-medium',
             htmlContainer: 'text-sm text-gray-400',
-            confirmButton: 'text-red-600 font-medium px-3 py-2 rounded-lg transition hover:bg-red-50 hover:text-red-700 focus:outline-none',
-            cancelButton: 'text-gray-500 px-3 py-2 rounded-lg transition hover:bg-gray-100 hover:text-gray-700 ml-2 focus:outline-none',
+            confirmButton:
+                'text-red-600 font-medium px-3 py-2 rounded-lg transition hover:bg-red-50 hover:text-red-700 focus:outline-none',
+            cancelButton:
+                'text-gray-500 px-3 py-2 rounded-lg transition hover:bg-gray-100 hover:text-gray-700 ml-2 focus:outline-none',
         },
     });
 
@@ -55,12 +62,15 @@ const deleteUser = async (id: number) => {
     <Head title="Tauler d'administració" />
 
     <div class="flex h-full flex-1 flex-col gap-6 p-6">
-
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-hp-text">Tauler d'administració</h1>
-                <p class="mt-1 text-sm text-hp-text-dim">Gestió global de la plataforma.</p>
+                <h1 class="text-3xl font-bold text-hp-text">
+                    Tauler d'administració
+                </h1>
+                <p class="mt-1 text-sm text-hp-text-dim">
+                    Gestió global de la plataforma.
+                </p>
             </div>
             <Link
                 :href="create()"
@@ -74,7 +84,12 @@ const deleteUser = async (id: number) => {
         <!-- Stats -->
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <div
-                v-for="[label, value] in [['Usuaris', stats.users], ['Intercanvis', stats.exchanges], ['Activitats', stats.activities], ['Temes', stats.themes]]"
+                v-for="[label, value] in [
+                    ['Usuaris', stats.users],
+                    ['Intercanvis', stats.exchanges],
+                    ['Activitats', stats.activities],
+                    ['Temes', stats.themes],
+                ]"
                 :key="label"
                 class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
             >
@@ -84,7 +99,10 @@ const deleteUser = async (id: number) => {
         </div>
 
         <!-- User cards -->
-        <div v-if="users.length > 0" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div
+            v-if="users.length > 0"
+            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
             <UserCard
                 v-for="user in users"
                 :key="user.id"
@@ -102,6 +120,5 @@ const deleteUser = async (id: number) => {
         >
             No hi ha usuaris registrats.
         </div>
-
     </div>
 </template>

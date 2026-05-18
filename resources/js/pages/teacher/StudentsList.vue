@@ -2,9 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Eye, Trash2, Copy, X } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { downloadCSV, importCSV } from '@/routes';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
+import { downloadCSV, importCSV } from '@/routes';
 
 interface Exchange {
     id: number;

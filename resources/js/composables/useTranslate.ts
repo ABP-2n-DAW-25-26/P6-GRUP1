@@ -126,7 +126,9 @@ function onDomChange() {
     }, 300);
 }
 
-if (typeof window !== 'undefined') new MutationObserver(onDomChange).observe(
-    document.getElementById('app') ?? document.body,
-    { childList: true, subtree: true },
-);
+if (typeof window !== 'undefined') {
+new MutationObserver(onDomChange).observe(
+        document.getElementById('app') ?? document.body,
+        { childList: true, subtree: true },
+    );
+}
