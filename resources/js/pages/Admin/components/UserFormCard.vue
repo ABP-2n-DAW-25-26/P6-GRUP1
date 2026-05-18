@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     form: any;
     submitLabel: string;
     withPassword?: boolean;
@@ -18,66 +18,70 @@ const emit = defineEmits<{
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Nom</label>
                 <input
-                    v-model="form.name"
+                    :value="props.form.name"
                     type="text"
                     placeholder="Nom complet"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
+                    @input="props.form.name = ($event.target as HTMLInputElement).value"
                 />
-                <p v-if="form.errors.name" class="text-xs text-red-500">{{ form.errors.name }}</p>
+                <p v-if="props.form.errors.name" class="text-xs text-red-500">{{ props.form.errors.name }}</p>
             </div>
 
             <!-- Correu -->
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Correu</label>
                 <input
-                    v-model="form.email"
+                    :value="props.form.email"
                     type="email"
                     placeholder="correu@exemple.com"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
+                    @input="props.form.email = ($event.target as HTMLInputElement).value"
                 />
-                <p v-if="form.errors.email" class="text-xs text-red-500">{{ form.errors.email }}</p>
+                <p v-if="props.form.errors.email" class="text-xs text-red-500">{{ props.form.errors.email }}</p>
             </div>
 
             <!-- Contrasenya -->
             <div v-if="withPassword" class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Contrasenya</label>
                 <input
-                    v-model="form.password"
+                    :value="props.form.password"
                     type="password"
                     placeholder="********"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white focus:ring-0"
+                    @input="props.form.password = ($event.target as HTMLInputElement).value"
                 />
-                <p v-if="form.errors.password" class="text-xs text-red-500">{{ form.errors.password }}</p>
+                <p v-if="props.form.errors.password" class="text-xs text-red-500">{{ props.form.errors.password }}</p>
             </div>
 
             <!-- Rol -->
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold tracking-wide text-gray-400 uppercase">Rol</label>
                 <select
-                    v-model="form.role"
+                    :value="props.form.role"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-hp-text outline-none transition hover:bg-gray-100 focus:border-hp-primary focus:bg-white"
+                    @change="props.form.role = ($event.target as HTMLSelectElement).value"
                 >
                     <option value="">Selecciona rol</option>
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
                     <option value="admin">Admin</option>
                 </select>
-                <p v-if="form.errors.role" class="text-xs text-red-500">{{ form.errors.role }}</p>
+                <p v-if="props.form.errors.role" class="text-xs text-red-500">{{ props.form.errors.role }}</p>
             </div>
 
         </div>
 
         <!-- Footer -->
         <div class="mt-6 flex items-center justify-between border-t border-gray-100 pt-5">
-            <p v-if="form.wasSuccessful" class="text-xs text-green-600">Desat correctament.</p>
+            <p v-if="props.form.wasSuccessful" class="text-xs text-green-600">Desat correctament.</p>
             <div v-else />
             <button
                 type="button"
-                :disabled="form.processing"
+                :disabled="props.form.processing"
                 @click="emit('submit')"
                 class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:scale-95 disabled:opacity-50"
             >
-                {{ form.processing ? 'Desant...' : submitLabel }}
+                {{ props.form.processing ? 'Desant...' : submitLabel }}
             </button>
         </div>
     </div>
