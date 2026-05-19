@@ -88,14 +88,17 @@ const completeQuestion = () => {
     return
   }
 
-  const correct = userAnswer.value.trim().toLowerCase() === currentLocation.value.correct_answer?.trim().toLowerCase()
+  const correctAnswer = currentLocation.value.correct_answer?.trim().toLowerCase()
+  const userValue = userAnswer.value.trim().toLowerCase()
+  const correct = !correctAnswer || userValue === correctAnswer
 
-  if ( currentLocation.value.question_type !== 'open' && currentLocation.value.correct_answer && !correct) 
-  {
-
-    currentIndex.value += 1
-    resetQuestionState()
+  if (!correct) {
+    feedback.value = 'Resposta incorrecta. Torna-ho a intentar.'
+    return
   }
+
+  currentIndex.value += 1
+  resetQuestionState()
 }
 
 const createMarkerIcon = (isActive: boolean, isDone: boolean) => {
@@ -184,12 +187,10 @@ onMounted(async () => {
 
   L.control.zoom({ position: 'topright' }).addTo(map)
 
-  // L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}', {
-  //   minZoom: 0,
-  //   maxZoom: 20,
-  //   attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  //   ext: 'png',
-  // }).addTo(map)
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    minZoom: 0,
+    maxZoom: 20,
+  }).addTo(map)
 
   renderMarkers()
 })
