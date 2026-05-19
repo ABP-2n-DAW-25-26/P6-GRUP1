@@ -25,8 +25,9 @@ class PostController extends Controller
     public function store(Request $request, Exchange $exchange)
     {
         $validated = $request->validate([
+            // ''
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'longText'],
+            'description' => ['nullable', 'string'],
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'files' => ['nullable', 'array'],
@@ -56,7 +57,6 @@ class PostController extends Controller
                 $savedImages[] = $filePath;
             }
 
-            // Compatibility with existing views that still read activities.file.
             $post->file = $savedImages[0] ?? null;
             $post->save();
         }

@@ -59,6 +59,23 @@ const props = defineProps<{
     }>;
 }>();
 
+const getDescription = (description: string | null): string => {
+    const text = description?.trim();
+
+    if (!text) {
+        return '—';
+    }
+
+    const withoutHtmlTags = text
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return withoutHtmlTags || '—';
+};
+
 function formatDayName(dateString: string) {
     const date = new Date(dateString + 'T00:00:00');
 
@@ -213,7 +230,7 @@ defineOptions({
                                             </h4>
                                         </div>
                                         <p class="line-clamp-1 text-gray-500">
-                                            {{ activity.description }}
+                                            {{ getDescription(activity.description) }}
                                         </p>
                                     </div>
                                     <div class="flex items-center">
