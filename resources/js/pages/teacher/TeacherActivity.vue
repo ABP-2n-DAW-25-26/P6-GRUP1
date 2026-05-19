@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { schedule } from '@/routes';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
@@ -18,6 +19,11 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import {
+    show as showGimcana,
+    edit as editGimcana,
+    destroy as deleteGimcana,
+} from '@/routes/exchange/gimcana';
 
 interface Exchange {
     id: number;
