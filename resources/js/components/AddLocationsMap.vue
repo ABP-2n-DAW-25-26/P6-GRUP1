@@ -11,6 +11,9 @@
 import L from 'leaflet';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import 'leaflet/dist/leaflet.css';
+import markerIcon2xUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIconUrl from 'leaflet/dist/images/marker-icon.png';
+import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
 const emit = defineEmits(['location-selected']);
 const lat = ref(null);
@@ -27,14 +30,16 @@ onMounted(() => {
 
     map = L.map(mapEl.value).setView([42.2655, 2.9581], 13);
 
-    L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            minZoom: 0,
-            maxZoom: 20,
-            ext: 'png',
-        },
-    ).addTo(map);
+    L.Icon.Default.mergeOptions({
+        iconRetinaUrl: markerIcon2xUrl,
+        iconUrl: markerIconUrl,
+        shadowUrl: markerShadowUrl,
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
+        maxZoom: 20,
+    }).addTo(map);
 
     // Click al mapa
     map.on('click', (e) => {
