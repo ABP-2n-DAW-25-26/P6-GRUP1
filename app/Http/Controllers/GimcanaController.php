@@ -53,10 +53,6 @@ public function store(CreateGimcana $request, Exchange $exchange)
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
-    session()->flash('message', 'Gimcana creada correctament');
-    return to_route('exchange.show', ['exchange' => $exchange->id]);
-}
-
     public function show(Exchange $exchange, string $gimcana)
     {
         $activity = Activity::where('exchange_id', $exchange->id)
@@ -69,8 +65,8 @@ public function store(CreateGimcana $request, Exchange $exchange)
             ->get();
 
         return Inertia::render('Activities/ShowGimcana', [
-            "gimcana" => $activity,
-            "locations" => $locations,
+            'gimcana' => $activity,
+            'locations' => $locations,
         ]);
     }
 
