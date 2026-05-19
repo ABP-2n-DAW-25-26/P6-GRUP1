@@ -39,7 +39,7 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
 </script>
 <template>
     <div
-        class="mx-2 flex flex-wrap justify-between gap-6 border-b px-2 text-lg"
+        class="mx-2 flex justify-between gap-6 border-b px-2 text-lg overflow-auto"
     >
         <div
             v-if="exchange"
@@ -70,7 +70,9 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
                 class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
             >
                 <Plus class="h-4 w-4" />
-                Nova activitat
+                <span class="hidden sm:inline">
+                    Nova activitat
+                </span>
             </button>
 
             <div
@@ -94,7 +96,9 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >
             <Plus class="h-4 w-4" />
-            Assigna professor
+            <span class="hidden sm:inline">
+                Assigna professor
+            </span>
         </button>
         <button
             v-else-if="$props.activeTab === 'students'"
@@ -102,7 +106,9 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >
             <Plus class="h-4 w-4" />
-            Importa CSV
+            <span class="hidden sm:inline">
+                Importa CSV
+            </span>
         </button>
     </div>
 </template>
