@@ -36,7 +36,7 @@ defineOptions({
         ],
     },
 });
-let url = import.meta.env.VITE_APP_URL;
+const url = import.meta.env.VITE_APP_URL;
 console.log('URL', url);
 
 const copied = ref<number | null>(null);
@@ -92,11 +92,19 @@ const assignTeacher = (userId: number) => {
         return;
     }
 
+<<<<<<< HEAD
+=======
+    const url = import.meta.env.VITE_APP_URL;
+>>>>>>> fa04f7bfc483cb48237df98ff7d0af84f99624b3
 
     console.log('URL', `${url}/exchange/${props.exchange.id}/teacher`);
 
+<<<<<<< HEAD
 
     fetch(`${url}/exchange/${props.exchange.id}/teacher`, {
+=======
+    fetch(`${url}/exchange/${props.exchange.id}/teacher/`, {
+>>>>>>> fa04f7bfc483cb48237df98ff7d0af84f99624b3
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
