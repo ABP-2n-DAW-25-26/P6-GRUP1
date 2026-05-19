@@ -28,9 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
-    Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
     Route::get('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
+    Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
