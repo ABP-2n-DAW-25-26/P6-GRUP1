@@ -89,7 +89,8 @@ const assignTeacher = (userId: number) => {
     if (!props.exchange?.id) {
         return;
     }
-    const url = import.meta.env.VITE_APP_URL
+
+    const url = import.meta.env.VITE_APP_URL;
 
     fetch(`${url}/exchange/${props.exchange.id}/teacher/`, {
         method: 'POST',

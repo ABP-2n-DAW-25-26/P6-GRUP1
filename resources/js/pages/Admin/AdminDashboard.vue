@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
+import { useConfirmDelete } from '@/composables/useConfirmDelete';
 import AppLayout from '@/layouts/AppLayout.vue';
 import UserCard from './components/UserCard.vue';
 import { destroy, show, edit, create } from '@/routes/admin';
-import { useConfirmDelete } from '@/composables/useConfirmDelete';
 
 defineProps<{
     users: Array<any>;
@@ -21,10 +21,9 @@ defineOptions({ layout: AppLayout });
 const { confirmDelete } = useConfirmDelete();
 
 const deleteUser = (id: number) => {
-    confirmDelete(
-        () => router.delete(destroy(id)),
-        { title: 'Eliminar usuari?' },
-    );
+    confirmDelete(() => router.delete(destroy(id)), {
+        title: 'Eliminar usuari?',
+    });
 };
 </script>
 
