@@ -70,14 +70,11 @@ onMounted(() => {
 
     map = L.map(mapElement.value).setView(center, 13);
 
-    L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            minZoom: 0,
-            maxZoom: 20,
-            ext: 'png',
-        },
-    ).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
+        maxZoom: 20,
+        ext: 'png',
+    }).addTo(map);
 
     createMarkerLayer();
 });

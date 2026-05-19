@@ -212,10 +212,10 @@ onMounted(async () => {
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    minZoom: 0,
-    maxZoom: 20,
-  }).addTo(map)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
+        maxZoom: 20,
+    }).addTo(map);
 
     renderMarkers();
 });
