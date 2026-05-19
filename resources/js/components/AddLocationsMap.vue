@@ -27,14 +27,11 @@ onMounted(() => {
 
     map = L.map(mapEl.value).setView([42.2655, 2.9581], 13);
 
-    L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            minZoom: 0,
-            maxZoom: 20,
-            ext: 'png',
-        },
-    ).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
+        maxZoom: 20,
+        ext: 'png',
+    }).addTo(map);
 
     // Click al mapa
     map.on('click', (e) => {
