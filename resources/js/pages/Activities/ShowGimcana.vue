@@ -88,14 +88,17 @@ const completeQuestion = () => {
     return
   }
 
-  const correct = userAnswer.value.trim().toLowerCase() === currentLocation.value.correct_answer?.trim().toLowerCase()
+  const correctAnswer = currentLocation.value.correct_answer?.trim().toLowerCase()
+  const userValue = userAnswer.value.trim().toLowerCase()
+  const correct = !correctAnswer || userValue === correctAnswer
 
-  if ( currentLocation.value.question_type !== 'open' && currentLocation.value.correct_answer && !correct) 
-  {
-
-    currentIndex.value += 1
-    resetQuestionState()
+  if (!correct) {
+    feedback.value = 'Resposta incorrecta. Torna-ho a intentar.'
+    return
   }
+
+  currentIndex.value += 1
+  resetQuestionState()
 }
 
 const createMarkerIcon = (isActive: boolean, isDone: boolean) => {
@@ -187,7 +190,6 @@ onMounted(async () => {
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 0,
     maxZoom: 20,
-    ext: 'png',
   }).addTo(map)
 
   renderMarkers()
