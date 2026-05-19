@@ -225,17 +225,17 @@ defineOptions({
                                     </time>
                                 </div>
                                 <div
-                                    class="flex w-full items-center justify-between rounded-xl border bg-stone-100 p-4"
+                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4"
                                 >
                                     <div class="min-w-0">
                                         <div class="flex gap-3">
                                             <h4
-                                                class="font-semibold text-gray-700"
+                                                class="font-semibold text-primary/80"
                                             >
                                                 {{ activity.title }}
                                             </h4>
                                         </div>
-                                        <p class="line-clamp-1 text-gray-500">
+                                        <p class="line-clamp-1 text-primary/60">
                                             {{ activity.description }}
                                         </p>
                                     </div>
@@ -255,7 +255,7 @@ defineOptions({
                                                     getActivityRoutes(activity)
                                                         .show
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                                class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
                                                 title="Veure"
                                             >
                                                 <Eye class="h-4 w-4" />
@@ -266,7 +266,7 @@ defineOptions({
                                                     getActivityRoutes(activity)
                                                         .edit
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                                class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
                                                 title="Editar"
                                             >
                                                 <Pencil class="h-4 w-4" />
@@ -278,7 +278,7 @@ defineOptions({
                                                     getActivityRoutes(activity)
                                                         .delete
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
+                                                class="rounded-lg p-2 text-red-400 transition hover:bg-red-200/80 hover:text-hp-red"
                                                 title="Eliminar"
                                             >
                                                 <Trash2 class="h-4 w-4" />
