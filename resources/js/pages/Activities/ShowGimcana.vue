@@ -119,7 +119,6 @@ const completeQuestion = () => {
     }
 };
 
-
 const createMarkerIcon = (isActive: boolean, isDone: boolean) => {
     const background = isActive ? '#00796b' : isDone ? '#76b7a8' : '#d8efe9';
     const border = isActive ? '#ffffff' : '#00796b';
