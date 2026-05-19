@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
-import Swal from 'sweetalert2';
+import { useConfirmDelete } from '@/composables/useConfirmDelete';
 import AppLayout from '@/layouts/AppLayout.vue';
 import UserCard from './components/UserCard.vue';
 import { destroy, show, edit, create } from '@/routes/admin';
@@ -18,43 +18,12 @@ defineProps<{
 
 defineOptions({ layout: AppLayout });
 
-// Delete user
-const deleteUser = async (id: number) => {
-    const result = await Swal.fire({
-        title: 'Eliminar usuari?',
-        text: 'Aquesta acció no es pot desfer.',
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancel·lar',
-        icon: undefined,
-        background: '#fff',
-        color: '#111827',
-        buttonsStyling: false,
-        customClass: {
-            popup: 'rounded-xl border border-gray-100',
-            title: 'text-base font-medium',
-            htmlContainer: 'text-sm text-gray-400',
-            confirmButton:
-                'text-red-600 font-medium px-3 py-2 rounded-lg transition hover:bg-red-50 hover:text-red-700 focus:outline-none',
-            cancelButton:
-                'text-gray-500 px-3 py-2 rounded-lg transition hover:bg-gray-100 hover:text-gray-700 ml-2 focus:outline-none',
-        },
-    });
+const { confirmDelete } = useConfirmDelete();
 
-    if (result.isConfirmed) {
-        router.delete(destroy(id), {
-            onSuccess: () => {
-                Swal.fire({
-                    title: 'Eliminat',
-                    timer: 1200,
-                    showConfirmButton: false,
-                    background: '#fff',
-                    color: '#111827',
-                    customClass: { popup: 'rounded-xl border border-gray-100' },
-                });
-            },
-        });
-    }
+const deleteUser = (id: number) => {
+    confirmDelete(() => router.delete(destroy(id)), {
+        title: 'Eliminar usuari?',
+    });
 };
 </script>
 
