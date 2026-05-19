@@ -36,7 +36,7 @@ defineOptions({
         ],
     },
 });
-const url = import.meta.env.VITE_APP_URL;
+let url = import.meta.env.VITE_APP_URL;
 console.log('URL', url);
 
 const copied = ref<number | null>(null);
@@ -92,7 +92,10 @@ const assignTeacher = (userId: number) => {
         return;
     }
 
-    const url = import.meta.env.VITE_APP_URL;
+    let url = import.meta.env.VITE_APP_URL;
+
+    console.log('URL', `${url}/exchange/${props.exchange.id}/teacher/`);
+
 
     fetch(`${url}/exchange/${props.exchange.id}/teacher/`, {
         method: 'POST',
