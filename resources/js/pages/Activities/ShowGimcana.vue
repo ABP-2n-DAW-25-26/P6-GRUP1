@@ -102,21 +102,23 @@ const completeQuestion = () => {
     if (!currentLocation.value || !isAnswerComplete.value) {
         feedback.value = 'Completa aquesta prova abans de continuar.';
 
-        const correctAnswer = currentLocation.value.correct_answer
-            ?.trim()
-            .toLowerCase();
-        const userValue = userAnswer.value.trim().toLowerCase();
-        const correct = !correctAnswer || userValue === correctAnswer;
-
-        if (!correct) {
-            feedback.value = 'Resposta incorrecta. Torna-ho a intentar.';
-
-            return;
-        }
-
-        currentIndex.value += 1;
-        resetQuestionState();
+        return;
     }
+
+    const correctAnswer = currentLocation.value.correct_answer
+        ?.trim()
+        .toLowerCase();
+    const userValue = userAnswer.value.trim().toLowerCase();
+    const correct = !correctAnswer || userValue === correctAnswer;
+
+    if (!correct) {
+        feedback.value = 'Resposta incorrecta. Torna-ho a intentar.';
+
+        return;
+    }
+
+    currentIndex.value += 1;
+    resetQuestionState();
 };
 
 const createMarkerIcon = (isActive: boolean, isDone: boolean) => {
