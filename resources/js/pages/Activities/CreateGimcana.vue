@@ -156,32 +156,6 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                         Crea gimcana
                     </h1>
                 </div>
-                <div class="sm:col-span-2">
-                  <label for="description">Descripcio</label>
-                  <textarea v-model="form.description" id="description" rows="3" placeholder="Descripcio de la gimcana"
-                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50"></textarea>
-                </div>
-                <div>
-                  <label for="start_date">Data d'inici</label>
-                  <input v-model="form.start_date" type="datetime-local" id="start_date"
-                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50"
-                    required />
-                </div>
-                <div>
-                  <label for="end_date">Data de fi</label>
-                  <input v-model="form.end_date" type="datetime-local" id="end_date"
-                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50" />
-                </div>
-                <div class="sm:col-span-2">
-                  <label for="theme_id">Tema</label>
-                  <select v-model="form.theme_id" id="theme_id"
-                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-hp-primary/50">
-                    <option value="">Selecciona un tema</option>
-                    <option v-for="theme in props.themes" :key="theme.id" :value="theme.id">{{ theme.name }}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
 
                 <form
                     @submit.prevent="createGimcana"
