@@ -23,6 +23,15 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import { usePage } from '@inertiajs/vue3';
+
+const page = usePage();
+const user = page.props.auth.user;
+
+interface ExchangeUser {
+    id: number;
+    role: string;
+}
 
 interface Exchange {
     id: number;
@@ -31,7 +40,7 @@ interface Exchange {
     start_date: string;
     end_date: string | null;
     destiny: string;
-    users?: { id: number }[];
+    users?: ExchangeUser[];
 }
 
 interface Activity {
@@ -158,6 +167,12 @@ function getActivityRoutes(activity: Activity) {
     }
 }
 
+const canManageActivities =
+    user.role === 'admin' ||
+    props.exchange?.users?.some(
+        u => u.id === user.id && u.role === 'teacher'
+);
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -245,8 +260,8 @@ defineOptions({
                                             >
                                                 <Eye class="h-4 w-4" />
                                             </Link>
-
                                             <Link
+                                                v-if="canManageActivities"
                                                 :href="
                                                     getActivityRoutes(activity)
                                                         .edit
@@ -258,6 +273,7 @@ defineOptions({
                                             </Link>
 
                                             <Link
+                                                v-if="canManageActivities"
                                                 :href="
                                                     getActivityRoutes(activity)
                                                         .delete

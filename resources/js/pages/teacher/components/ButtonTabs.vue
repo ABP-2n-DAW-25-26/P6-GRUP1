@@ -10,7 +10,7 @@ import { create as createPost } from '@/routes/exchange/post';
 import { index as studentsIndex } from '@/routes/exchange/student';
 import { index as teachersIndex } from '@/routes/exchange/teacher';
 const activeClass =
-    'font-bold border-b-3 border-hp-primary-dark text-hp-primary-dark!';
+    'font-bold border-b-3 border-hp-primary-dark dark:border-hp-primary-light text-hp-primary-dark! dark:text-hp-primary-light!';
 
 interface Exchange {
     id: number;
@@ -43,7 +43,7 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
     >
         <div
             v-if="exchange"
-            class="flex transition-colors duration-200 *:px-2 *:text-gray-700 hover:text-gray-300 *:md:px-4"
+            class="flex transition-colors duration-200 *:px-2 *:text-primary hover:text-gray-300 *:md:px-4"
         >
             <Link
                 :href="activities(exchange.id)"
