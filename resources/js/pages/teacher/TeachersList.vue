@@ -36,8 +36,8 @@ defineOptions({
         ],
     },
 });
-    const url = import.meta.env.VITE_APP_URL;
-    console.log('URL', url);
+const url = import.meta.env.VITE_APP_URL;
+console.log('URL', url);
 
 const copied = ref<number | null>(null);
 
