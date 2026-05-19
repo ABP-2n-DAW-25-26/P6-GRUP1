@@ -248,7 +248,7 @@ function getActivityRoutes(activity: Activity) {
                                         <h4 class="font-semibold text-primary/80">
                                             {{ activity.title }}
                                         </h4>
-                                        <p class="text-primar/60">
+                                        <p class="text-primary/60">
                                             {{ activity.description }}
                                         </p>
                                     </div>
