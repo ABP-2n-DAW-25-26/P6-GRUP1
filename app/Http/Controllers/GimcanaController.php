@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateGimcana;
 use App\Models\Activity;
 use App\Models\Exchange;
 use App\Models\Locations;
 use App\Models\Theme;
-use App\Http\Requests\CreateGimcana;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -26,34 +26,34 @@ class GimcanaController extends Controller
         return Inertia::render('Activities/CreateGimcana', ['activities' => $activities, 'locations' => $locations, 'themes' => $themes, 'exchange' => $exchange]);
     }
 
-public function store(CreateGimcana $request, Exchange $exchange)
-{
-    $data = $request->validated();
+    public function store(CreateGimcana $request, Exchange $exchange)
+    {
+        $data = $request->validated();
 
-    $gimcana = Activity::create([
-        'title' => $data['title'],
-        'description' => $data['description'] ?? null,
-        'start_date' => $data['start_date'] ?? null,
-        'end_date' => $data['end_date'] ?? null,
-        'theme_id' => $data['theme_id'] ?? null,
-        'exchange_id' => $exchange->id,
-        'type' => 'gimcana',
-    ]);
+        $gimcana = Activity::create([
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'start_date' => $data['start_date'] ?? null,
+            'end_date' => $data['end_date'] ?? null,
+            'theme_id' => $data['theme_id'] ?? null,
+            'exchange_id' => $exchange->id,
+            'type' => 'gimcana',
+        ]);
 
-    foreach ($data['locations'] as $location) {
+        foreach ($data['locations'] as $location) {
 
-        $newLocation = $location;
+            $newLocation = $location;
 
-        if (($location['question_type'] ?? null) === 'multiple_choice') {
-            $newLocation['answer'] = json_encode($location['answers'] ?? []);
+            if (($location['question_type'] ?? null) === 'multiple_choice') {
+                $newLocation['answer'] = json_encode($location['answers'] ?? []);
+            }
+
         }
 
+        session()->flash('message', 'Gimcana creada correctament');
+
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
-
-    session()->flash('message', 'Gimcana creada correctament');
-
-    return to_route('exchange.show', ['exchange' => $exchange->id]);
-}
 
     public function show(Exchange $exchange, string $gimcana)
     {

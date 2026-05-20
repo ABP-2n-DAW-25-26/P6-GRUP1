@@ -14,7 +14,8 @@ interface Notification {
 
 const props = defineProps<{ notifications: Notification[] }>();
 
-const unread = () => props.notifications.filter((n: Notification) => !n.read_at);
+const unread = () =>
+    props.notifications.filter((n: Notification) => !n.read_at);
 
 function markAsRead(id: number) {
     router.post(`/notifications/${id}/read`);
@@ -33,17 +34,24 @@ function formatDate(date: string) {
     <Head title="Notificacions" />
     <div class="px-4 py-10 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-xl">
-
             <!-- Header -->
-            <div class="mb-8 flex items-end justify-between border-b border-hp-border pb-4">
+            <div
+                class="mb-8 flex items-end justify-between border-b border-hp-border pb-4"
+            >
                 <div>
-                    <p class="text-xs font-medium uppercase tracking-widest text-hp-primary">Safata</p>
-                    <h1 class="text-3xl font-semibold text-hp-text">Notificacions</h1>
+                    <p
+                        class="text-xs font-medium tracking-widest text-hp-primary uppercase"
+                    >
+                        Safata
+                    </p>
+                    <h1 class="text-3xl font-semibold text-hp-text">
+                        Notificacions
+                    </h1>
                 </div>
                 <button
                     v-if="unread().length > 0"
                     @click="markAllAsRead"
-                    class="text-xs text-gray-400 hover:text-hp-primary transition"
+                    class="text-xs text-gray-400 transition hover:text-hp-primary"
                 >
                     Marcar totes com a llegides
                 </button>
@@ -52,7 +60,9 @@ function formatDate(date: string) {
             <!-- Empty state -->
             <div v-if="notifications.length === 0" class="py-20 text-center">
                 <p class="text-lg font-medium text-hp-text">Tot net per aquí</p>
-                <p class="mt-1 text-sm text-gray-500">Quan rebis una notificació apareixerà aquí.</p>
+                <p class="mt-1 text-sm text-gray-500">
+                    Quan rebis una notificació apareixerà aquí.
+                </p>
             </div>
 
             <!-- List -->
@@ -63,10 +73,26 @@ function formatDate(date: string) {
                     class="flex items-center justify-between gap-4 py-4 transition"
                 >
                     <div class="flex min-w-0 items-center gap-3">
-                        <span :class="['h-1.5 w-1.5 shrink-0 rounded-full', n.read_at ? 'bg-transparent' : 'bg-hp-primary']"></span>
+                        <span
+                            :class="[
+                                'h-1.5 w-1.5 shrink-0 rounded-full',
+                                n.read_at ? 'bg-transparent' : 'bg-hp-primary',
+                            ]"
+                        ></span>
                         <div class="min-w-0">
-                            <p :class="['text-sm', n.read_at ? 'text-gray-500' : 'font-medium text-gray-900 dark:text-white']">{{ n.message }}</p>
-                            <p class="mt-0.5 text-xs text-hp-primary">{{ formatDate(n.created_at) }}</p>
+                            <p
+                                :class="[
+                                    'text-sm',
+                                    n.read_at
+                                        ? 'text-gray-500'
+                                        : 'font-medium text-gray-900 dark:text-white',
+                                ]"
+                            >
+                                {{ n.message }}
+                            </p>
+                            <p class="mt-0.5 text-xs text-hp-primary">
+                                {{ formatDate(n.created_at) }}
+                            </p>
                         </div>
                     </div>
                     <button
@@ -78,7 +104,6 @@ function formatDate(date: string) {
                     </button>
                 </li>
             </ul>
-
         </div>
     </div>
 </template>

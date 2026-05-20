@@ -70,9 +70,13 @@ const { isCurrentUrl } = useCurrentUrl();
                         <component :is="item.icon" />
                         <span>{{ item.title }}</span>
                         <span
-                            v-if="item.href === '/notifications' && unreadNotifications > 0"
-                            class="ml-auto rounded-full bg-hp-primary px-1.5 py-0.5 text-[10px] font-bold leading-none text-white"
-                        >+1</span>
+                            v-if="
+                                item.href === '/notifications' &&
+                                unreadNotifications > 0
+                            "
+                            class="ml-auto rounded-full bg-hp-primary px-1.5 py-0.5 text-[10px] leading-none font-bold text-white"
+                            >+1</span
+                        >
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use App\Models\Notification;
 
 class HandleInertiaRequests extends Middleware
 {

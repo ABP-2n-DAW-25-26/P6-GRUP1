@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import ButtonTabs from './components/ButtonTabs.vue';
 import HeaderExchangeInfo from './components/HeaderExchangeInfo.vue';
@@ -23,7 +24,6 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
-import { usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 const user = page.props.auth.user;
@@ -187,8 +187,8 @@ function getActivityRoutes(activity: Activity) {
 const canManageActivities =
     user.role === 'admin' ||
     props.exchange?.users?.some(
-        u => u.id === user.id && u.role === 'teacher'
-);
+        (u) => u.id === user.id && u.role === 'teacher',
+    );
 
 defineOptions({
     layout: {
@@ -253,7 +253,11 @@ defineOptions({
                                             </h4>
                                         </div>
                                         <p class="line-clamp-1 text-gray-500">
-                                            {{ getDescription(activity.description) }}
+                                            {{
+                                                getDescription(
+                                                    activity.description,
+                                                )
+                                            }}
                                         </p>
                                     </div>
                                     <div class="flex items-center">

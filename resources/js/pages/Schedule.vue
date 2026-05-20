@@ -167,13 +167,11 @@ function getActivityRoutes(activity: Activity) {
 <template>
     <Head title="Agenda" />
 
-    <div
-        class="flex flex-1 flex-col gap-8 rounded-xl p-4 relative"
-    >
+    <div class="relative flex flex-1 flex-col gap-8 rounded-xl p-4">
         <h1 class="text-center font-hp text-6xl text-hp-primary">agenda</h1>
         <div
             v-if="exchange !== null"
-            class="mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase z-20"
+            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase"
         >
             <div class="mx-auto flex gap-2">
                 <div
@@ -242,10 +240,12 @@ function getActivityRoutes(activity: Activity) {
                             <div class="flex w-full">
                                 <Link
                                     :href="getActivityRoutes(activity).show"
-                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 hover:bg-secondary p-4"
+                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4 hover:bg-secondary"
                                 >
                                     <div>
-                                        <h4 class="font-semibold text-primary/80">
+                                        <h4
+                                            class="font-semibold text-primary/80"
+                                        >
                                             {{ activity.title }}
                                         </h4>
                                         <p class="text-primary/60">

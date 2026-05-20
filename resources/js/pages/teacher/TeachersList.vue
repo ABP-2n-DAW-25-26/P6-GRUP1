@@ -267,7 +267,9 @@ const removeTeacherFromExchange = (teacherId: number) => {
                 v-if="showAssignTeacherModal"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
             >
-                <div class="w-full max-w-md rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-xl">
+                <div
+                    class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800"
+                >
                     <div class="mb-4 flex items-center justify-between">
                         <h2 class="text-lg font-semibold">Assigna professor</h2>
 
@@ -284,7 +286,7 @@ const removeTeacherFromExchange = (teacherId: number) => {
                         @keyup="searchTeachers"
                         type="text"
                         placeholder="Buscar professor..."
-                        class="mb-4 w-full rounded-xl border border-gray-30000 px-4 py-2 dark:border-gray-400"
+                        class="border-gray-30000 mb-4 w-full rounded-xl border px-4 py-2 dark:border-gray-400"
                     />
                     <div class="max-h-72 space-y-2 overflow-y-auto">
                         <div
