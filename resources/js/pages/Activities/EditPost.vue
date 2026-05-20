@@ -1,0 +1,392 @@
+<script setup lang="ts">
+import { Form, Link } from '@inertiajs/vue3';
+import Quill from 'quill';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { update } from '@/routes/exchange/post';
+import 'quill/dist/quill.snow.css';
+
+interface ActivityImage {
+    id: number;
+    image_path: string;
+    activity_id: number;
+}
+
+interface Post {
+    id: number;
+    title: string;
+    description?: string;
+    start_date?: string;
+    end_date?: string;
+    exchange_id: number;
+    images?: ActivityImage[];
+}
+
+const props = defineProps<{
+    post: Post;
+    exchange: { id: number };
+}>();
+
+defineOptions({
+    layout: {
+        breadcrumbs: [
+            {
+                title: 'Editar anunci',
+            },
+        ],
+    },
+});
+
+const fileInput = ref<HTMLInputElement | null>(null);
+const selectedFiles = ref<File[]>([]);
+const previews = ref<string[]>([]);
+const existingImages = ref<string[]>([]);
+const editorRef = ref<HTMLDivElement | null>(null);
+const description = ref(props.post.description || '');
+let quill: Quill | null = null;
+
+// Initialize existing images
+if (props.post.images) {
+    existingImages.value = props.post.images.map((img) => img.image_path);
+}
+
+const fileSignature = (file: File) =>
+    `${file.name}-${file.size}-${file.lastModified}`;
+
+const refreshPreviews = () => {
+    previews.value.forEach((url) => {
+        if (url.startsWith('blob:')) {
+            URL.revokeObjectURL(url);
+        }
+    });
+    previews.value = selectedFiles.value.map((file) =>
+        URL.createObjectURL(file),
+    );
+};
+
+const handleFileChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+        return;
+    }
+
+    const existingSignatures = new Set(
+        selectedFiles.value.map((file) => fileSignature(file)),
+    );
+    const incomingFiles = Array.from(input.files);
+
+    incomingFiles.forEach((file) => {
+        const signature = fileSignature(file);
+
+        if (!existingSignatures.has(signature)) {
+            selectedFiles.value.push(file);
+            existingSignatures.add(signature);
+        }
+    });
+
+    const dataTransfer = new DataTransfer();
+    selectedFiles.value.forEach((file) => dataTransfer.items.add(file));
+    input.files = dataTransfer.files;
+
+    refreshPreviews();
+};
+
+const removeNewImage = (index: number) => {
+    selectedFiles.value.splice(index, 1);
+    refreshPreviews();
+};
+
+const removeExistingImage = (index: number) => {
+    existingImages.value.splice(index, 1);
+};
+
+onMounted(() => {
+    if (!editorRef.value) {
+        return;
+    }
+
+    quill = new Quill(editorRef.value, {
+        theme: 'snow',
+        placeholder: "Explica l'anunci aquí...",
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+            ],
+        },
+    });
+
+    if (description.value) {
+        quill.root.innerHTML = description.value;
+    }
+
+    quill.on('text-change', () => {
+        if (!quill) {
+            return;
+        }
+
+        const html = quill.root.innerHTML;
+        description.value = html === '<p><br></p>' ? '' : html;
+    });
+});
+
+onBeforeUnmount(() => {
+    previews.value.forEach((url) => {
+        if (url.startsWith('blob:')) {
+            URL.revokeObjectURL(url);
+        }
+    });
+    quill = null;
+});
+</script>
+<template>
+    <div class="flex justify-center pt-6 sm:min-h-screen lg:min-h-screen">
+        <div class="w-full max-w-md">
+            <div class="mb-7 text-center">
+                <h1 class="font-hp text-6xl text-hp-primary">Editar Anunci</h1>
+            </div>
+
+            <!-- Card -->
+            <div class="">
+                <Form
+                    :action="update({
+                        exchange: exchange.id,
+                        post: post.id
+                    })"
+                    method="put"
+                    enctype="multipart/form-data"
+                    class="space-y-5"
+                >
+                    <!-- Títol -->
+                    <div>
+                        <label class="text-sm font-medium text-hp-text"
+                            >Títol</label
+                        >
+                        <input
+                            type="text"
+                            name="title"
+                            :value="post.title"
+                            class="mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+                        />
+                    </div>
+
+                    <!-- Descripció -->
+                    <div>
+                        <label class="text-sm font-medium text-hp-text"
+                            >Descripció</label
+                        >
+                        <div class="quill-wrapper mt-1">
+                            <div ref="editorRef" class="quill-container"></div>
+                        </div>
+                        <input
+                            type="hidden"
+                            name="description"
+                            :value="description"
+                        />
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div>
+                            <label class="text-sm font-medium text-hp-text"
+                                >Comença</label
+                            >
+                            <input
+                                type="datetime-local"
+                                name="start_date"
+                                :value="post.start_date"
+                                class="mt-1 w-full rounded-md border border-hp-bg-icon bg-hp-bg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium text-hp-text"
+                                >Acaba</label
+                            >
+                            <input
+                                type="datetime-local"
+                                name="end_date"
+                                :value="post.end_date"
+                                class="mt-1 w-full rounded-md border border-hp-bg-icon bg-hp-bg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Imatge -->
+                    <div>
+                        <label
+                            class="mb-3 block text-sm font-medium text-hp-text"
+                        >
+                            Imatge
+                        </label>
+
+                        <!-- Existing Images -->
+                        <div v-if="existingImages.length" class="mb-4">
+                            <p class="mb-2 text-xs font-medium text-gray-600">
+                                Imatges actuals:
+                            </p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div
+                                    v-for="(image, index) in existingImages"
+                                    :key="`existing-${index}`"
+                                    class="relative"
+                                >
+                                    <img
+                                        :src="`/storage/${image}`"
+                                        :alt="`Existing ${index + 1}`"
+                                        class="inset-shadow-lg h-32 w-full rounded-2xl border border-hp-primary bg-hp-primary/30 object-contain p-1 shadow-[inset_0_0_20px_5px_rgba(0,0,0,0.3)] shadow-hp-primary"
+                                    />
+                                    <button
+                                        type="button"
+                                        @click="removeExistingImage(index)"
+                                        class="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                                    >
+                                        <svg
+                                            class="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>
+                                    <input
+                                        type="hidden"
+                                        name="existing_images[]"
+                                        :value="image"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload New Images -->
+                        <label
+                            class="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-teal-300 transition hover:border-teal-500 hover:bg-teal-50"
+                        >
+                            <span class="text-sm text-gray-600"
+                                >Fes clic per pujar una o més imatges</span
+                            >
+                            <input
+                                ref="fileInput"
+                                type="file"
+                                name="files[]"
+                                placeholder=""
+                                class="hidden"
+                                accept="image/*"
+                                multiple
+                                @change="handleFileChange"
+                            />
+                        </label>
+
+                        <!-- New Preview -->
+                        <div
+                            v-if="previews.length"
+                            class="mt-4 grid grid-cols-2 gap-3"
+                        >
+                            <div
+                                v-for="(preview, index) in previews"
+                                :key="`${preview}-${index}`"
+                                class="relative"
+                            >
+                                <img
+                                    :src="preview"
+                                    :alt="`Preview ${index + 1}`"
+                                    class="inset-shadow-lg h-32 w-full rounded-2xl border border-hp-primary bg-hp-primary/30 object-contain p-1 shadow-[inset_0_0_20px_5px_rgba(0,0,0,0.3)] shadow-hp-primary"
+                                />
+                                <button
+                                    type="button"
+                                    @click="removeNewImage(index)"
+                                    class="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                                >
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botó enviar -->
+                    <div class="flex w-full gap-3 pt-2">
+                        <Link
+                            :href="`/exchange/${exchange.id}`"
+                            class="flex-1 rounded-md border border-hp-bg-icon py-2 text-center text-sm"
+                        >
+                            Cancel·lar
+                        </Link>
+                        <button
+                            type="submit"
+                            class="flex-1 rounded-md bg-hp-primary py-2 text-sm font-semibold hover:bg-teal-300"
+                        >
+                            Guardar Canvis
+                        </button>
+                    </div>
+                </Form>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style>
+.quill-wrapper {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid var(--hp-bg-icon, #d1d5db);
+}
+
+.quill-container {
+    min-height: 100px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--hp-bg, #f8fafc);
+    color: var(--hp-text, #0f172a);
+}
+
+.ql-toolbar.ql-snow {
+    background: var(--hp-bg-card, #ffffff);
+    border: none;
+    border-bottom: 1px solid var(--hp-bg-icon, #d1d5db);
+}
+
+.ql-container.ql-snow {
+    border: none;
+}
+
+.ql-toolbar button .ql-stroke {
+    stroke: var(--hp-text-dim, #64748b);
+}
+
+.ql-toolbar button:hover .ql-stroke,
+.ql-toolbar button.ql-active .ql-stroke {
+    stroke: var(--hp-primary, #14b8a6);
+}
+
+.ql-toolbar button .ql-fill {
+    fill: var(--hp-text-dim, #64748b);
+}
+
+.ql-toolbar button:hover .ql-fill,
+.ql-toolbar button.ql-active .ql-fill {
+    fill: var(--hp-primary, #14b8a6);
+}
+
+.ql-snow .ql-editor.ql-blank::before {
+    color: var(--hp-text-dim, #64748b);
+}
+</style>
