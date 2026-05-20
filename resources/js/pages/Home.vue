@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { login, privacy } from '@/routes';
 import { ArrowUpRight } from 'lucide-vue-next';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { initCookieConsent } from '@/cookieconsent';
 
 defineOptions({ layout: PublicLayout });
+
+onMounted(() => {
+    initCookieConsent();
+});
 </script>
 
 <template>
