@@ -2,7 +2,7 @@
 import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Map from '@/components/AddLocationsMap.vue';
-import { store } from '@/routes/interestpoint';
+import { store } from '@/routes/exchange/interestpoint';
 
 defineEmits(['location-selected']);
 // Guarda la imatge seleccionada
@@ -19,6 +19,10 @@ const handleFileChange = (event: Event) => {
 const latitude = ref('');
 const longitude = ref('');
 
+defineProps<{
+    exchangeId: number;
+}>();
+
 const setInterestPointLocation = (coords: {
     latitude: number;
     longitude: number;
@@ -30,22 +34,24 @@ const setInterestPointLocation = (coords: {
 </script>
 
 <template>
-    <div
-        class="flex min-h-screen items-center justify-center bg-gray-100 p-4 dark:bg-gray-900"
-    >
+    <div class="flex min-h-screen items-center justify-center p-4">
         <div class="w-full max-w-md">
             <div class="mb-6 text-center">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                    Crea una nova activitat
+                    Crea un punt d'interès
                 </h1>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Completa la informació per crear una nova activitat
+                    Completa la informació per crear un nou punt d'interès
                 </p>
             </div>
 
             <!-- Card -->
-            <div class="rounded-2xl bg-white p-4 shadow-lg dark:bg-gray-800">
-                <Form :action="store()" method="post" class="space-y-5">
+            <div>
+                <Form
+                    :action="store(exchangeId)"
+                    method="post"
+                    class="space-y-5"
+                >
                     <!-- Títol -->
                     <div>
                         <label

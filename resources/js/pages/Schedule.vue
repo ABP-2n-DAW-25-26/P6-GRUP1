@@ -167,13 +167,11 @@ function getActivityRoutes(activity: Activity) {
 <template>
     <Head title="Agenda" />
 
-    <div
-        class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4"
-    >
+    <div class="relative flex flex-1 flex-col gap-8 rounded-xl p-4">
         <h1 class="text-center font-hp text-6xl text-hp-primary">agenda</h1>
         <div
             v-if="exchange !== null"
-            class="sticky top-0 mx-auto flex w-full gap-6 overflow-x-auto rounded-3xl bg-stone-100 px-4 py-6 uppercase"
+            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase"
         >
             <div class="mx-auto flex gap-2">
                 <div
@@ -242,13 +240,15 @@ function getActivityRoutes(activity: Activity) {
                             <div class="flex w-full">
                                 <Link
                                     :href="getActivityRoutes(activity).show"
-                                    class="flex w-full items-center justify-between rounded-xl border bg-stone-100 p-4"
+                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4 hover:bg-secondary"
                                 >
                                     <div>
-                                        <h4 class="font-semibold text-gray-700">
+                                        <h4
+                                            class="font-semibold text-primary/80"
+                                        >
                                             {{ activity.title }}
                                         </h4>
-                                        <p class="text-gray-500">
+                                        <p class="text-primary/60">
                                             {{ activity.description }}
                                         </p>
                                     </div>
@@ -272,7 +272,7 @@ function getActivityRoutes(activity: Activity) {
                                             </AvatarFallback>
                                         </Avatar>
                                         <ChevronRight
-                                            class="text-gray-500 group-hover:text-gray-900"
+                                            class="text-gray-500 group-hover:text-gray-900 group-hover:dark:text-gray-100"
                                             :size="18"
                                         />
                                     </div>

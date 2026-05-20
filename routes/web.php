@@ -9,6 +9,7 @@ use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\GimcanaController;
 use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
@@ -28,19 +29,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
-    Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
-    Route::post('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
+    Route::get('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
+    Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
+    Route::get('theme/search', [ThemeController::class, 'search'])->name('theme.search');
     Route::resource('theme', ThemeController::class);
-});
 
-Route::resource('guidedactivity', GuidedActivityController::class);
-Route::resource('interestpoint', InterestPointController::class);
-Route::inertia('notifications', 'Notifications')->name('notifications');
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+});
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 Route::resource('admin', AdminController::class);
 

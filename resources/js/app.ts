@@ -21,6 +21,10 @@ createInertiaApp({
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            // case name.includes('gimcana/'):
+            //     return;
+            // case name.endsWith('gimcana/create'):
+            //     return AppLayout;
             default:
                 return AppLayout;
         }

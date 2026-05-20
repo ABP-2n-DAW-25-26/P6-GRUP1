@@ -44,19 +44,6 @@ class ExchangeController extends Controller
     public function show(Exchange $exchange)
     {
         $user = Auth::user();
-        if ($user && $user->role === 'student') {
-            return Inertia::render('users/StudentActivity', [
-                'activity' => Activity::with('exchange.users')
-                    ->where('exchange_id', $exchange->id)
-                    ->get(),
-                'exchange' => $exchange->load('users'),
-            ]);
-        }
-
-        $user = Auth::user();
-        if ($exchange->user_id !== $user->id && ! $exchange->users()->where('user_id', $user->id)->where('role', 'teacher')->exists()) {
-            return to_route('schedule')->with('error', 'No tienes permiso para ver este intercambio');
-        }
 
         $exchange->load('users', 'activities');
 
