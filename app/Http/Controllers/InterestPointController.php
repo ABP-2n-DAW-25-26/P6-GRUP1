@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Activities\CreateInterestPoint;
 use App\Http\Requests\CreateInterestPointRequest;
 use App\Models\Exchange;
+use App\Models\Activity;
 use App\Models\InterestPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,17 +62,31 @@ class InterestPointController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InterestPoint $interestPoint)
-    {
-        //
-    }
+public function edit(Exchange $exchange, string $id)
+{
+    $activity = Activity::where('id', $id)->where('exchange_id', $exchange->id)->firstOrFail();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, InterestPoint $interestPoint)
+    return Inertia::render('Activities/EditInterestPoint', ['activity' => $activity,]);
+}
+
+    public function update(Request $request, string $id)
     {
-        //
+        $activity = Activity::findOrFail($id);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+        ]);
+
+        $activity->update($data);
+
+        session()->flash('message', 'Punt d’interès actualitzat correctament');
+
+        return to_route('exchange.show', $activity->exchange_id);
     }
 
     /**
