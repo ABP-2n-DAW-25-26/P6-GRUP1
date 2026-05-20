@@ -43,7 +43,7 @@ function formatDate(date: string) {
                 <button
                     v-if="unread().length > 0"
                     @click="markAllAsRead"
-                    class="text-xs text-hp-muted hover:text-hp-primary transition"
+                    class="text-xs text-gray-400 hover:text-hp-primary transition"
                 >
                     Marcar totes com a llegides
                 </button>
@@ -52,7 +52,7 @@ function formatDate(date: string) {
             <!-- Empty state -->
             <div v-if="notifications.length === 0" class="py-20 text-center">
                 <p class="text-lg font-medium text-hp-text">Tot net per aquí</p>
-                <p class="mt-1 text-sm text-hp-muted">Quan rebis una notificació apareixerà aquí.</p>
+                <p class="mt-1 text-sm text-gray-500">Quan rebis una notificació apareixerà aquí.</p>
             </div>
 
             <!-- List -->
@@ -65,7 +65,7 @@ function formatDate(date: string) {
                     <div class="flex min-w-0 items-center gap-3">
                         <span :class="['h-1.5 w-1.5 shrink-0 rounded-full', n.read_at ? 'bg-transparent' : 'bg-hp-primary']"></span>
                         <div class="min-w-0">
-                            <p :class="['text-sm', n.read_at ? 'text-hp-muted' : 'font-medium text-hp-text']">{{ n.message }}</p>
+                            <p :class="['text-sm', n.read_at ? 'text-gray-500' : 'font-medium text-gray-900 dark:text-white']">{{ n.message }}</p>
                             <p class="mt-0.5 text-xs text-hp-primary">{{ formatDate(n.created_at) }}</p>
                         </div>
                     </div>
