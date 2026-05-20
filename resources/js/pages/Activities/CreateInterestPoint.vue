@@ -2,7 +2,6 @@
 import { Form } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Map from '@/components/AddLocationsMap.vue';
-import { store } from '@/routes/interestpoint';
 
 defineEmits(['location-selected']);
 // Guarda la imatge seleccionada
@@ -43,7 +42,7 @@ const setInterestPointLocation = (coords: {
 
             <!-- Card -->
             <div>
-                <Form :action="store()" method="post" class="space-y-5">
+                <Form action="/interestpoint" method="post" class="space-y-5">
                     <!-- Títol -->
                     <div>
                         <label
