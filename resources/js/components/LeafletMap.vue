@@ -53,7 +53,13 @@ const createMarkerLayer = () => {
         }
     });
 
-    if (bounds.length > 0) {
+    if (bounds.length === 1) {
+        const [lat, lng] = bounds[0];
+        map.setView([lat, lng], 14);
+        return;
+    }
+
+    if (bounds.length > 1) {
         map.fitBounds(bounds, { padding: [24, 24] });
     }
 };
