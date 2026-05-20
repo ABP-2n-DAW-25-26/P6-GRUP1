@@ -23,26 +23,31 @@ class InterestPointController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Exchange $exchange)
     {
         $interestPoint = InterestPoint::all();
 
-        return Inertia::render('Activities/CreateInterestPoint', ['interestPoint' => $interestPoint]);
+        return Inertia::render('Activities/CreateInterestPoint', [
+            'interestPoint' => $interestPoint,
+            'exchangeId' => $exchange->id,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateInterestPointRequest $request, CreateInterestPoint $createinterestPoint)
+    public function store(CreateInterestPointRequest $request, Exchange $exchange, CreateInterestPoint $createinterestPoint)
     {
         $interestPoint = new InterestPoint;
 
         $validated = $request->validated();
+        $validated['exchange_id'] = $exchange->id;
+        $validated['type'] = 'interest_point';
         $createinterestPoint->execute($validated, Auth::id());
         // dd($request->all());
         Inertia::flash(['message' => 'Interestpoint creat correctament']);
 
-        return to_route('interestpoint.index');
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
     /**
