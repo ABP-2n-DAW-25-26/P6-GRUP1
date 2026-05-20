@@ -32,14 +32,26 @@ class GuidedActivityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateGuidedActivityRequest $request, CreateGuidedActivityAction $createGuidedActivity)
+    public function store(CreateGuidedActivityRequest $request, Exchange $exchange, CreateGuidedActivityAction $createGuidedActivity)
     {
         $validated = $request->validated();
-        $guidedActivity = $createGuidedActivity->execute($validated, Auth::id(), $validated['exchange_id']);
+        $guidedActivity = $createGuidedActivity->execute($validated, Auth::id(), $exchange->id);
+
+        foreach ($validated['locations'] as $index => $location) {
+            Locations::create([
+                'name' => $location['name'],
+                'description' => $location['description'] ?? null,
+                'latitude' => $location['latitude'],
+                'longitude' => $location['longitude'],
+                'type' => 'guided_visit',
+                'activity_id' => $guidedActivity->id,
+                'order' => $location['order'] ?? ($index + 1),
+            ]);
+        }
 
         Inertia::flash(['message' => 'Activitat guiada creada correctament']);
 
-        return to_route('guidedactivity.index');
+        return to_route('exchange.guidedactivity.index', ['exchange' => $exchange->id]);
     }
 
     /**
@@ -49,7 +61,9 @@ class GuidedActivityController extends Controller
     {
         // dd($guidedActivity);
         // $guidedactivity = GuidedActivity::with('locations')->findOrFail($id);
-        return Inertia::render('Activities/ShowGuidedActivity', ['guidedactivity' => $guidedActivity]);
+        return Inertia::render('Activities/ShowGuidedActivity', [
+            'guidedactivity' => $guidedActivity->load('locations'),
+        ]);
     }
 
     /**

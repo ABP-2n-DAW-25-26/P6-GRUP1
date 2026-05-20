@@ -7,6 +7,7 @@ interface GuidedActivity {
     description: string | null;
     start_date: string | null;
     end_date: string | null;
+    exchange_id: number;
 }
 
 defineProps<{
@@ -29,7 +30,7 @@ defineProps<{
             <Link
                 v-for="activity in guidedActivities"
                 :key="activity.id"
-                :href="`/guidedactivity/${activity.id}`"
+                :href="`/exchange/${activity.exchange_id}/guidedactivity/${activity.id}`"
                 class="block rounded-xl border border-hp-border bg-white p-4 transition hover:shadow-md"
             >
                 <h2 class="font-semibold text-hp-text">{{ activity.title }}</h2>
