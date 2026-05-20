@@ -49,11 +49,12 @@ class GimcanaController extends Controller
             }
 
         }
-
-        session()->flash('message', 'Gimcana creada correctament');
-
-        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
+
+    session()->flash('message', 'Gimcana creada correctament');
+
+    return to_route('exchange.show', ['exchange' => $exchange->id]);
+}
 
     public function show(Exchange $exchange, string $gimcana)
     {
