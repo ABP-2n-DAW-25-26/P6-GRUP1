@@ -12,9 +12,20 @@ import L from 'leaflet';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import 'leaflet/dist/leaflet.css';
 
+const props = defineProps({
+    initialLatitude: {
+        type: String,
+        default: null,
+    },
+    initialLongitude: {
+        type: String,
+        default: null,
+    },
+});
+
 const emit = defineEmits(['location-selected']);
-const lat = ref(null);
-const lng = ref(null);
+const lat = ref(props.initialLatitude ?? null);
+const lng = ref(props.initialLongitude ?? null);
 const mapEl = ref(null);
 
 let map;
@@ -25,7 +36,22 @@ onMounted(() => {
         return;
     }
 
-    map = L.map(mapEl.value).setView([42.2655, 2.9581], 13);
+    const initialLat = props.initialLatitude ? parseFloat(props.initialLatitude) : 42.2655;
+    const initialLng = props.initialLongitude ? parseFloat(props.initialLongitude) : 2.9581;
+    const initialZoom = props.initialLatitude && props.initialLongitude ? 13 : 13;
+
+    map = L.map(mapEl.value).setView([initialLat, initialLng], initialZoom);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
+        maxZoom: 20,
+        ext: 'png',
+    }).addTo(map);
+
+    if (props.initialLatitude && props.initialLongitude) {
+        const latlng = L.latLng(initialLat, initialLng);
+        marker = L.marker(latlng).addTo(map);
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         minZoom: 0,
