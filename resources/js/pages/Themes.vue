@@ -116,7 +116,7 @@ async function searchThemes() {
                             <span class="text-xs font-semibold text-white/90"
                                 >Primary</span
                             >
-                            <span class="text-[11px] text-white/70">{{
+                            <span class="text-xs text-white/70">{{
                                 item.primary
                             }}</span>
                         </div>
@@ -141,10 +141,10 @@ async function searchThemes() {
                                 class="absolute inset-0 flex flex-col items-center justify-center rounded-lg opacity-0 transition group-hover:opacity-100"
                             >
                                 <span
-                                    class="text-center text-[9px] leading-tight font-semibold text-white/90"
+                                    class="text-center text-xs leading-tight font-semibold text-white/90"
                                     >{{ label }}</span
                                 >
-                                <span class="text-[8px] text-white/70">{{
+                                <span class="text-xs text-white/70">{{
                                     value
                                 }}</span>
                             </div>

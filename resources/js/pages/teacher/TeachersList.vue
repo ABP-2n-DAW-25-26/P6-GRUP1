@@ -90,9 +90,7 @@ const assignTeacher = (userId: number) => {
         return;
     }
 
-    fetch(
-        `/exchange/${props.exchange.id}/teacher/assign?user_id=${userId}`,
-    )
+    fetch(`/exchange/${props.exchange.id}/teacher/assign?user_id=${userId}`)
         .then((res) => res.json())
         .then(() => {
             // quitar de resultados búsqueda

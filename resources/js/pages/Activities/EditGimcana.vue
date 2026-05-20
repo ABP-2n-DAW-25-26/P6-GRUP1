@@ -3,7 +3,7 @@ import { router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import Map from '@/components/AddLocationsMap.vue';
 import OverviewMap from '@/components/LeafletMap.vue';
-import { store } from '@/routes/exchange/gimcana';
+import { update } from '@/routes/exchange/gimcana';
 
 type GimcanaLocationPayload = {
     name: string;
@@ -17,14 +17,69 @@ type GimcanaLocationPayload = {
     correct_answer?: string;
 };
 
+interface Theme {
+    id: number;
+    name: string;
+}
+
+interface Exchange {
+    id: number;
+}
+
+interface LocationRaw {
+    id?: number | string;
+    name: string;
+    description?: string | null;
+    statement?: string | null;
+    question_type?: string | null;
+    answer?: string | null;
+    correct_answer?: string | null;
+    latitude?: string | null;
+    longitude?: string | null;
+    order?: number | null;
+}
+
+const props = defineProps<{
+    themes: Theme[];
+    exchange: Exchange;
+    gimcana: any;
+    locations: LocationRaw[];
+}>();
+
+const initialLocations = props.locations.map((loc, idx) => {
+    const question_type = loc.question_type ?? 'open';
+    let answers: string[] = [''];
+
+    if (question_type === 'multiple_choice') {
+        try {
+            answers = loc.answer ? JSON.parse(loc.answer) : [''];
+            if (!Array.isArray(answers) || answers.length === 0) answers = [''];
+        } catch (e) {
+            answers = [''];
+        }
+    }
+
+    return {
+        name: loc.name ?? '',
+        description: loc.description ?? '',
+        statement: loc.statement ?? '',
+        question_type: question_type,
+        answers: answers,
+        correct_answer: loc.correct_answer ?? '',
+        latitude: loc.latitude ?? '',
+        longitude: loc.longitude ?? '',
+        order: loc.order ?? (idx + 1),
+    } as GimcanaLocationPayload;
+});
+
 const form = ref({
-    title: '',
-    description: '',
-    start_date: '',
-    end_date: '',
-    theme_id: '',
+    title: props.gimcana.title ?? '',
+    description: props.gimcana.description ?? '',
+    start_date: props.gimcana.start_date ?? '',
+    end_date: props.gimcana.end_date ?? '',
+    theme_id: props.gimcana.theme_id ?? '',
     type: 'gimcana',
-    locations: [
+    locations: initialLocations.length ? initialLocations : [
         {
             name: '',
             description: '',
@@ -34,8 +89,15 @@ const form = ref({
             correct_answer: '',
             latitude: '',
             longitude: '',
+            order: 1,
         },
     ],
+});
+
+// ensure answers and order exist
+form.value.locations.forEach((loc, idx) => {
+    if (!loc.answers) loc.answers = [''];
+    if (!('order' in loc) || loc.order === undefined || loc.order === null) loc.order = idx + 1;
 });
 
 // add new location
@@ -49,6 +111,7 @@ const addLocation = () => {
         correct_answer: '',
         latitude: '',
         longitude: '',
+        order: form.value.locations.length + 1,
     });
 };
 const removeLocation = (index: number) => {
@@ -64,15 +127,18 @@ const setLocationCoords = (
 };
 
 const addAnswer = (locationIndex: number) => {
-    form.value.locations[locationIndex].answers.push('');
+    const loc = form.value.locations[locationIndex];
+    if (!loc.answers) loc.answers = [''];
+    loc.answers.push('');
 };
 
 const removeAnswer = (locationIndex: number, answerIndex: number) => {
-    if (form.value.locations[locationIndex].answers.length <= 1) {
+    const location = form.value.locations[locationIndex];
+    if (!location.answers) return;
+    if (location.answers.length <= 1) {
         return;
     }
 
-    const location = form.value.locations[locationIndex];
     const removedAnswer = location.answers[answerIndex];
     location.answers.splice(answerIndex, 1);
 
@@ -82,7 +148,7 @@ const removeAnswer = (locationIndex: number, answerIndex: number) => {
 };
 
 const overviewMarkers = computed(() => {
-    const result = [];
+    const result: { name: string; latitude: string; longitude: string }[] = [];
 
     for (let i = 0; i < form.value.locations.length; i++) {
         const loc = form.value.locations[i];
@@ -99,9 +165,9 @@ const overviewMarkers = computed(() => {
     return result;
 });
 
-const createGimcana = () => {
+const updateGimcana = () => {
     const locations = form.value.locations.map((loc, index) => {
-        const location: GimcanaLocationPayload = {
+        const location: any = {
             name: loc.name,
             description: loc.description,
             statement: loc.statement,
@@ -109,7 +175,7 @@ const createGimcana = () => {
             latitude: loc.latitude,
             longitude: loc.longitude,
             order: index + 1,
-        };
+        } as GimcanaLocationPayload;
 
         if (loc.question_type === 'multiple_choice') {
             location.answers = loc.answers;
@@ -133,33 +199,23 @@ const createGimcana = () => {
         locations: locations,
     };
 
-    router.post(store(props.exchange.id), payload);
+    router.put(update.put({ exchange: props.exchange.id, gimcana: props.gimcana.id }), payload);
 };
-
-interface Theme {
-    id: number;
-    name: string;
-}
-
-interface Exchange {
-    id: number;
-}
-
-const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
 </script>
+
 <template>
     <div class="min-h-screen">
         <div class="overflow-hidden">
             <div class="relative container pt-10">
                 <div class="mb-8 flex flex-col gap-3">
                     <h1 class="text-3xl font-semibold text-hp-text">
-                        Crea gimcana
+                        Edita gimcana
                     </h1>
                 </div>
             </div>
         </div>
 
-        <form @submit.prevent="createGimcana" class="grid gap-8 lg:grid-cols-3">
+        <form @submit.prevent="updateGimcana" class="grid gap-8 lg:grid-cols-3">
             <section class="space-y-6 lg:col-span-2">
                 <div class="rounded-3xl border border-hp-border p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-hp-text">
@@ -283,7 +339,6 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                                         <input
                                             v-model="location.name"
                                             type="text"
-                                            placeholder="Nom del punt"
                                             class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
                                             required
                                         />
@@ -294,13 +349,9 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                                             v-model="location.question_type"
                                             class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
                                         >
-                                            <option value="open">Oberta</option>
-                                            <option value="multiple_choice">
-                                                Test
-                                            </option>
-                                            <option value="true_false">
-                                                Cert/Fals
-                                            </option>
+                                            <option value="open">Resposta oberta</option>
+                                            <option value="multiple_choice">Selecció múltiple</option>
+                                            <option value="true_false">Cert/Fals</option>
                                         </select>
                                     </div>
 
@@ -309,59 +360,43 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                                         <input
                                             v-model="location.statement"
                                             type="text"
-                                            placeholder="Pregunta"
                                             class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
                                             required
                                         />
                                     </div>
 
                                     <div
-                                        v-if="
-                                            location.question_type ===
-                                            'multiple_choice'
-                                        "
+                                        v-if="location.question_type === 'multiple_choice'"
                                         class="space-y-3"
                                     >
                                         <div
                                             class="flex items-center justify-between"
                                         >
-                                            <label>Respostes</label>
+                                            <p class="text-sm font-medium text-slate-700">Respostes</p>
                                             <button
                                                 type="button"
                                                 @click="addAnswer(index)"
-                                                class="text-xs font-semibold tracking-wider text-emerald-600 uppercase hover:text-emerald-500"
+                                                class="text-sm font-semibold text-hp-primary"
                                             >
                                                 Afegir resposta
                                             </button>
                                         </div>
                                         <div class="space-y-2">
                                             <div
-                                                v-for="(
-                                                    answer, answerIndex
-                                                ) in location.answers"
-                                                :key="answerIndex"
+                                                v-for="(answer, aIndex) in (location.answers || [])"
+                                                :key="`${index}-${aIndex}`"
                                                 class="flex items-center gap-2"
                                             >
                                                 <input
-                                                    v-model="
-                                                        location.answers[
-                                                            answerIndex
-                                                        ]
-                                                    "
+                                                    :value="location.answers ? location.answers[aIndex] : ''"
+                                                    @input="(e) => { if (!location.answers) location.answers = ['']; location.answers[aIndex] = (e.target as HTMLInputElement).value }"
                                                     type="text"
-                                                    placeholder="Resposta"
-                                                    class="w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:border-hp-primary focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                                                    required
+                                                    class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
                                                 />
                                                 <button
                                                     type="button"
-                                                    @click="
-                                                        removeAnswer(
-                                                            index,
-                                                            answerIndex,
-                                                        )
-                                                    "
-                                                    class="text-xs font-semibold tracking-wider text-red-500 uppercase hover:text-red-600"
+                                                    @click="removeAnswer(index, aIndex)"
+                                                    class="text-sm font-semibold text-red-500"
                                                 >
                                                     Eliminar
                                                 </button>
@@ -369,43 +404,19 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                                         </div>
                                         <div>
                                             <label>Resposta correcta</label>
-                                            <select
-                                                v-model="
-                                                    location.correct_answer
-                                                "
-                                                class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 text-sm shadow-sm focus:border-hp-primary focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                                                required
-                                            >
-                                                <option value="">
-                                                    Selecciona
-                                                </option>
-                                                <option
-                                                    v-for="(
-                                                        answer, answerIndex
-                                                    ) in location.answers"
-                                                    :key="answerIndex"
-                                                    :value="answer"
-                                                >
-                                                    {{
-                                                        answer ||
-                                                        `Resposta ${answerIndex + 1}`
-                                                    }}
-                                                </option>
-                                            </select>
+                                            <input
+                                                v-model="location.correct_answer"
+                                                type="text"
+                                                class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
+                                            />
                                         </div>
                                     </div>
 
-                                    <div
-                                        v-if="
-                                            location.question_type ===
-                                            'true_false'
-                                        "
-                                    >
+                                    <div v-if="location.question_type === 'true_false'">
                                         <label>Resposta correcta</label>
                                         <select
                                             v-model="location.correct_answer"
-                                            class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 text-sm shadow-sm focus:border-hp-primary focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                                            required
+                                            class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
                                         >
                                             <option value="">Selecciona</option>
                                             <option value="true">Cert</option>
@@ -420,27 +431,15 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                                     <h3
                                         class="text-sm font-semibold text-slate-700"
                                     >
-                                        Mapa del punt
+                                        Ubicació
                                     </h3>
                                     <div
                                         class="mt-3 h-56 overflow-hidden rounded-xl"
                                     >
                                         <Map
-                                            @location-selected="
-                                                (coords) =>
-                                                    setLocationCoords(
-                                                        index,
-                                                        coords,
-                                                    )
-                                            "
-                                        />
-                                        <input
-                                            type="hidden"
-                                            v-model="location.latitude"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            v-model="location.longitude"
+                                            @location-selected="(coords) => setLocationCoords(index, coords)"
+                                            :initialLatitude="location.latitude"
+                                            :initialLongitude="location.longitude"
                                         />
                                     </div>
                                 </div>
@@ -453,7 +452,7 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
                     type="submit"
                     class="mb-5 inline-flex items-center justify-center rounded-full bg-hp-primary-dark px-6 py-3 font-semibold text-white shadow-sm shadow-hp-primary-light transition hover:bg-hp-primary"
                 >
-                    Crear Gimcana
+                    Actualitzar Gimcana
                 </button>
             </section>
 

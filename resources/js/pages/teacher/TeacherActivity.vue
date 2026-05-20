@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
 import { Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import ButtonTabs from './components/ButtonTabs.vue';
@@ -24,6 +24,17 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import { useConfirmDelete } from '@/composables/useConfirmDelete';
+
+const { confirmDelete } = useConfirmDelete();
+
+function handleDelete(activity: Activity) {
+    const routes = getActivityRoutes(activity);
+    confirmDelete(() => router.delete(routes.delete), {
+        title: 'Eliminar activitat?',
+        successTitle: 'Activitat eliminada',
+    });
+}
 
 const page = usePage();
 const user = page.props.auth.user;
@@ -202,18 +213,13 @@ defineOptions({
 </script>
 
 <template>
+
     <Head title="Agenda" />
 
-    <div
-        class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4"
-    >
+    <div class="flex h-full flex-1 flex-col gap-8 overflow-x-hidden rounded-xl p-4">
         <HeaderExchangeInfo :exchange="exchange" />
 
-        <ButtonTabs
-            v-if="exchange"
-            :active-tab="'activities'"
-            :exchange="exchange"
-        />
+        <ButtonTabs v-if="exchange" :active-tab="'activities'" :exchange="exchange" />
 
         <div class="flex flex-col gap-4">
             <div v-for="day in exchangeDays" :key="day.date" class="flex">
@@ -222,16 +228,12 @@ defineOptions({
                         <h3 class="text-xl font-bold capitalize">
                             {{ formatDayName(day.date) }}
                         </h3>
-                        <time :datetime="day.date" class="text-gray-400"
-                            >{{ day.day }} {{ formatMonthName(day.date) }}</time
-                        >
+                        <time :datetime="day.date" class="text-gray-400">{{ day.day }} {{ formatMonthName(day.date)
+                            }}</time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
-                        <div
-                            v-for="activity in day.activities"
-                            :key="activity.id"
-                        >
+                        <div v-for="activity in day.activities" :key="activity.id">
                             <div class="flex gap-3">
                                 <div class="flex w-18 flex-col justify-around">
                                     <time class="text-gray-400">
@@ -242,13 +244,10 @@ defineOptions({
                                     </time>
                                 </div>
                                 <div
-                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4"
-                                >
+                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4">
                                     <div class="min-w-0">
                                         <div class="flex gap-3">
-                                            <h4
-                                                class="font-semibold text-primary/80"
-                                            >
+                                            <h4 class="font-semibold text-primary/80">
                                                 {{ activity.title }}
                                             </h4>
                                         </div>
@@ -263,47 +262,33 @@ defineOptions({
                                     <div class="flex items-center">
                                         <div class="flex items-center gap-2">
                                             <span
-                                                class="badge-actiu inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold"
-                                            >
+                                                class="badge-actiu inline-flex flex-1 items-center rounded-full px-4 py-1.5 text-xs font-semibold">
                                                 {{
                                                     activityTypeLabels[
-                                                        activity.type
+                                                    activity.type
                                                     ]
                                                 }}
                                             </span>
-                                            <Link
-                                                :href="
-                                                    getActivityRoutes(activity)
-                                                        .show
+                                            <Link :href="getActivityRoutes(activity)
+                                                    .show
                                                 "
                                                 class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
-                                                title="Veure"
-                                            >
+                                                title="Veure">
                                                 <Eye class="h-4 w-4" />
                                             </Link>
-                                            <Link
-                                                v-if="canManageActivities"
-                                                :href="
-                                                    getActivityRoutes(activity)
-                                                        .edit
+                                            <Link v-if="canManageActivities" :href="getActivityRoutes(activity)
+                                                    .edit
                                                 "
                                                 class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
-                                                title="Editar"
-                                            >
+                                                title="Editar">
                                                 <Pencil class="h-4 w-4" />
                                             </Link>
 
-                                            <Link
-                                                v-if="canManageActivities"
-                                                :href="
-                                                    getActivityRoutes(activity)
-                                                        .delete
-                                                "
+                                            <button v-if="canManageActivities" type="button"
                                                 class="rounded-lg p-2 text-red-400 transition hover:bg-red-200/80 hover:text-hp-red"
-                                                title="Eliminar"
-                                            >
+                                                title="Eliminar" @click="handleDelete(activity)">
                                                 <Trash2 class="h-4 w-4" />
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
