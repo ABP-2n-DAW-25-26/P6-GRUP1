@@ -23,7 +23,7 @@ class ExchangeTeacherController extends Controller
     {
         $query = $request->query('query');
         $exchangeId = $request->query('exchangeId');
-        $teachersQuery = User::where('name', 'like', '%'.$query.'%')
+        $teachersQuery = User::where('name', 'like', '%' . $query . '%')
             ->where('role', 'teacher')
             ->orderBy('name', 'asc');
         if ($exchangeId) {
@@ -75,12 +75,23 @@ class ExchangeTeacherController extends Controller
 
     public function assign(Exchange $exchange, Request $request)
     {
-        return $this->store($request, $exchange);
+        $userId = $request->query('user_id');
+        if ($exchange->users()->where('user_id', $userId)->exists()) {
+            return response()->json([
+                'message' => 'Aquest professor ja està assignat',
+            ], 409);
+        }
+        $exchange->users()->attach($userId);
+
+        return response()->json([
+            'message' => 'Professor assignat correctament',
+        ]);
     }
 
-    public function destroy(Exchange $exchange, User $teacher)
+    public function delete(Exchange $exchange, Request $request)
     {
-        $exchange->users()->detach($teacher->id);
+        $teacherId = $request->query('teacher_id');
+        $exchange->users()->detach($teacherId);
 
         return response()->json([
             'message' => 'Professor eliminat correctament',

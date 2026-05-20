@@ -115,16 +115,9 @@ const removeTeacherFromExchange = (teacherId: number) => {
         return;
     }
 
-    fetch(`/exchange/${props.exchange.id}/teacher/${teacherId}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN':
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute('content') || '',
-            Accept: 'application/json',
-        },
-    })
+    fetch(
+        `/exchange/${props.exchange.id}/teacher/delete?teacher_id=${teacherId}`,
+    )
         .then((res) => res.json())
         .then(() => {
             teachersList.value = teachersList.value.filter(
