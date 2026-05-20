@@ -31,7 +31,10 @@ function bg(color: string) {
 }
 
 async function searchThemes() {
-    const response = await fetch(`/theme/search?q=${encodeURIComponent(search.value)}`);
+    const response = await fetch(
+        `/theme/search?q=${encodeURIComponent(search.value)}`,
+    );
+
     if (!response.ok) {
         return;
     }
@@ -61,8 +64,13 @@ async function searchThemes() {
         </div>
 
         <div class="max-w-md">
-            <input v-model="search" type="text" placeholder="Cerca un tema..." @input="searchThemes"
-                class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-hp-text shadow-sm focus:border-hp-primary focus:outline-none"/>
+            <input
+                v-model="search"
+                type="text"
+                placeholder="Cerca un tema..."
+                @input="searchThemes"
+                class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-hp-text shadow-sm focus:border-hp-primary focus:outline-none"
+            />
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -9,6 +9,7 @@ use App\Http\Controllers\ExchangeTeacherController;
 use App\Http\Controllers\GimcanaController;
 use App\Http\Controllers\GuidedActivityController;
 use App\Http\Controllers\InterestPointController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ThemeController;
@@ -37,11 +38,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.interestpoint', InterestPointController::class);
     Route::get('theme/search', [ThemeController::class, 'search'])->name('theme.search');
     Route::resource('theme', ThemeController::class);
-});
 
-Route::resource('guidedactivity', GuidedActivityController::class);
-Route::resource('interestpoint', InterestPointController::class);
-Route::inertia('notifications', 'Notifications')->name('notifications');
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+});
 Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
 Route::resource('admin', AdminController::class);
 
