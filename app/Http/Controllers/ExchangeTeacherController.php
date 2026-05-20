@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exchange;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -43,9 +44,16 @@ class ExchangeTeacherController extends Controller
         ]);
     }
 
-    public function assign(Exchange $exchange, Request $request)
+    public function store(Request $request, Exchange $exchange)
     {
-        $userId = $request->query('user_id');
+        $userId = $request->input('user_id', $request->query('user_id'));
+
+        if (! $userId) {
+            return response()->json([
+                'message' => 'Falta el paràmetre user_id',
+            ], 422);
+        }
+
         if ($exchange->users()->where('user_id', $userId)->exists()) {
             return response()->json([
                 'message' => 'Aquest professor ja està assignat',
@@ -53,9 +61,21 @@ class ExchangeTeacherController extends Controller
         }
         $exchange->users()->attach($userId);
 
+        Notification::create([
+            'user_id' => $userId,
+            'type' => 'exchange_assigned',
+            'message' => "Has estat assignat a l'intercanvi: {$exchange->title}",
+            'data' => ['exchange_id' => $exchange->id],
+        ]);
+
         return response()->json([
             'message' => 'Professor assignat correctament',
         ]);
+    }
+
+    public function assign(Exchange $exchange, Request $request)
+    {
+        return $this->store($request, $exchange);
     }
 
     public function destroy(Exchange $exchange, User $teacher)
