@@ -90,22 +90,9 @@ const assignTeacher = (userId: number) => {
         return;
     }
 
-    const url = import.meta.env.VITE_APP_URL ?? '';
-
-    fetch(`${url}/exchange/${props.exchange.id}/teacher/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN':
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute('content') || '',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({
-            user_id: userId,
-        }),
-    })
+    fetch(
+        `/exchange/${props.exchange.id}/teacher/assign?user_id=${userId}`,
+    )
         .then((res) => res.json())
         .then(() => {
             // quitar de resultados búsqueda
