@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
+    Route::get('theme/search', [ThemeController::class, 'search'])->name('theme.search');
     Route::resource('theme', ThemeController::class);
 });
 
