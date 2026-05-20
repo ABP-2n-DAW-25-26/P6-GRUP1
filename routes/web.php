@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
     Route::get('/teacher/search', [ExchangeTeacherController::class, 'searchAJAX'])->name('exchange.teacher.search');
     Route::get('/exchange/{exchange}/teacher/assign', [ExchangeTeacherController::class, 'assign'])->name('exchange.teacher.assign');
+    Route::get('/exchange/{exchange}/teacher/delete', [ExchangeTeacherController::class, 'delete'])->name('exchange.teacher.delete');
     Route::resource('exchange.teacher', ExchangeTeacherController::class);
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);

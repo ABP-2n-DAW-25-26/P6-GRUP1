@@ -90,22 +90,9 @@ const assignTeacher = (userId: number) => {
         return;
     }
 
-    const url = import.meta.env.VITE_APP_URL ?? '';
-
-    fetch(`${url}/exchange/${props.exchange.id}/teacher/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN':
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute('content') || '',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({
-            user_id: userId,
-        }),
-    })
+    fetch(
+        `/exchange/${props.exchange.id}/teacher/assign?user_id=${userId}`,
+    )
         .then((res) => res.json())
         .then(() => {
             // quitar de resultados búsqueda
@@ -130,16 +117,9 @@ const removeTeacherFromExchange = (teacherId: number) => {
         return;
     }
 
-    fetch(`/exchange/${props.exchange.id}/teacher/${teacherId}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN':
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute('content') || '',
-            Accept: 'application/json',
-        },
-    })
+    fetch(
+        `/exchange/${props.exchange.id}/teacher/delete?teacher_id=${teacherId}`,
+    )
         .then((res) => res.json())
         .then(() => {
             teachersList.value = teachersList.value.filter(
