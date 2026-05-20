@@ -39,5 +39,25 @@ class ExchangesSeeder extends Seeder
             'start_date' => Carbon::now()->addDays(50)->setTime(10, 0),
             'end_date' => Carbon::now()->addDays(58)->setTime(19, 0),
         ]);
+
+        Exchange::create([
+            'title' => 'Cendrassos - Portugal',
+            'user_id' => 1,
+            'color' => '#f97316',
+            'origin' => 'INS Cendrassos (Figueres)',
+            'destiny' => 'Lisboa, Portugal',
+            'start_date' => Carbon::now()->addDays(70)->setTime(9, 0),
+            'end_date' => Carbon::now()->addDays(76)->setTime(18, 0),
+        ]);
+
+        Exchange::create([
+            'title' => 'Cendrassos - Irlanda',
+            'user_id' => 1,
+            'color' => '#0ea5e9',
+            'origin' => 'INS Cendrassos (Figueres)',
+            'destiny' => 'Dublin, Irlanda',
+            'start_date' => Carbon::now()->addDays(90)->setTime(9, 0),
+            'end_date' => Carbon::now()->addDays(96)->setTime(18, 0),
+        ]);
     }
 }
