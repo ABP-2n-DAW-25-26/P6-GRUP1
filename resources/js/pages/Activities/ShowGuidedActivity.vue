@@ -31,6 +31,8 @@ defineProps<{
 </script>
 
 <template>
+    <!-- <pre>{{ JSON.stringify(guidedactivity.locations, null, 2) }}</pre> -->
+
     <Head :title="guidedactivity.title" />
 
     <div class="min-h-screen w-full p-4 dark:bg-gray-900">

@@ -15,6 +15,7 @@ class CreateGuidedActivityAction
         $guidedActivity->start_date = $data['start_date'];
         $guidedActivity->end_date = $data['end_date'] ?? null;
         $guidedActivity->exchange_id = $exchangeId;
+        $guidedActivity->type = 'guided_visit';
 
         if (! empty($data['file'])) {
             $path = $data['file']->store('guidedActivity', 'public');

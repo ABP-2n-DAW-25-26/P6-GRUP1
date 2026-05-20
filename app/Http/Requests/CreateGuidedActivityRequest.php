@@ -28,6 +28,12 @@ class CreateGuidedActivityRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'file' => 'nullable|image|max:2048',
+            'locations' => 'required|array|min:1',
+            'locations.*.name' => 'required|string|max:255',
+            'locations.*.description' => 'nullable|string|max:255',
+            'locations.*.latitude' => 'required|numeric',
+            'locations.*.longitude' => 'required|numeric',
+            'locations.*.order' => 'nullable|integer|min:1',
         ];
     }
 }
