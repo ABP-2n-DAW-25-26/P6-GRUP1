@@ -54,24 +54,26 @@ class InterestPointController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InterestPoint $interestPoint)
+    public function show(Exchange $exchange, string $id)
     {
-        dd('show interestpoint TODO');
+        $activity = Activity::where('id', $id)->where('exchange_id', $exchange->id)->firstOrFail();
+
+        return Inertia::render('Activities/InterestPointView', ['activity' => $activity]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-public function edit(Exchange $exchange, string $id)
-{
-    $activity = Activity::where('id', $id)->where('exchange_id', $exchange->id)->firstOrFail();
-
-    return Inertia::render('Activities/EditInterestPoint', ['activity' => $activity,]);
-}
-
-    public function update(Request $request, string $id)
+    public function edit(Exchange $exchange, string $id)
     {
-        $activity = Activity::findOrFail($id);
+        $activity = Activity::where('id', $id)->where('exchange_id', $exchange->id)->firstOrFail();
+
+         return Inertia::render('Activities/EditInterestPoint', ['activity' => $activity,]);
+    }
+
+    public function update(Request $request, Exchange $exchange, string $id)
+    {
+        $activity = Activity::where('id', $id)->where('exchange_id', $exchange->id)->firstOrFail();
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
