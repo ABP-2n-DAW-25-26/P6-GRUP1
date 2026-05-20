@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->string('title', 255);
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
             $table->string('latitude', 255)->nullable();

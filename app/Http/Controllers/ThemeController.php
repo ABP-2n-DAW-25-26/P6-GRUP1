@@ -17,6 +17,19 @@ class ThemeController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $term = trim((string) $request->query('q', ''));
+
+        $theme = Theme::query()
+            ->when($term !== '', fn ($query) => $query->where('name', 'like', "%{$term}%"))
+            ->get();
+
+        return response()->json([
+            'theme' => $theme,
+        ]);
+    }
+
     public function create()
     {
         $theme = Theme::all();
