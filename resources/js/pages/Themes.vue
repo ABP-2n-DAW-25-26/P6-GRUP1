@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { Trash, Plus } from 'lucide-vue-next';
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy } from '@/routes/theme';
 
@@ -18,6 +19,8 @@ interface Theme {
 }
 
 const props = defineProps<{ theme: Theme[] }>();
+const search = ref('');
+const themes = ref<Theme[]>(props.theme);
 
 defineOptions({ layout: AppLayout });
 
@@ -25,6 +28,16 @@ defineOptions({ layout: AppLayout });
 // so dynamic :style is required — Tailwind cannot generate classes with unknown values at build time.
 function bg(color: string) {
     return { backgroundColor: color };
+}
+
+async function searchThemes() {
+    const response = await fetch(`/theme/search?q=${encodeURIComponent(search.value)}`);
+    if (!response.ok) {
+        return;
+    }
+
+    const data = (await response.json()) as { theme?: Theme[] };
+    themes.value = data.theme ?? [];
 }
 </script>
 <template>
@@ -47,16 +60,14 @@ function bg(color: string) {
             </Link>
         </div>
 
-        <div
-            v-if="props.theme.length === 0"
-            class="rounded-xl border border-dashed border-gray-200 bg-white p-12 text-center text-sm text-hp-text-dim"
-        >
-            Encara no hi ha temes.
+        <div class="max-w-md">
+            <input v-model="search" type="text" placeholder="Cerca un tema..." @input="searchThemes"
+                class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-hp-text shadow-sm focus:border-hp-primary focus:outline-none"/>
         </div>
 
-        <div v-else class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div
-                v-for="item in props.theme"
+                v-for="item in themes"
                 :key="item.id"
                 class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
             >
