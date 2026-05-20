@@ -49,7 +49,7 @@ class GimcanaController extends Controller
             }
 
         }
-    }
+
 
     session()->flash('message', 'Gimcana creada correctament');
 
