@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { show as activities } from '@/routes/exchange';
@@ -10,7 +10,12 @@ import { create as createPost } from '@/routes/exchange/post';
 import { index as studentsIndex } from '@/routes/exchange/student';
 import { index as teachersIndex } from '@/routes/exchange/teacher';
 const activeClass =
-    'font-bold border-b-3 border-hp-primary-dark text-hp-primary-dark!';
+    'font-bold border-b-3 border-hp-primary-dark dark:border-hp-primary-light text-hp-primary-dark! dark:text-hp-primary-light!';
+
+interface ExchangeUser {
+    id: number;
+    role: string;
+}
 
 interface Exchange {
     id: number;
@@ -19,12 +24,23 @@ interface Exchange {
     start_date: string;
     end_date: string | null;
     destiny: string;
-    users?: { id: number }[];
+    users?: ExchangeUser[];
 }
+
 const props = defineProps<{
     activeTab: 'activities' | 'teachers' | 'students';
     exchange: Exchange | null;
 }>();
+
+const page = usePage();
+
+const user = page.props.auth.user;
+
+const canManageActivities =
+    user.role === 'admin' ||
+    props.exchange?.users?.some(
+        u => u.id === user.id && u.role === 'teacher'
+);
 
 const showActivityOptions = ref(false);
 
@@ -39,11 +55,11 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
 </script>
 <template>
     <div
-        class="mx-2 flex flex-wrap justify-between gap-6 border-b px-2 text-lg"
+        class="mx-2 flex justify-between gap-6 border-b px-2 text-lg overflow-auto"
     >
         <div
             v-if="exchange"
-            class="flex transition-colors duration-200 *:px-2 *:text-gray-700 hover:text-gray-300 *:md:px-4"
+            class="flex transition-colors duration-200 *:px-2 *:text-primary hover:text-gray-300 *:md:px-4"
         >
             <Link
                 :href="activities(exchange.id)"
@@ -64,13 +80,15 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
                 Alumnes</Link
             >
         </div>
-        <div v-if="$props.activeTab === 'activities'" class="relative">
+        <div v-if="$props.activeTab === 'activities' && canManageActivities" class="relative">
             <button
                 @click="showActivityOptions = !showActivityOptions"
                 class="inline-flex items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
             >
                 <Plus class="h-4 w-4" />
-                Nova activitat
+                <span class="hidden sm:inline">
+                    Nova activitat
+                </span>
             </button>
 
             <div
@@ -89,20 +107,24 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
             </div>
         </div>
         <button
-            v-else-if="$props.activeTab === 'teachers'"
+            v-else-if="$props.activeTab === 'teachers' && canManageActivities"
             @click="emit('assign-teacher')"
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >
             <Plus class="h-4 w-4" />
-            Assigna professor
+            <span class="hidden sm:inline">
+                Assigna professor
+            </span>
         </button>
         <button
-            v-else-if="$props.activeTab === 'students'"
+            v-else-if="$props.activeTab === 'students' && canManageActivities"
             @click="emit('assign-student')"
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >
             <Plus class="h-4 w-4" />
-            Importa CSV
+            <span class="hidden sm:inline">
+                Importa CSV
+            </span>
         </button>
     </div>
 </template>

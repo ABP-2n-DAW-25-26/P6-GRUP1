@@ -21,7 +21,7 @@ withDefaults(defineProps<Props>(), {
         <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
             <div
-                class="mx-auto my-10 flex h-auto w-[95%] justify-center rounded-2xl border border-sidebar-border/70 bg-hp-bg-card md:w-[90%] dark:border-sidebar-border"
+                class="mx-auto my-10 flex h-auto w-[95%] justify-center rounded-2xl border border-sidebar-border/70 bg-card md:w-[90%] dark:border-sidebar-border"
             >
                 <slot />
             </div>

@@ -23,6 +23,15 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import { usePage } from '@inertiajs/vue3';
+
+const page = usePage();
+const user = page.props.auth.user;
+
+interface ExchangeUser {
+    id: number;
+    role: string;
+}
 
 interface Exchange {
     id: number;
@@ -31,7 +40,7 @@ interface Exchange {
     start_date: string;
     end_date: string | null;
     destiny: string;
-    users?: { id: number }[];
+    users?: ExchangeUser[];
 }
 
 interface Activity {
@@ -175,6 +184,12 @@ function getActivityRoutes(activity: Activity) {
     }
 }
 
+const canManageActivities =
+    user.role === 'admin' ||
+    props.exchange?.users?.some(
+        u => u.id === user.id && u.role === 'teacher'
+);
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -227,12 +242,12 @@ defineOptions({
                                     </time>
                                 </div>
                                 <div
-                                    class="flex w-full items-center justify-between rounded-xl border bg-stone-100 p-4"
+                                    class="flex w-full items-center justify-between rounded-xl border bg-secondary/50 p-4"
                                 >
                                     <div class="min-w-0">
                                         <div class="flex gap-3">
                                             <h4
-                                                class="font-semibold text-gray-700"
+                                                class="font-semibold text-primary/80"
                                             >
                                                 {{ activity.title }}
                                             </h4>
@@ -257,29 +272,30 @@ defineOptions({
                                                     getActivityRoutes(activity)
                                                         .show
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                                class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
                                                 title="Veure"
                                             >
                                                 <Eye class="h-4 w-4" />
                                             </Link>
-
                                             <Link
+                                                v-if="canManageActivities"
                                                 :href="
                                                     getActivityRoutes(activity)
                                                         .edit
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
+                                                class="rounded-lg p-2 text-primary/80 transition hover:bg-white/80 hover:text-primary dark:hover:text-secondary"
                                                 title="Editar"
                                             >
                                                 <Pencil class="h-4 w-4" />
                                             </Link>
 
                                             <Link
+                                                v-if="canManageActivities"
                                                 :href="
                                                     getActivityRoutes(activity)
                                                         .delete
                                                 "
-                                                class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
+                                                class="rounded-lg p-2 text-red-400 transition hover:bg-red-200/80 hover:text-hp-red"
                                                 title="Eliminar"
                                             >
                                                 <Trash2 class="h-4 w-4" />
