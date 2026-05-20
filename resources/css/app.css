@@ -64,6 +64,7 @@
     --color-hp-primary: var(--hp-primary);
     --color-hp-primary-light: var(--hp-primary-light);
     --color-hp-primary-dark: var(--hp-primary-dark);
+    --color-hp-primary-darker: var(--hp-primary-darker);
     --color-hp-secondary: var(--hp-secondary);
     --color-hp-secondary-light: var(--hp-secondary-light);
     --color-hp-secondary-dark: var(--hp-secondary-dark);
@@ -95,12 +96,20 @@
 
     /* Font */
     --font-hp: 'Catalona', sans-serif;
+    --font-inter: 'Inter', sans-serif;
 }
 
 @font-face {
     font-family: 'Catalona';
     src: url('/public/fonts/Catalona.ttf') format('truetype');
     font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('/public/fonts/Inter.ttf') format('truetype');
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
@@ -170,9 +179,10 @@
     --sidebar: hsl(0 0% 98%);
 
     /* Hipatia palette */
-    --hp-primary: #4dbcad;
+    --hp-primary: #168576;
     --hp-primary-light: #7ed6cb;
     --hp-primary-dark: #198371;
+    --hp-primary-darker: #115a4e;
     --hp-secondary: #defffb;
     --hp-secondary-light: #f0fffd;
     --hp-secondary-dark: #93faec;

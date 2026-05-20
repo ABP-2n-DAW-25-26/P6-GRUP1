@@ -17,6 +17,7 @@ use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
+Route::inertia('/privacy', 'Privacy')->name('privacy');
 
 // OAuth — Google (restringit a @cendrassos.net)
 Route::get('/auth/gmail', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.gmail');
