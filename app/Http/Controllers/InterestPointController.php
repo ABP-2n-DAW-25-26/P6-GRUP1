@@ -94,23 +94,13 @@ class InterestPointController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Exchange $exchange, int $id)
+    public function destroy(Exchange $exchange, string $id)
     {
-        $interestPoint = InterestPoint::findOrFail($id);
-        $deleted = $interestPoint->delete();
-        if ($deleted) {
-            Inertia::flash(['message' => 'Punt d\'interès eliminat correctament']);
-        }
+        $activity = Activity::where('exchange_id', $exchange->id)->findOrFail($id);
+        $activity->delete();
 
-        return to_route('exchange.show', ['exchange' => $interestPoint->exchange_id]);
+        Inertia::flash(['message' => "Punt d'interès eliminat correctament"]);
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 }
 
-// }    public function destroy(Exchange $exchange, Post $post)
-//     {
-//         $deleted = $post->delete();
-//         if($deleted) {
-//             Inertia::flash(['message' => 'Post eliminat correctament']);
-//         }
-//         return to_route('exchange.show', ['exchange' => $post->exchange_id]);
-//     }

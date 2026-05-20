@@ -153,13 +153,14 @@ class GimcanaController extends Controller
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
-    public function destroy(string $id)
+    public function destroy(Exchange $exchange, string $id)
     {
-        $gimcana = Activity::findOrFail($id);
-        $gimcana->delete();
+       $activity = Activity::where('exchange_id', $exchange->id)->where('type', 'gimcana')->findOrFail($id);
+
+        $activity->delete();
 
         Inertia::flash(['message' => 'Gimcana eliminada correctament']);
 
-        return to_route('gimcana.index');
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 }

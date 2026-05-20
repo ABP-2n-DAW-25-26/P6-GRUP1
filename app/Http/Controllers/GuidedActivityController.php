@@ -89,8 +89,13 @@ public function update(Request $request, Exchange $exchange, string $id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Activity $guidedActivity)
+    public function destroy(Exchange $exchange, string $id)
     {
-        //
+        $activity = Activity::where('exchange_id', $exchange->id)->findOrFail($id);
+        $activity->delete();
+
+        Inertia::flash(['message' => 'Activitat guiada eliminada correctament']);
+
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 }
