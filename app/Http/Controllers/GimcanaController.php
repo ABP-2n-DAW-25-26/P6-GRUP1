@@ -40,14 +40,26 @@ class GimcanaController extends Controller
             'type' => 'gimcana',
         ]);
 
-        foreach ($data['locations'] as $location) {
-
-            $newLocation = $location;
+        foreach ($data['locations'] as $index => $location) {
+            $answers = null;
 
             if (($location['question_type'] ?? null) === 'multiple_choice') {
-                $newLocation['answer'] = json_encode($location['answers'] ?? []);
+                $answers = json_encode($location['answers'] ?? []);
             }
 
+            Locations::create([
+                'name' => $location['name'],
+                'description' => $location['description'] ?? null,
+                'statement' => $location['statement'] ?? null,
+                'question_type' => $location['question_type'] ?? null,
+                'answer' => $answers,
+                'correct_answer' => $location['correct_answer'] ?? null,
+                'latitude' => $location['latitude'] ?? null,
+                'longitude' => $location['longitude'] ?? null,
+                'type' => 'gimcana',
+                'activity_id' => $gimcana->id,
+                'order' => $location['order'] ?? ($index + 1),
+            ]);
         }
 
         session()->flash('message', 'Gimcana creada correctament');
