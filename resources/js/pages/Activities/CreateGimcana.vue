@@ -451,7 +451,7 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
 
                 <button
                     type="submit"
-                    class="inline-flex items-center justify-center rounded-full bg-hp-primary-dark px-6 py-3 mb-5 font-semibold text-white shadow-sm shadow-hp-primary-light transition hover:bg-hp-primary"
+                    class="mb-5 inline-flex items-center justify-center rounded-full bg-hp-primary-dark px-6 py-3 font-semibold text-white shadow-sm shadow-hp-primary-light transition hover:bg-hp-primary"
                 >
                     Crear Gimcana
                 </button>
