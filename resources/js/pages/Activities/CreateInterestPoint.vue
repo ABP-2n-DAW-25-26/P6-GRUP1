@@ -47,7 +47,11 @@ const setInterestPointLocation = (coords: {
 
             <!-- Card -->
             <div>
-                <Form :action="store(exchangeId)" method="post" class="space-y-5">
+                <Form
+                    :action="store(exchangeId)"
+                    method="post"
+                    class="space-y-5"
+                >
                     <!-- Títol -->
                     <div>
                         <label
