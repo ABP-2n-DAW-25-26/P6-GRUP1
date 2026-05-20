@@ -150,57 +150,11 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
 <template>
     <div class="min-h-screen">
         <div class="overflow-hidden">
-            <div class="relative container pt-10 pb-10">
+            <div class="relative container pt-10">
                 <div class="mb-8 flex flex-col gap-3">
                     <h1 class="text-3xl font-semibold text-hp-text">
                         Crea gimcana
                     </h1>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="description">Descripcio</label>
-                    <textarea
-                        v-model="form.description"
-                        id="description"
-                        rows="3"
-                        placeholder="Descripcio de la gimcana"
-                        class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                    ></textarea>
-                </div>
-                <div>
-                    <label for="start_date">Data d'inici</label>
-                    <input
-                        v-model="form.start_date"
-                        type="datetime-local"
-                        id="start_date"
-                        class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                        required
-                    />
-                </div>
-                <div>
-                    <label for="end_date">Data de fi</label>
-                    <input
-                        v-model="form.end_date"
-                        type="datetime-local"
-                        id="end_date"
-                        class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                    />
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="theme_id">Tema</label>
-                    <select
-                        v-model="form.theme_id"
-                        id="theme_id"
-                        class="mt-2 w-full rounded-xl border border-hp-border bg-hp-bg-card p-2 shadow-sm focus:ring-2 focus:ring-hp-primary/50 focus:outline-none"
-                    >
-                        <option value="">Selecciona un tema</option>
-                        <option
-                            v-for="theme in props.themes"
-                            :key="theme.id"
-                            :value="theme.id"
-                        >
-                            {{ theme.name }}
-                        </option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -497,7 +451,7 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
 
                 <button
                     type="submit"
-                    class="inline-flex items-center justify-center rounded-full bg-hp-primary-dark px-6 py-3 font-semibold text-white shadow-sm shadow-hp-primary-light transition hover:bg-hp-primary"
+                    class="inline-flex items-center justify-center rounded-full bg-hp-primary-dark px-6 py-3 mb-5 font-semibold text-white shadow-sm shadow-hp-primary-light transition hover:bg-hp-primary"
                 >
                     Crear Gimcana
                 </button>
