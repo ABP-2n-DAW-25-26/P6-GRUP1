@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Activities\CreateGuidedActivityAction;
 use App\Http\Requests\CreateGuidedActivityRequest;
 use App\Models\Exchange;
-use App\Models\GuidedActivity;
+use App\Models\Activity;
 use App\Models\Locations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,24 +55,47 @@ class GuidedActivityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(GuidedActivity $guidedActivity)
-    {
-        //
-    }
+public function edit(Exchange $exchange, string $id)
+{
+    $activity = Activity::findOrFail($id);
+
+    return Inertia::render('Activities/EditGuidedActivity', [
+        'activity' => $activity,
+        'exchange' => $exchange,
+    ]);
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, GuidedActivity $guidedActivity)
-    {
-        //
-    }
+public function update(Request $request, Exchange $exchange, string $id)
+{
+    $activity = Activity::findOrFail($id);
+
+    $data = $request->validate([
+        'title' => ['required', 'string', 'max:255'],
+        'description' => ['nullable', 'string'],
+        'start_date' => ['nullable', 'date'],
+        'end_date' => ['nullable', 'date'],
+    ]);
+
+    $activity->update($data);
+
+    session()->flash('message', 'Activitat actualitzada correctament');
+
+    return to_route('exchange.show', $exchange->id);
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(GuidedActivity $guidedActivity)
+    public function destroy(Exchange $exchange, string $id)
     {
-        //
+        $activity = Activity::where('exchange_id', $exchange->id)->findOrFail($id);
+        $activity->delete();
+
+        Inertia::flash(['message' => 'Activitat guiada eliminada correctament']);
+
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 }

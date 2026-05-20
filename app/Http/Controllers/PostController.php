@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\ActivityImage;
 use App\Models\Exchange;
 use App\Models\Post;
@@ -66,9 +67,68 @@ class PostController extends Controller
         return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
-    public function edit(Exchange $exchange, Post $post)
+    public function edit(Exchange $exchange, string $id)
     {
-        dd('edit post TODO');
+        $activity = Activity::findOrFail($id);
+
+        return Inertia::render('Activities/EditPost', [
+            'post' => $activity->load('images'),
+            'exchange' => $exchange,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Exchange $exchange, string $id)
+    {
+        $activity = Activity::findOrFail($id);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'existing_images' => ['nullable', 'array'],
+            'files' => ['nullable', 'array'],
+            'files.*' => ['image', 'max:5120'],
+        ]);
+
+        $activity->update($data);
+
+        // Handle existing images - delete those not in the list
+        $existingImages = $data['existing_images'] ?? [];
+        $imagesToDelete = $activity->images()
+            ->whereNotIn('image_path', $existingImages)
+            ->get();
+
+        foreach ($imagesToDelete as $image) {
+            if (file_exists(storage_path("app/public/{$image->image_path}"))) {
+                unlink(storage_path("app/public/{$image->image_path}"));
+            }
+            $image->delete();
+        }
+
+        // Handle new files
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filePath = $file->store('files', 'public');
+
+                ActivityImage::create([
+                    'activity_id' => $activity->id,
+                    'image_path' => $filePath,
+                ]);
+            }
+        }
+
+        // Update the main file (first image)
+        $firstImage = $activity->images()->first();
+        $activity->file = $firstImage?->image_path ?? null;
+        $activity->save();
+
+        session()->flash('message', 'Post actualitzat correctament');
+
+        return to_route('exchange.show', $exchange->id);
     }
 
     public function show(Exchange $exchange, Post $post)
