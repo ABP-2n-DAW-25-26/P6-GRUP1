@@ -18,7 +18,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::with('exchanges')->get();
+        // Límit defensiu per evitar carregar dades innecessàries (MP1708 sostenibilitat).
+        // El cercador frontend filtra sobre aquest subconjunt; per a llistats grans
+        // s'hauria d'utilitzar paginació real al backend.
+        $users = User::with('exchanges')->latest()->take(200)->get();
 
         $stats = [
             'users' => User::count(),

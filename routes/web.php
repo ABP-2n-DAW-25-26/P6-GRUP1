@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/privacy', 'Privacy')->name('privacy');
+Route::inertia('/sostenibilitat', 'Sostenibilitat')->name('sostenibilitat');
 
 // OAuth — Google (restringit a @cendrassos.net)
 Route::get('/auth/gmail', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.gmail');

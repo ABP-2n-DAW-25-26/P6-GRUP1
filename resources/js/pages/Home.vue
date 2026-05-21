@@ -483,6 +483,13 @@ onMounted(() => {
                     >
                         Política de privacitat
                     </Link>
+
+                    <Link
+                        href="/sostenibilitat"
+                        class="text-sm text-primary/60 transition hover:text-primary"
+                    >
+                        Sostenibilitat (ASG)
+                    </Link>
                 </div>
             </div>
 
