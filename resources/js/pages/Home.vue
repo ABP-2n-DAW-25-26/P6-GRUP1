@@ -13,18 +13,18 @@ defineOptions({ layout: PublicLayout });
 <template>
     <Head title="Cendraquest" />
     <main
-        class="mx-auto flex max-w-7xl flex-col items-center gap-24 px-4 pt-16"
+        class="mx-auto flex max-w-7xl flex-col items-center gap-24 px-4"
     >
         <div>
             <img
-                src="/assets/cloud-corner-tr.png"
+                src="/assets/cloud-corner-tr.webp"
                 alt="bg image"
                 class="absolute top-0 right-0 w-1/3 [mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
         </div>
         <div>
             <img
-                src="/assets/cloud-corner-tr.png"
+                src="/assets/cloud-corner-tr.webp"
                 alt="bg image"
                 class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
@@ -35,14 +35,14 @@ defineOptions({ layout: PublicLayout });
             >
                 Control total del teu Erasmus
                 <img
-                    src="/assets/plane.jpg"
+                    src="/assets/plane.webp"
                     alt="Ala d'avió"
                     class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
                 <br />
                 en una
                 <img
-                    src="/assets/river.jpg"
+                    src="/assets/river.webp"
                     alt="Muntanya i riu"
                     class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
@@ -65,7 +65,7 @@ defineOptions({ layout: PublicLayout });
                 class="[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_70%,transparent_96%)]"
             >
                 <img
-                    src="/assets/schedule.png"
+                    src="/assets/schedule.webp"
                     alt="Imatge preview de la pàgina de l'horari"
                     class="mt-8 h-auto w-full max-w-5xl rounded-lg"
                 />
@@ -95,7 +95,7 @@ defineOptions({ layout: PublicLayout });
                 class="absolute inset-0 z-10 flex justify-center overflow-visible"
             >
                 <img
-                    src="/assets/clouds.png"
+                    src="/assets/clouds.webp"
                     alt="bg image"
                     class="absolute top-10 left-1/2 h-full w-[95dvw] max-w-none -translate-x-1/2 [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] [mask-composite:intersect] object-cover opacity-60 select-none [-webkit-mask-composite:source-in] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] dark:hidden"
                 />
@@ -120,7 +120,7 @@ defineOptions({ layout: PublicLayout });
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:-rotate-7"
                     >
                         <img
-                            src="/assets/step1.png"
+                            src="/assets/step1.webp"
                             alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
@@ -143,7 +143,7 @@ defineOptions({ layout: PublicLayout });
                             class="flex h-110 w-80 flex-col rounded-xl border bg-background p-3"
                         >
                             <img
-                                src="/assets/step2.png"
+                                src="/assets/step2.webp"
                                 alt="imagen de una feature"
                                 class="h-full w-full rounded-md object-cover"
                             />
@@ -173,7 +173,7 @@ defineOptions({ layout: PublicLayout });
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:rotate-7"
                     >
                         <img
-                            src="/assets/step3.png"
+                            src="/assets/step3.webp"
                             alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
@@ -201,14 +201,14 @@ defineOptions({ layout: PublicLayout });
             >
                 Programa activitats
                 <img
-                    src="/assets/museum.png"
+                    src="/assets/museum.webp"
                     alt="Ala d'avió"
                     class="mb-3 inline-flex h-12 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
                 <br />
                 pels teus
                 <img
-                    src="/assets/bosque.png"
+                    src="/assets/bosque.webp"
                     alt="Muntanya i riu"
                     class="mb-3 inline-flex h-12 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
@@ -243,7 +243,7 @@ defineOptions({ layout: PublicLayout });
                     <div class="rounded-lg bg-secondary">
                         <img
                             alt="img de una feature"
-                            src="/assets/post.png"
+                            src="/assets/post.webp"
                             class="mx-auto h-full w-min rounded-xl object-contain"
                         />
                     </div>
@@ -267,7 +267,7 @@ defineOptions({ layout: PublicLayout });
                     <div class="rounded-lg bg-secondary">
                         <img
                             alt="img de una feature"
-                            src="/assets/point.png"
+                            src="/assets/point.webp"
                             class="mx-auto h-full w-min rounded-xl object-contain"
                         />
                     </div>
@@ -290,7 +290,7 @@ defineOptions({ layout: PublicLayout });
                     <div class="rounded-lg bg-secondary">
                         <img
                             alt="img de una feature"
-                            src="/assets/visit.png"
+                            src="/assets/visit.webp"
                             class="mx-auto h-full w-min rounded-xl object-contain"
                         />
                     </div>
@@ -325,7 +325,7 @@ defineOptions({ layout: PublicLayout });
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/gimcana1.png"
+                                    src="/assets/gimcana1.webp"
                                     class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
@@ -333,7 +333,7 @@ defineOptions({ layout: PublicLayout });
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/gimcana2.png"
+                                    src="/assets/gimcana2.webp"
                                     class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
@@ -341,7 +341,7 @@ defineOptions({ layout: PublicLayout });
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/gimcana3.png"
+                                    src="/assets/gimcana3.webp"
                                     class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
@@ -360,7 +360,7 @@ defineOptions({ layout: PublicLayout });
                     >
                         Contacte amb
                         <img
-                            src="/assets/centre3.png"
+                            src="/assets/centre3.webp"
                             alt="imagen de la entrada del INS Cendrassos"
                             class="mb-2 inline-flex h-12 w-22 rounded-full border border-stone-300 object-cover shadow-md/30"
                         />
