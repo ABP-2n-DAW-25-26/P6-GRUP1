@@ -51,7 +51,7 @@ class GuidedActivityController extends Controller
 
         Inertia::flash(['message' => 'Activitat guiada creada correctament']);
 
-        return to_route('exchange.guidedactivity.index', ['exchange' => $exchange->id]);
+        return to_route('exchange.show', ['exchange' => $exchange->id]);
     }
 
     /**
