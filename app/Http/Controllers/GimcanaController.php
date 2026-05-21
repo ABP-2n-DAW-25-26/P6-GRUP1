@@ -69,7 +69,8 @@ class GimcanaController extends Controller
 
     public function show(Exchange $exchange, string $gimcana)
     {
-        $activity = Activity::where('exchange_id', $exchange->id)
+        $activity = Activity::with('theme')
+            ->where('exchange_id', $exchange->id)
             ->where('type', 'gimcana')
             ->findOrFail($gimcana);
 
@@ -78,9 +79,23 @@ class GimcanaController extends Controller
             ->orderBy('id')
             ->get();
 
+        $theme = $activity->theme ?? [
+            'id' => null,
+            'name' => 'Per defecte',
+            'primary' => '#00796b',
+            'primary_dark' => '#004238',
+            'secondary' => '#76b7a8',
+            'text' => '#1f2937',
+            'text_secondary' => '#58615F',
+            'background' => '#F6FAF8',
+            'background_card' => '#FFFFFF',
+        ];
+
         return Inertia::render('Activities/ShowGimcana', [
             'gimcana' => $activity,
             'locations' => $locations,
+            'theme' => $theme,
+            'themes' => Theme::all(),
         ]);
     }
 
@@ -162,5 +177,26 @@ class GimcanaController extends Controller
         Inertia::flash(['message' => 'Gimcana eliminada correctament']);
 
         return to_route('exchange.show', ['exchange' => $exchange->id]);
+    }
+
+    public function updateTheme(Request $request, Exchange $exchange, string $gimcana)
+    {
+        $user = auth()->user();
+
+        if (! in_array($user->role, ['admin', 'teacher'], true)) {
+            abort(403);
+        }
+
+        $activity = Activity::where('exchange_id', $exchange->id)
+            ->where('type', 'gimcana')
+            ->findOrFail($gimcana);
+
+        $data = $request->validate([
+            'theme_id' => ['nullable', 'integer', 'exists:themes,id'],
+        ]);
+
+        $activity->update(['theme_id' => $data['theme_id'] ?? null]);
+
+        return back();
     }
 }

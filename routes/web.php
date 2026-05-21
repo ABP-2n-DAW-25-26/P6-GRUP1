@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/privacy', 'Privacy')->name('privacy');
+Route::inertia('/sostenibilitat', 'Sostenibilitat')->name('sostenibilitat');
 
 // OAuth — Google (restringit a @cendrassos.net)
 Route::get('/auth/gmail', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.gmail');
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.post', PostController::class);
     Route::resource('exchange.guidedactivity', GuidedActivityController::class);
     Route::resource('exchange.gimcana', GimcanaController::class);
+    Route::patch('exchange/{exchange}/gimcana/{gimcana}/theme', [GimcanaController::class, 'updateTheme'])->name('exchange.gimcana.theme');
     Route::resource('exchange.interestpoint', InterestPointController::class);
     Route::get('theme/search', [ThemeController::class, 'search'])->name('theme.search');
     Route::get('/search/exchanges/{value}', [ExchangeController::class, 'search']);

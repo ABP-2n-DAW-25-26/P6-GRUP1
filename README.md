@@ -1,5 +1,17 @@
 # P6-GRUP1
 
+> Projecte **Hipatia** — Plataforma de gestió d'intercanvis Erasmus per a l'institut Cendrassos.
+> Equip **P06 - Cendrasoft**: Solaiman Baraka, Robert Poenaru, Balvinder Singh, Youssef Bakouh.
+
+## URLs de producció (HTTPS)
+
+| Entorn | URL |
+|--------|-----|
+| Solaiman | https://hipatia.sbaraka.cat/ |
+| Balvinder | http://hipatia.balvindermarfil.cat/ |
+| Youssef | https://hipatia.ybak.cat |
+| Robert | https://hipatia.robertgp.cat |
+
 Eines de desenvolupador que cal tenir instal·lades a l'ordinador
 
 [![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -156,3 +168,45 @@ A l'hora de crear els seeders per als temes predefinits se li va demanar a la IA
 Per crear els seeders dels intercanvis i les seves activitats s'ha utilitzat la IA per poder proporcionar informació verídica a l'hora de fer la demo.
 En crear una política de privacitat realista.
 El text de les cookies està generat amb IA per donar més impressió de realisme.
+
+## Política d'ús d'IA
+
+La IA es fa servir només com a **suport**. Tot el codi es revisa abans de fer commit.
+
+**Per a què la fem servir:**
+
+- Generar textos legals (privacitat, cookies).
+- Crear dades de prova als seeders.
+- Resoldre dubtes tècnics puntuals (Copilot Chat).
+- Autocompletat de codi (Copilot).
+
+**Què no fem:**
+
+- Enganxar codi sense entendre'l.
+- Passar dades reals d'usuari a la IA.
+
+**Cas d'ús destacat:** traducció dinàmica amb l'API de Groq (model `llama-3.1-8b-instant`). Les traduccions es guarden en caché a la BD per no repetir crides. Detalls a la secció [Traducció amb IA](#traducció-amb-ia).
+
+## Accessibilitat (WCAG 2.1)
+
+Objectiu: **nivell AA** a les pàgines públiques.
+
+Què hem fet:
+
+- Contrast de colors suficient (tokens Tailwind).
+- Navegació amb teclat a tots els botons i formularis.
+- Etiquetes `aria-label` i `alt` a imatges.
+- Estructura semàntica (`<header>`, `<main>`, `<footer>`, jerarquia de `<h1>`...`<h6>`).
+- Mode clar/fosc segons preferència del sistema.
+
+## Sostenibilitat — ASG
+
+Pàgina completa a [/sostenibilitat](resources/js/pages/Sostenibilitat.vue) (enllaçada al peu de la home).
+
+Petjada de carboni mesurada amb [Website Carbon](https://www.websitecarbon.com/website/hipatia-ybak-cat/) (21/05/2026):
+
+- **0,22 g de CO₂** per visita
+- Funciona amb energia sostenible
+- Rating: D
+
+Accions aplicades: imatges WebP, Vite minifica el bundle, caché de traduccions, Tailwind purge del CSS no utilitzat.

@@ -9,12 +9,12 @@ class Theme extends Model
     protected $fillable = [
         'name',
         'primary',
-        'primary-dark',
+        'primary_dark',
         'secondary',
         'text',
-        'text-secondary',
+        'text_secondary',
         'background',
-        'background-card',
+        'background_card',
     ];
 
     public $timestamps = false;
