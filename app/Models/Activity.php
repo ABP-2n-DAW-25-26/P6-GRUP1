@@ -29,6 +29,11 @@ class Activity extends Model
         return $this->belongsTo(Exchange::class);
     }
 
+    public function theme(): BelongsTo
+    {
+        return $this->belongsTo(Theme::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
