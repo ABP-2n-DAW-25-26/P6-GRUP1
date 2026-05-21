@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import L from 'leaflet';
 import {
     computed,
@@ -24,9 +24,66 @@ interface Location {
     order: number | null;
 }
 
+interface Theme {
+    id: number;
+    name: string;
+    primary: string;
+    primary_dark: string;
+    secondary: string;
+    text: string;
+    text_secondary: string;
+    background: string;
+    background_card: string;
+}
+
 const props = defineProps<{
     locations: Location[];
+    gimcana: { id: number; exchange_id: number; theme_id: number | null };
+    theme: Omit<Theme, 'id'> & { id: number | null };
+    themes: Theme[];
 }>();
+
+const page = usePage<{ auth: { user: { role: string } | null } }>();
+const canChangeTheme = computed(() => {
+    const role = page.props.auth.user?.role;
+    return role === 'admin' || role === 'teacher';
+});
+
+const themeStyle = computed(() => ({
+    '--hp-primary': props.theme.primary,
+    '--hp-primary-dark': props.theme.primary_dark,
+    '--hp-primary-darker': props.theme.primary_dark,
+    '--hp-primary-light': props.theme.secondary,
+}));
+
+const themeModalOpen = ref(false);
+const selectedThemeId = ref<number | null>(props.theme.id);
+const applyingTheme = ref(false);
+
+const openThemeModal = () => {
+    selectedThemeId.value = props.theme.id;
+    themeModalOpen.value = true;
+};
+
+const closeThemeModal = () => {
+    if (applyingTheme.value) return;
+    themeModalOpen.value = false;
+};
+
+const applyTheme = () => {
+    applyingTheme.value = true;
+    router.patch(
+        `/exchange/${props.gimcana.exchange_id}/gimcana/${props.gimcana.id}/theme`,
+        { theme_id: selectedThemeId.value },
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                applyingTheme.value = false;
+                themeModalOpen.value = false;
+            },
+        },
+    );
+};
 
 const currentIndex = ref(0);
 const userAnswer = ref('');
@@ -122,8 +179,12 @@ const completeQuestion = () => {
 };
 
 const createMarkerIcon = (isActive: boolean, isDone: boolean) => {
-    const background = isActive ? '#00796b' : isDone ? '#76b7a8' : '#d8efe9';
-    const border = isActive ? '#ffffff' : '#00796b';
+    const background = isActive
+        ? props.theme.primary
+        : isDone
+          ? props.theme.secondary
+          : props.theme.background_card;
+    const border = isActive ? '#ffffff' : props.theme.primary;
     const ring = isActive
         ? '<span class="absolute -inset-3 rounded-full bg-hp-primary/20"></span>'
         : '';
@@ -239,7 +300,7 @@ onBeforeUnmount(() => {
 <template>
     <Head title="Gimcana" />
 
-    <div class="relative min-h-full min-w-full overflow-hidden">
+    <div :style="themeStyle" class="relative min-h-full min-w-full overflow-hidden">
         <div ref="mapElement" class="absolute inset-0 z-0 rounded-xl"></div>
         <div
             class="pointer-events-none absolute inset-0 z-10 rounded-xl bg-hp-primary/10"
@@ -413,6 +474,85 @@ onBeforeUnmount(() => {
                     Has completat totes les proves
                 </h1>
             </section>
+        </div>
+
+        <button
+            v-if="canChangeTheme"
+            type="button"
+            class="pointer-events-auto absolute top-3 right-3 z-30 rounded-full bg-white px-4 py-2 text-sm font-semibold text-hp-primary shadow-lg transition hover:bg-gray-50"
+            @click="openThemeModal"
+        >
+            Canviar tema
+        </button>
+
+        <div
+            v-if="themeModalOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+            @click.self="closeThemeModal"
+        >
+            <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <div class="space-y-6">
+                    <div class="space-y-3">
+                        <h2 class="text-lg font-semibold text-gray-900">Canviar tema de la gimcana</h2>
+                        <p class="text-sm text-gray-600">
+                            Tria un tema per aplicar a aquesta gimcana.
+                        </p>
+                    </div>
+                    <div class="grid max-h-72 grid-cols-1 gap-2 overflow-y-auto">
+                        <label
+                            class="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-3 transition hover:bg-gray-50"
+                            :class="selectedThemeId === null ? 'border-hp-primary bg-hp-primary/5' : ''"
+                        >
+                            <input
+                                type="radio"
+                                name="theme"
+                                :value="null"
+                                v-model="selectedThemeId"
+                                class="h-4 w-4"
+                            />
+                            <span class="text-sm font-medium text-gray-700">Sense tema (per defecte)</span>
+                        </label>
+                        <label
+                            v-for="t in themes"
+                            :key="t.id"
+                            class="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-3 transition hover:bg-gray-50"
+                            :class="selectedThemeId === t.id ? 'border-hp-primary bg-hp-primary/5' : ''"
+                        >
+                            <input
+                                type="radio"
+                                name="theme"
+                                :value="t.id"
+                                v-model="selectedThemeId"
+                                class="h-4 w-4"
+                            />
+                            <span class="flex-1 text-sm font-medium text-gray-700">{{ t.name }}</span>
+                            <span class="flex gap-1">
+                                <span class="h-5 w-5 rounded-full border border-gray-200" :style="{ background: t.primary }"></span>
+                                <span class="h-5 w-5 rounded-full border border-gray-200" :style="{ background: t.primary_dark }"></span>
+                                <span class="h-5 w-5 rounded-full border border-gray-200" :style="{ background: t.secondary }"></span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button
+                            type="button"
+                            class="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
+                            :disabled="applyingTheme"
+                            @click="closeThemeModal"
+                        >
+                            Cancel·lar
+                        </button>
+                        <button
+                            type="button"
+                            class="flex-1 rounded-md bg-hp-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+                            :disabled="applyingTheme"
+                            @click="applyTheme"
+                        >
+                            {{ applyingTheme ? 'Aplicant...' : 'Aplicar' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
