@@ -153,7 +153,7 @@ const props = defineProps<{ themes: Theme[]; exchange: Exchange }>();
             <div class="relative container pt-10">
                 <div class="mb-8 flex flex-col gap-3">
                     <h1 class="text-3xl font-semibold text-hp-text">
-                        Crea gimcana
+                        Crea una gimcana
                     </h1>
                 </div>
             </div>

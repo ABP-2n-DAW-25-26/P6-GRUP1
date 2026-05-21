@@ -50,12 +50,13 @@ const activityOptions = [
     { label: "Punt d'interès", href: (id: number) => createInterest(id) },
     { label: 'Gimcana', href: (id: number) => createGimcana(id) },
 ];
-
+console.log(props.exchange);
+console.log(user);
 const emit = defineEmits(['assign-teacher', 'assign-student']);
 </script>
 <template>
     <div
-        class="mx-2 flex justify-between gap-6 overflow-auto border-b px-2 text-lg"
+        class="mx-2 flex justify-between gap-6 border-b px-2 text-lg"
     >
         <div
             v-if="exchange"
@@ -108,7 +109,7 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
             </div>
         </div>
         <button
-            v-else-if="$props.activeTab === 'teachers' && canManageActivities"
+            v-if="$props.activeTab === 'teachers' && canManageActivities"
             @click="emit('assign-teacher')"
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >
@@ -116,7 +117,7 @@ const emit = defineEmits(['assign-teacher', 'assign-student']);
             <span class="hidden sm:inline"> Assigna professor </span>
         </button>
         <button
-            v-else-if="$props.activeTab === 'students' && canManageActivities"
+            v-if="$props.activeTab === 'students' && canManageActivities"
             @click="emit('assign-student')"
             class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-nowrap text-white shadow-sm transition hover:opacity-90 active:scale-95"
         >

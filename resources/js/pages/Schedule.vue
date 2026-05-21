@@ -162,16 +162,31 @@ function getActivityRoutes(activity: Activity) {
             };
     }
 }
+
+function downloadPdf() {
+    window.print();
+}
 </script>
 
 <template>
     <Head title="Agenda" />
 
-    <div class="relative flex flex-1 flex-col gap-8 rounded-xl p-4">
+    <div class="relative flex flex-1 flex-col gap-8 rounded-xl p-4" id="agenda">
+        <button
+            @click="downloadPdf"
+            class="absolute w-min self-end rounded-xl bg-hp-primary px-4 py-2 font-semibold text-nowrap text-white hover:bg-hp-primary-dark"
+        >
+            Descarregar PDF
+        </button>
         <h1 class="text-center font-hp text-6xl text-hp-primary">agenda</h1>
+
+        <div class="flex items-center justify-center gap-4">
+            <h2 class="text-center text-2xl font-bold">{{ exchange.title }}</h2>
+        </div>
+
         <div
             v-if="exchange !== null"
-            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase"
+            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase dark:bg-neutral-800"
         >
             <div class="mx-auto flex gap-2">
                 <div
@@ -199,6 +214,7 @@ function getActivityRoutes(activity: Activity) {
                 </div>
             </div>
         </div>
+
         <div v-else class="px-30 text-center text-gray-500">
             No hi ha cap intercanvi programat. Has d'esperar a que un professor
             creï un intercanvi i t'assigni a tu perquè puguis veure les
@@ -218,9 +234,9 @@ function getActivityRoutes(activity: Activity) {
                         <h3 v-else class="text-xl font-bold capitalize">
                             {{ formatDayName(day.date) }}
                         </h3>
-                        <time :datetime="day.date" class="text-gray-400"
-                            >{{ day.day }} {{ formatMonthName(day.date) }}</time
-                        >
+                        <time :datetime="day.date" class="text-gray-400">
+                            {{ day.day }} {{ formatMonthName(day.date) }}
+                        </time>
                     </div>
 
                     <div v-if="day.activities.length > 0" class="space-y-4">
@@ -237,6 +253,7 @@ function getActivityRoutes(activity: Activity) {
                                     {{ formatTime(activity.end_date) }}
                                 </time>
                             </div>
+
                             <div class="flex w-full">
                                 <Link
                                     :href="getActivityRoutes(activity).show"
@@ -252,6 +269,7 @@ function getActivityRoutes(activity: Activity) {
                                             {{ activity.description }}
                                         </p>
                                     </div>
+
                                     <div class="flex items-center gap-4">
                                         <Avatar
                                             class="h-12 w-12 overflow-hidden rounded-full"
@@ -271,6 +289,7 @@ function getActivityRoutes(activity: Activity) {
                                                 }}
                                             </AvatarFallback>
                                         </Avatar>
+
                                         <ChevronRight
                                             class="text-gray-500 group-hover:text-gray-900 group-hover:dark:text-gray-100"
                                             :size="18"
@@ -280,9 +299,18 @@ function getActivityRoutes(activity: Activity) {
                             </div>
                         </div>
                     </div>
+
                     <div v-else class="text-gray-600">Sense activitats</div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<style>
+@media print {
+    button {
+        display: none !important;
+    }
+}
+</style>

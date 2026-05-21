@@ -7,6 +7,16 @@ import { ArrowUpRight } from 'lucide-vue-next';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { ref } from 'vue';
+
+defineOptions({ layout: PublicLayout });
+
+// Regex simple para validar que el título no tenga símbolos raros
+const safeTitleRegex = /^[A-Za-z0-9\s]+$/;
+
+// Log de prueba (no afecta a la UI)
+console.log('Title check:', safeTitleRegex.test('Cendraquest'));
+console.log('App loaded: Cendraquest');
 import { initCookieConsent } from '@/cookieconsent';
 
 defineOptions({ layout: PublicLayout });
@@ -19,20 +29,20 @@ onMounted(() => {
 <template>
     <Head title="Cendraquest" />
     <main
-        class="mx-auto flex max-w-7xl flex-col items-center gap-24 px-4 pt-16"
+        class="mx-auto flex max-w-7xl flex-col items-center gap-24 px-4"
     >
         <div>
             <img
-                src="/assets/cloud-corner-tr.png"
-                alt=""
-                class="absolute top-0 right-0 w-1/3 [mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)]"
+                src="/assets/cloud-corner-tr.webp"
+                alt="bg image"
+                class="absolute top-0 right-0 w-1/3 [mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
         </div>
         <div>
             <img
-                src="/assets/cloud-corner-tr.png"
-                alt=""
-                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)]"
+                src="/assets/cloud-corner-tr.webp"
+                alt="bg image"
+                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
         </div>
         <section class="z-10 flex flex-col items-center gap-3">
@@ -41,14 +51,14 @@ onMounted(() => {
             >
                 Control total del teu Erasmus
                 <img
-                    src="/assets/plane.jpg"
+                    src="/assets/plane.webp"
                     alt="Ala d'avió"
                     class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
                 <br />
                 en una
                 <img
-                    src="/assets/river.jpg"
+                    src="/assets/river.webp"
                     alt="Muntanya i riu"
                     class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
@@ -71,7 +81,7 @@ onMounted(() => {
                 class="[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_70%,transparent_96%)]"
             >
                 <img
-                    src="/assets/schedule.png"
+                    src="/assets/schedule.webp"
                     alt="Imatge preview de la pàgina de l'horari"
                     class="mt-8 h-auto w-full max-w-5xl rounded-lg"
                 />
@@ -101,9 +111,9 @@ onMounted(() => {
                 class="absolute inset-0 z-10 flex justify-center overflow-visible"
             >
                 <img
-                    src="/assets/clouds.png"
-                    alt=""
-                    class="absolute top-10 left-1/2 h-full w-[95dvw] max-w-none -translate-x-1/2 [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] [mask-composite:intersect] object-cover opacity-60 select-none [-webkit-mask-composite:source-in] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)]"
+                    src="/assets/clouds.webp"
+                    alt="bg image"
+                    class="absolute top-10 left-1/2 h-full w-[95dvw] max-w-none -translate-x-1/2 [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] [mask-composite:intersect] object-cover opacity-60 select-none [-webkit-mask-composite:source-in] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] dark:hidden"
                 />
             </div>
             <div class="relative z-20 flex flex-col items-center gap-3">
@@ -126,21 +136,21 @@ onMounted(() => {
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:-rotate-7"
                     >
                         <img
-                            src="/assets/feature3.png"
-                            alt=""
+                            src="/assets/step1.webp"
+                            alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
                         <div class="mx-4">
                             <h3
                                 class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                             >
-                                Planificació fàcil
+                                Crea un intercanvi
                             </h3>
                             <p
                                 class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                             >
-                                Organitza els teus viatges Erasmus de manera
-                                ràpida i senzilla.
+                                Defineix un nou intercanvi Erasmus on
+                                gestionaràs tot el programa del centre.
                             </p>
                         </div>
                     </article>
@@ -149,21 +159,22 @@ onMounted(() => {
                             class="flex h-110 w-80 flex-col rounded-xl border bg-background p-3"
                         >
                             <img
-                                src="/assets/feature3.png"
-                                alt=""
+                                src="/assets/step2.webp"
+                                alt="imagen de una feature"
                                 class="h-full w-full rounded-md object-cover"
                             />
                             <div class="mx-4">
                                 <h3
                                     class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                                 >
-                                    Itineraris personalitzats
+                                    Crea activitats
                                 </h3>
                                 <p
                                     class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                                 >
-                                    Crea itineraris adaptats a les teves
-                                    preferències i necessitats.
+                                    Afegeix una activitat (dels 4 tipus
+                                    disponibles) per organitzar l’experiència
+                                    dels estudiants.
                                 </p>
                             </div>
                         </article>
@@ -171,28 +182,29 @@ onMounted(() => {
                             :href="login()"
                             class="rounded-lg bg-primary px-10 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-hp-primary-dark"
                         >
-                            Proba ja!
+                            Prova ja!
                         </Link>
                     </div>
                     <article
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:rotate-7"
                     >
                         <img
-                            src="/assets/feature3.png"
-                            alt=""
+                            src="/assets/step3.webp"
+                            alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
                         <div class="mx-4">
                             <h3
                                 class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                             >
-                                Recordatoris automàtics
+                                Importa estudiants
                             </h3>
                             <p
                                 class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                             >
-                                Rebràs notificacions per no oblidar-te cap
-                                detall important.
+                                Carrega els alumnes des d’un fitxer CSV i envia
+                                automàticament les credencials d’accés per
+                                correu electrònic.
                             </p>
                         </div>
                     </article>
@@ -205,14 +217,14 @@ onMounted(() => {
             >
                 Programa activitats
                 <img
-                    src="/assets/museum.png"
+                    src="/assets/museum.webp"
                     alt="Ala d'avió"
                     class="mb-3 inline-flex h-12 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
                 <br />
                 pels teus
                 <img
-                    src="/assets/bosque.png"
+                    src="/assets/bosque.webp"
                     alt="Muntanya i riu"
                     class="mb-3 inline-flex h-12 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
                 />
@@ -244,7 +256,13 @@ onMounted(() => {
                         </p>
                     </div>
 
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/post.webp"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div>
@@ -262,7 +280,13 @@ onMounted(() => {
                             monument de la zona!
                         </p>
                     </div>
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/point.webp"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div>
@@ -279,7 +303,13 @@ onMounted(() => {
                             un volt a la zona.
                         </p>
                     </div>
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/visit.webp"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div class="md:col-span-3 *:md:mx-auto *:md:text-center">
@@ -310,22 +340,25 @@ onMounted(() => {
                         >
                             <SwiperSlide>
                                 <img
-                                    src="/assets/feature1.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    alt="img de una feature"
+                                    src="/assets/gimcana1.webp"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
 
                             <SwiperSlide>
                                 <img
-                                    src="/assets/feature2.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    alt="img de una feature"
+                                    src="/assets/gimcana2.webp"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
 
                             <SwiperSlide>
                                 <img
-                                    src="/assets/feature3.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    alt="img de una feature"
+                                    src="/assets/gimcana3.webp"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
                         </Swiper>
@@ -343,8 +376,8 @@ onMounted(() => {
                     >
                         Contacte amb
                         <img
-                            src="/assets/centre3.png"
-                            alt=""
+                            src="/assets/centre3.webp"
+                            alt="imagen de la entrada del INS Cendrassos"
                             class="mb-2 inline-flex h-12 w-22 rounded-full border border-stone-300 object-cover shadow-md/30"
                         />
                         el centre
@@ -450,7 +483,7 @@ onMounted(() => {
                         class="text-sm text-primary/60 transition hover:text-primary"
                     >
                         Política de privacitat
-                </Link>
+                    </Link>
                 </div>
             </div>
 

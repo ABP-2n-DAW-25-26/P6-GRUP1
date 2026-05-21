@@ -64,13 +64,14 @@ async function searchThemes() {
         </div>
 
         <div class="max-w-md">
-            <input
-                v-model="search"
-                type="text"
-                placeholder="Cerca un tema..."
-                @input="searchThemes"
-                class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-hp-text shadow-sm focus:border-hp-primary focus:outline-none"
-            />
+            <label for="search">
+                <input
+                    v-model="search"
+                    type="text"
+                    placeholder="Cerca un tema..."
+                    @input="searchThemes"
+                    class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-hp-text shadow-sm focus:border-hp-primary focus:outline-none"
+            /></label>
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

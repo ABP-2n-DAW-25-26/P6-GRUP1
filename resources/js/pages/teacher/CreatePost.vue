@@ -97,14 +97,20 @@ onBeforeUnmount(() => {
     quill = null;
 });
 </script>
+
 <template>
     <div class="flex justify-center pt-6 sm:min-h-screen lg:min-h-screen">
         <div class="w-full max-w-md">
-            <div class="mb-7 text-center">
-                <h1 class="font-hp text-6xl text-hp-primary">Anunci</h1>
+            <div class="mb-6 text-center">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Crea un anunci
+                </h1>
+
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    Completa la informació per crear una nova activitat
+                </p>
             </div>
 
-            <!-- Card -->
             <div class="">
                 <Form
                     :action="store({ exchange: props.exchangeId })"
@@ -112,27 +118,43 @@ onBeforeUnmount(() => {
                     enctype="multipart/form-data"
                     class="space-y-5"
                 >
-                    <!-- Títol -->
                     <div>
-                        <label class="text-sm font-medium text-hp-text"
-                            >Títol</label
+                        <label
+                            for="title"
+                            class="text-sm font-medium text-hp-text"
                         >
+                            Títol
+                        </label>
+
                         <input
+                            id="title"
                             type="text"
                             name="title"
                             placeholder="Anunci..."
+                            autocomplete="off"
                             class="mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </div>
 
-                    <!-- Descripció -->
                     <div>
-                        <label class="text-sm font-medium text-hp-text"
-                            >Descripció</label
+                        <label
+                            for="description"
+                            class="text-sm font-medium text-hp-text"
                         >
+                            Descripció
+                        </label>
+
                         <div class="quill-wrapper mt-1">
-                            <div ref="editorRef" class="quill-container"></div>
+                            <div
+                                id="description"
+                                ref="editorRef"
+                                class="quill-container"
+                                role="textbox"
+                                aria-multiline="true"
+                                aria-label="Descripció de l'anunci"
+                            ></div>
                         </div>
+
                         <input
                             type="hidden"
                             name="description"
@@ -140,13 +162,17 @@ onBeforeUnmount(() => {
                         />
                     </div>
 
-                    <!-- Dates -->
                     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                         <div>
-                            <label class="text-sm font-medium text-hp-text"
-                                >Comença</label
+                            <label
+                                for="start_date"
+                                class="text-sm font-medium text-hp-text"
                             >
+                                Comença
+                            </label>
+
                             <input
+                                id="start_date"
                                 type="datetime-local"
                                 name="start_date"
                                 class="mt-1 w-full rounded-md border border-hp-bg-icon bg-hp-bg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none"
@@ -154,30 +180,40 @@ onBeforeUnmount(() => {
                         </div>
 
                         <div>
-                            <label class="text-sm font-medium text-hp-text"
-                                >Acaba</label
+                            <label
+                                for="end_date"
+                                class="text-sm font-medium text-hp-text"
                             >
+                                Acaba
+                            </label>
+
                             <input
+                                id="end_date"
                                 type="datetime-local"
                                 name="end_date"
                                 class="mt-1 w-full rounded-md border border-hp-bg-icon bg-hp-bg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none"
                             />
                         </div>
                     </div>
-                    <!-- Imatge -->
+
                     <div>
                         <label
+                            for="files"
                             class="mb-3 block text-sm font-medium text-hp-text"
                         >
                             Imatge
                         </label>
+
                         <label
+                            for="files"
                             class="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-teal-300 transition hover:border-teal-500 hover:bg-teal-50"
                         >
-                            <span class="text-sm text-gray-600"
-                                >Fes clic per pujar una o més imatges</span
-                            >
+                            <span class="text-sm text-gray-600">
+                                Fes clic per pujar una o més imatges
+                            </span>
+
                             <input
+                                id="files"
                                 ref="fileInput"
                                 type="file"
                                 name="files[]"
@@ -185,10 +221,11 @@ onBeforeUnmount(() => {
                                 class="hidden"
                                 accept="image/*"
                                 multiple
+                                aria-label="Pujar imatges"
                                 @change="handleFileChange"
                             />
                         </label>
-                        <!-- Preview -->
+
                         <div
                             v-if="previews.length"
                             class="mt-4 grid grid-cols-2 gap-3"
@@ -197,22 +234,23 @@ onBeforeUnmount(() => {
                                 v-for="(preview, index) in previews"
                                 :key="`${preview}-${index}`"
                                 :src="preview"
-                                :alt="`Preview ${index + 1}`"
+                                :alt="`Vista prèvia imatge ${index + 1}`"
                                 class="inset-shadow-lg h-32 w-full rounded-2xl border border-hp-primary bg-hp-primary/30 object-contain p-1 shadow-[inset_0_0_20px_5px_rgba(0,0,0,0.3)] shadow-hp-primary"
                             />
                         </div>
                     </div>
 
-                    <!-- Botó enviar -->
                     <div class="flex w-full gap-3 pt-2">
                         <button
                             type="button"
+                            aria-label="Cancel·lar creació activitat"
                             class="flex-1 rounded-md border border-hp-bg-icon py-2 text-sm"
                         >
                             Cancel·lar
                         </button>
                         <button
                             type="submit"
+                            aria-label="Crear activitat"
                             class="flex-1 rounded-md bg-hp-primary py-2 text-sm font-semibold hover:bg-teal-300"
                         >
                             Crear Activitat

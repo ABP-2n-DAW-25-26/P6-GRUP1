@@ -11,7 +11,15 @@ class ExchangeTeacherController extends Controller
 {
     public function index(Exchange $exchange)
     {
-        $teachers = $exchange->users()->where('role', 'teacher')->get();
+        $exchange->load([
+            'users' => function ($query) {
+                $query->select('users.id', 'role');
+            }
+        ]);
+
+        $teachers = $exchange->users()
+            ->where('role', 'teacher')
+            ->get();
 
         return inertia('teacher/TeachersList', [
             'exchange' => $exchange,
