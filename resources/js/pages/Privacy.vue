@@ -12,9 +12,7 @@ defineOptions({ layout: PublicLayout });
 
 <template>
     <Head title="Privacy" />
-    <main
-        class="mx-auto flex max-w-7xl flex-col items-center gap-24 px-4 pt-16"
-    >
+    <main class="mx-auto flex max-w-6xl flex-col gap-16 px-4 pt-16">
         <div>
             <img
                 src="/assets/cloud-corner-tr.png"
@@ -26,36 +24,137 @@ defineOptions({ layout: PublicLayout });
             <img
                 src="/assets/cloud-corner-tr.png"
                 alt=""
-                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)]"
+                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)]"
             />
         </div>
-        <section class="z-10 flex flex-col items-center gap-3">
-            <h1
-                class="text-hipatia-text text-center font-inter text-6xl leading-22 font-medium tracking-tight text-primary capitalize"
-            >
-                Control total del teu Erasmus
-                <img
-                    src="/assets/plane.jpg"
-                    alt="Ala d'avió"
-                    class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
-                />
-                <br />
-                en una
-                <img
-                    src="/assets/river.jpg"
-                    alt="Muntanya i riu"
-                    class="mb-4 inline-flex h-14 w-24 rounded-full border border-2 border-stone-300 object-cover shadow-md/30"
-                />
-                plataforma
+        <section class="z-20 flex flex-col gap-4">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary/70">
+                Politica de privacitat
+            </p>
+            <h1 class="text-hipatia-text font-inter text-5xl font-medium text-primary">
+                Una politica clara, sense sorpreses
             </h1>
+            <p class="max-w-2xl text-base leading-7 text-primary/70">
+                Aquesta pagina descriu com recollim, utilitzem i protegim les
+                teves dades quan fas servir Hipàtia. El nostre objectiu
+                es ser transparents i donar-te el control.
+            </p>
         </section>
-        <footer class="w-full border-t border-gray-200 bg-background">
+
+        <section class="grid z-20 gap-10 md:grid-cols-[2fr,1fr]">
+            <div class="space-y-10">
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        1. Qui som
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Hipàtia es una aplicacio educativa creada per
+                        ajudar estudiants i coordinadors a gestionar estades
+                        Erasmus de manera simple i segura.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        2. Dades que recollim
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Recollim dades necessaries per oferir el servei:
+                        identificacio, contacte, informacio academica bàsica i
+                        activitats que decideixes compartir.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        3. Per a que les fem servir
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Utilitzem les dades per crear el teu compte, gestionar
+                        processos Erasmus, enviar comunicacions rellevants i
+                        millorar el servei. No venem les teves dades.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        4. Base legal
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Tractem les dades per execucio d'un contracte, interès
+                        legitím i, quan cal, pel teu consentiment.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        5. Conservacio
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Mantenim les dades mentre tens compte actiu o mentre
+                        sigui necessari per complir obligacions legals.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        6. Amb qui compartim dades
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Nomes compartim dades amb proveidors tecnics que ens
+                        ajuden a operar la plataforma, sempre sota acords de
+                        confidencialitat.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        7. Els teus drets
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Pots accedir, rectificar o suprimir les teves dades, o
+                        limitar-ne el tractament. Escriu-nos i t'ajudarem.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="text-xl font-semibold text-primary">
+                        8. Contacte
+                    </h2>
+                    <p class="text-sm leading-7 text-primary/70">
+                        Per consultes de privacitat: hipatiaweb@cendrassos.net
+                    </p>
+                </div>
+            </div>
+
+            <aside class="z-20 rounded-3xl border border-primary/10 bg-white/70 p-6 shadow-sm">
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-primary">
+                        Resum rapid
+                    </h3>
+                    <ul class="space-y-3 text-sm text-primary/70">
+                        <li>Recollim nomes el necessari per al servei.</li>
+                        <li>No venem ni cedim dades personals.</li>
+                        <li>Pots gestionar els teus drets en qualsevol moment.</li>
+                        <li>Protegim la informació amb mesures tecnològiques.</li>
+                    </ul>
+                    <Link
+                        :href="login()"
+                        class="inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:text-primary/80"
+                    >
+                        Accedeix al teu compte
+                        <ArrowUpRight class="h-4 w-4" />
+                    </Link>
+                </div>
+            </aside>
+        </section>
+        <footer class="z-20 w-full border-t border-gray-200 bg-background">
             <div
                 class="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-12 md:flex-row md:items-start md:justify-between"
             >
                 <div class="max-w-sm">
                     <h3 class="text-lg font-semibold text-primary">
-                        Erasmus Platform
+                        Hipàtia
                     </h3>
                     <p class="mt-2 text-sm text-primary/60">
                         Plataforma per a la gestió i organització d’experiències
@@ -119,7 +218,7 @@ defineOptions({ layout: PublicLayout });
             <div
                 class="border-t border-gray-200 py-4 text-center text-xs text-primary/50"
             >
-                © {{ new Date().getFullYear() }} Erasmus Platform. Tots els
+                © {{ new Date().getFullYear() }} Hipàtia. Tots els
                 drets reservats.
             </div>
         </footer>
