@@ -17,6 +17,9 @@ const props = defineProps<{ exchangesList: Exchange[] }>();
 
 defineOptions({ layout: AppLayout });
 
+// Regex per validar que la cerca no tingui símbols estranys
+const safeSearchRegex = /^[A-Za-z0-9\s\-àáâãäåèéêëìíîïòóôõöùúûüÀÁÈÉÍÒÓÚÜçÇ]+$/;
+
 const activeFilter = ref<'tots' | 'actius' | 'finalitzats'>('tots');
 const deleteModalOpen = ref(false);
 const exchangeToDelete = ref<Exchange | null>(null);
@@ -30,6 +33,8 @@ async function handleSearch() {
         exchanges.value = props.exchangesList;
         return;
     }
+
+    if (!safeSearchRegex.test(searchQuery.value)) return;
 
     const response = await fetch(`/search/exchanges/${encodeURIComponent(searchQuery.value)}`);
     const data = await response.json();
@@ -106,7 +111,6 @@ const statusClass: Record<string, string> = {
             </button>
         </div>
 
-        <!-- Taula -->
         <div class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
             <table class="min-w-full text-sm">
                 <thead>
