@@ -48,9 +48,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+
+    Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
+    Route::resource('admin', AdminController::class);
 });
-Route::inertia('teacher', 'teacher/TeacherPanel')->name('teacher');
-Route::resource('admin', AdminController::class);
 
 Route::post('/api/translate', [TranslationController::class, 'translatePage']);
 
