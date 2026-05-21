@@ -171,7 +171,7 @@ function getActivityRoutes(activity: Activity) {
         <h1 class="text-center font-hp text-6xl text-hp-primary">agenda</h1>
         <div
             v-if="exchange !== null"
-            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 px-4 py-6 uppercase"
+            class="z-20 mx-auto flex w-full gap-6 rounded-3xl bg-stone-100 dark:bg-neutral-800 px-4 py-6 uppercase"
         >
             <div class="mx-auto flex gap-2">
                 <div

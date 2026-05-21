@@ -204,7 +204,7 @@
     --hp-bg-icon: #d8d9dc;
     --hp-bg: #edf1f7;
     --font-hp: 'Catalona', sans-serif;
-    --hp-role-admin: #4dbcad;
+    --hp-role-admin: #000202;
     --hp-role-admin-bg: #d0f0ec;
     --hp-role-teacher: #1d4ed8;
     --hp-role-teacher-bg: #dbeafe;
@@ -270,12 +270,12 @@
 
     /* Badges d'estat dels intercanvis */
     .badge-actiu {
-        color: #4dbcad;
+        color: #2f746b;
         background: #d0f0ec;
         border: 1px solid #a3ddd7;
     }
     .badge-pendent {
-        color: #e84c4c;
+        color: #a43333;
         background: #fde8e8;
         border: 1px solid #f4b8b8;
     }

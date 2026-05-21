@@ -99,14 +99,16 @@ function onSearch() {
             <Search
                 class="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400"
             />
-            <input
-                id="search-users"
-                v-model="searchQuery"
-                type="text"
-                placeholder="Cerca usuaris per nom..."
-                class="w-full rounded-xl border border-gray-200 bg-white py-2.5 pr-4 pl-9 text-sm shadow-sm focus:border-hp-primary focus:ring-1 focus:ring-hp-primary focus:outline-none"
-                @input="onSearch"
-            />
+            <label for="search user">
+                <input
+                    id="search-users"
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Cerca usuaris per nom..."
+                    class="w-full rounded-xl border border-gray-200 bg-white py-2.5 pr-4 pl-9 text-sm shadow-sm focus:border-hp-primary focus:ring-1 focus:ring-hp-primary focus:outline-none"
+                    @input="onSearch"
+                />
+            </label>
         </div>
 
         <div

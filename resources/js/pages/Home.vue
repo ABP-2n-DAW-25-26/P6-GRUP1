@@ -18,15 +18,15 @@ defineOptions({ layout: PublicLayout });
         <div>
             <img
                 src="/assets/cloud-corner-tr.png"
-                alt=""
-                class="absolute top-0 right-0 w-1/3 [mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)]"
+                alt="bg image"
+                class="absolute top-0 right-0 w-1/3 [mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_top_right,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
         </div>
         <div>
             <img
                 src="/assets/cloud-corner-tr.png"
-                alt=""
-                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)]"
+                alt="bg image"
+                class="absolute top-0 left-0 w-1/2 [mask-image:radial-gradient(center,black_0%,black_45%,transparent_75%)] object-contain [-webkit-mask-image:radial-gradient(ellipse_at_center,black_0%,black_45%,transparent_75%)] dark:hidden"
             />
         </div>
         <section class="z-10 flex flex-col items-center gap-3">
@@ -96,8 +96,8 @@ defineOptions({ layout: PublicLayout });
             >
                 <img
                     src="/assets/clouds.png"
-                    alt=""
-                    class="absolute top-10 left-1/2 h-full w-[95dvw] max-w-none -translate-x-1/2 [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] [mask-composite:intersect] object-cover opacity-60 select-none [-webkit-mask-composite:source-in] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)]"
+                    alt="bg image"
+                    class="absolute top-10 left-1/2 h-full w-[95dvw] max-w-none -translate-x-1/2 [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] [mask-composite:intersect] object-cover opacity-60 select-none [-webkit-mask-composite:source-in] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_85%,transparent_100%),linear-gradient(to_bottom,transparent_0%,black_15%,black_85%,transparent_100%)] dark:hidden"
                 />
             </div>
             <div class="relative z-20 flex flex-col items-center gap-3">
@@ -121,7 +121,7 @@ defineOptions({ layout: PublicLayout });
                     >
                         <img
                             src="/assets/feature3.png"
-                            alt=""
+                            alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
                         <div class="mx-4">
@@ -144,7 +144,7 @@ defineOptions({ layout: PublicLayout });
                         >
                             <img
                                 src="/assets/feature3.png"
-                                alt=""
+                                alt="imagen de una feature"
                                 class="h-full w-full rounded-md object-cover"
                             />
                             <div class="mx-4">
@@ -173,7 +173,7 @@ defineOptions({ layout: PublicLayout });
                     >
                         <img
                             src="/assets/feature3.png"
-                            alt=""
+                            alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
                         <div class="mx-4">
@@ -304,6 +304,7 @@ defineOptions({ layout: PublicLayout });
                         >
                             <SwiperSlide>
                                 <img
+                                    alt="img de una feature"
                                     src="/assets/feature1.png"
                                     class="h-full w-min object-contain rounded-xl mx-auto"
                                 />
@@ -311,6 +312,7 @@ defineOptions({ layout: PublicLayout });
 
                             <SwiperSlide>
                                 <img
+                                    alt="img de una feature"
                                     src="/assets/feature2.png"
                                     class="h-full w-min object-contain rounded-xl mx-auto"
                                 />
@@ -318,6 +320,7 @@ defineOptions({ layout: PublicLayout });
 
                             <SwiperSlide>
                                 <img
+                                    alt="img de una feature"
                                     src="/assets/feature3.png"
                                     class="h-full w-min object-contain rounded-xl mx-auto"
                                 />
@@ -338,7 +341,7 @@ defineOptions({ layout: PublicLayout });
                         Contacte amb
                         <img
                             src="/assets/centre3.png"
-                            alt=""
+                            alt="imagen de la entrada del INS Cendrassos"
                             class="mb-2 inline-flex h-12 w-22 rounded-full border border-stone-300 object-cover shadow-md/30"
                         />
                         el centre

@@ -65,11 +65,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Themes',
-                // href: themeIndexUrl,
-            },
-            {
-                title: 'Create',
+                title: 'Crear tema',
             },
         ],
     },
@@ -86,14 +82,21 @@ defineOptions({
                     >
                         Crea un tema personalitzat
                     </h1>
-                    <label class="mt-6 block text-sm font-medium text-slate-500"
-                        >Nom del tema</label
+
+                    <label
+                        for="theme-name"
+                        class="mt-6 block text-sm font-medium text-slate-500"
                     >
+                        Nom del tema
+                    </label>
+
                     <input
+                        id="theme-name"
                         type="text"
                         name="name"
                         v-model="palette.name"
                         placeholder="Girona"
+                        autocomplete="off"
                         class="mt-2 w-full border-b border-slate-200 bg-transparent pb-2 text-lg text-slate-700 placeholder:text-slate-300 focus:border-hp-primary focus:outline-none"
                     />
                 </div>
@@ -120,35 +123,46 @@ defineOptions({
                         <div
                             class="flex h-24 items-center justify-center rounded-xl border border-slate-200"
                             :style="{ backgroundColor: palette[color.key] }"
+                            :aria-label="`Vista prèvia color ${color.title}`"
+                            role="img"
                         >
                             <span
                                 v-if="color.preview === 'type'"
                                 class="text-2xl font-semibold text-white"
-                                >Aa</span
                             >
+                                Aa
+                            </span>
+
                             <span
                                 v-else-if="color.preview === 'readability'"
                                 class="text-sm font-semibold text-white"
-                                >Aa</span
                             >
+                                Aa
+                            </span>
+
                             <div
                                 v-else-if="color.preview === 'canvas'"
                                 class="w-30"
+                                aria-hidden="true"
                             >
                                 <div
                                     class="h-2 w-30 rounded bg-slate-300/60"
                                 ></div>
+
                                 <div
                                     class="mt-2 h-2 w-25 rounded bg-slate-300/60"
                                 ></div>
                             </div>
+
                             <div
                                 v-else-if="color.preview === 'card'"
                                 class="w-30 rounded-lg bg-white/80 p-3"
+                                aria-hidden="true"
                             >
                                 <div
                                     class="h-2 w-25 rounded bg-slate-200/80"
                                 ></div>
+
                                 <div
                                     class="mt-2 h-2 w-20 rounded bg-slate-200/80"
                                 ></div>
@@ -161,24 +175,37 @@ defineOptions({
                                     {{ color.title }}
                                 </p>
                             </div>
-                            <span class="font-mono text-xs text-hp-text-dim">{{
-                                palette[color.key]
-                            }}</span>
+
+                            <span class="font-mono text-xs text-hp-text-dim">
+                                {{ palette[color.key] }}
+                            </span>
                         </div>
 
                         <div class="mt-3 flex items-center gap-3">
+                            <label :for="`picker-${color.key}`" class="sr-only">
+                                Selector de color {{ color.title }}
+                            </label>
+
                             <input
+                                :id="`picker-${color.key}`"
                                 type="color"
                                 v-model="palette[color.key]"
-                                aria-label="Pick color"
+                                :aria-label="`Selecciona el color ${color.title}`"
                                 class="h-9 w-12 cursor-pointer"
                                 style="border: none"
                             />
+
+                            <label :for="`hex-${color.key}`" class="sr-only">
+                                Valor hexadecimal {{ color.title }}
+                            </label>
+
                             <input
+                                :id="`hex-${color.key}`"
                                 type="text"
                                 :name="color.name"
                                 v-model="palette[color.key]"
                                 placeholder="#000000"
+                                autocomplete="off"
                                 class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-hp-primary focus:outline-none"
                             />
                         </div>
@@ -188,12 +215,15 @@ defineOptions({
                 <div class="flex flex-col justify-end gap-3 sm:flex-row">
                     <Link
                         :href="themeIndexUrl"
+                        aria-label="Cancelar creació del tema"
                         class="inline-flex items-center justify-center rounded-full border border-hp-primary bg-white px-6 py-2 text-sm font-semibold text-hp-primary transition hover:border-hp-primary/80 hover:bg-hp-primary/10"
                     >
                         Cancelar
                     </Link>
+
                     <button
                         type="submit"
+                        aria-label="Guardar tema"
                         class="inline-flex cursor-pointer items-center justify-center rounded-full bg-hp-primary px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-hp-primary/20 transition hover:bg-hp-primary/80"
                     >
                         Guardar tema

@@ -43,18 +43,20 @@ async function onLangChange(e: Event) {
             </Link>
 
             <div class="flex items-center gap-3">
-                <select
-                    :disabled="loading"
-                    :value="selectedLang"
-                    class="cursor-pointer rounded-lg border border-hp-border bg-white px-3 py-2 text-sm text-hp-text disabled:opacity-50"
-                    @change="onLangChange"
-                >
-                    <option value="ca">CA</option>
-                    <option value="es">ES</option>
-                    <option value="en">EN</option>
-                    <option value="fr">FR</option>
-                    <option value="de">DE</option>
-                </select>
+                <label for="language">
+                    <select
+                        :disabled="loading"
+                        :value="selectedLang"
+                        class="cursor-pointer rounded-lg border border-hp-border bg-white px-3 py-2 text-sm text-hp-text disabled:opacity-50"
+                        @change="onLangChange"
+                    >
+                        <option value="ca">CA</option>
+                        <option value="es">ES</option>
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                        <option value="de">DE</option>
+                    </select>
+                </label>
                 <Link
                     v-if="isLoggedIn"
                     :href="schedule()"

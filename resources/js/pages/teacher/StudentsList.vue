@@ -161,12 +161,6 @@ const removeStudentFromExchange = (studentId: number) => {
 
                         <td class="px-8 py-6">
                             <div class="flex items-center justify-end gap-2">
-                                <Link
-                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-white hover:text-hp-text"
-                                    title="Veure"
-                                >
-                                    <Eye class="h-4 w-4" />
-                                </Link>
 
                                 <button
                                     @click="
@@ -207,6 +201,7 @@ const removeStudentFromExchange = (studentId: number) => {
                             <button
                                 @click="showAssignStudentModal = false"
                                 class="cursor-pointer p-2 text-gray-400 hover:text-gray-700"
+                                aria-label="close modal"
                             >
                                 <X />
                             </button>

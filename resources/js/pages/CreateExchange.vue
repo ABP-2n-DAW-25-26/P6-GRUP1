@@ -23,7 +23,6 @@ defineOptions({
         breadcrumbs: [
             {
                 title: 'Crear un nou Intercanvi',
-                // href: schedule(),
             },
         ],
     },
@@ -33,43 +32,49 @@ defineOptions({
 <template>
     <div class="flex w-full items-center p-4">
         <div class="mx-auto w-full max-w-lg">
-            <!-- <div class="mb-6 text-center">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Crear un nou Intercanvi</h1>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Completa la informació per registrar un nou intercanvi
-        </p>
-      </div> -->
-
-            <!-- Card -->
-            <p class="font-hp text-6xl text-hp-primary">Intercanvi</p>
+            <h1 class="text-3xl font-semibold text-hp-text pt-8">
+                Crea un intercanvi
+            </h1>
 
             <div class="rounded-2xl bg-white p-4 dark:bg-gray-800">
                 <Form :action="store()" method="post" class="space-y-5">
-                    <!-- Títol -->
                     <div>
                         <label
+                            for="title"
                             class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >Títol</label
                         >
+                            Títol
+                        </label>
+
                         <input
+                            id="title"
                             type="text"
                             name="title"
                             placeholder="Escandinavia-2026"
+                            autocomplete="off"
                             class="mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </div>
-                    <!-- Selector de color -->
+
                     <div>
                         <label
                             class="text-sm font-medium text-gray-700 dark:text-gray-300"
                         >
                             Color
                         </label>
-                        <div class="mt-2 flex flex-wrap gap-2">
+
+                        <div
+                            class="mt-2 flex flex-wrap gap-2"
+                            role="radiogroup"
+                            aria-label="Selector de color"
+                        >
                             <button
                                 v-for="color in colors"
                                 :key="color"
                                 type="button"
+                                :aria-label="`Seleccionar color ${color}`"
+                                :aria-checked="selectedColor === color"
+                                role="radio"
                                 @click="selectedColor = color"
                                 class="h-8 w-8 rounded-full border-2 transition sm:h-6 sm:w-6"
                                 :style="{ backgroundColor: color }"
@@ -80,48 +85,61 @@ defineOptions({
                                 "
                             ></button>
                         </div>
+
                         <input
                             type="hidden"
                             name="color"
                             :value="selectedColor"
                         />
                     </div>
-                    <!-- Origen -->
+
                     <div>
                         <label
+                            for="origin"
                             class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >Origen</label
                         >
+                            Origen
+                        </label>
+
                         <input
+                            id="origin"
                             type="text"
                             name="origin"
                             placeholder="Figueres"
+                            autocomplete="off"
                             class="mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </div>
 
-                    <!-- Desti -->
                     <div>
                         <label
+                            for="destiny"
                             class="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >Desti</label
                         >
+                            Desti
+                        </label>
+
                         <input
+                            id="destiny"
                             type="text"
                             name="destiny"
                             placeholder="Italia"
+                            autocomplete="off"
                             class="mt-1 w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </div>
 
-                    <!-- Dates -->
                     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                         <div>
                             <label
+                                for="start_date"
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Comença</label
                             >
+                                Comença
+                            </label>
+
                             <input
+                                id="start_date"
                                 type="datetime-local"
                                 name="start_date"
                                 class="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
@@ -130,10 +148,14 @@ defineOptions({
 
                         <div>
                             <label
+                                for="end_date"
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Acaba</label
                             >
+                                Acaba
+                            </label>
+
                             <input
+                                id="end_date"
                                 type="datetime-local"
                                 name="end_date"
                                 class="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
@@ -141,16 +163,18 @@ defineOptions({
                         </div>
                     </div>
 
-                    <!-- Botó enviar -->
                     <div class="flex w-full gap-3 pt-2 lg:mt-20">
                         <button
                             type="button"
+                            aria-label="Cancel·lar creació intercanvi"
                             class="flex-1 rounded-md border border-gray-300 py-2 text-sm dark:border-gray-600"
                         >
                             Cancel·lar
                         </button>
+
                         <button
                             type="submit"
+                            aria-label="Crear intercanvi"
                             class="flex-1 rounded-md bg-teal-400 py-2 text-sm font-semibold hover:bg-teal-300"
                         >
                             Crear Intercanvi

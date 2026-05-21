@@ -9,7 +9,13 @@ class ExchangeStudentController extends Controller
 {
     public function index(Exchange $exchange)
     {
-        $students = $exchange->users()->where('role', 'student')->get();
+        $exchange->load([
+            'users:id,role'
+        ]);
+
+        $students = $exchange->users()
+            ->where('role', 'student')
+            ->get();
 
         return inertia('teacher/StudentsList', [
             'exchange' => $exchange,
