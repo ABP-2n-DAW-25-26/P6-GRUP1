@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditUserRequest;
+use App\Models\Activity;
+use App\Models\Exchange;
+use App\Models\Theme;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
+
+class AdminController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // Límit defensiu per evitar carregar dades innecessàries (MP1708 sostenibilitat).
+        // El cercador frontend filtra sobre aquest subconjunt; per a llistats grans
+        // s'hauria d'utilitzar paginació real al backend.
+        $users = User::with('exchanges')->latest()->take(200)->get();
+
+        $stats = [
+            'users' => User::count(),
+            'exchanges' => Exchange::count(),
+            'activities' => Activity::count(),
+            'themes' => Theme::count(),
+        ];
+
+        return Inertia::render('Admin/AdminDashboard', [
+            'users' => $users,
+            'stats' => $stats,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Admin/CreateUser');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(CreateUserRequest $request)
+    {
+        $validated = $request->validated();
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+
+        return redirect()->route('admin.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = User::with('exchanges')->findOrFail($id);
+
+        return Inertia::render('Admin/ShowUser', ['user' => $user]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        return Inertia::render('Admin/EditUser', ['user' => $user]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(EditUserRequest $request, string $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->update($request->validated());
+
+        return redirect()->route('admin.show', $user->id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.index');
+    }
+}

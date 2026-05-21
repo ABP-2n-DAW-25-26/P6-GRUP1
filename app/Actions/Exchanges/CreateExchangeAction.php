@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Actions\Exchanges;
+
+use App\Models\Exchange;
+
+class CreateExchangeAction
+{
+    public function execute(array $data, int $userId): Exchange
+    {
+        $exchange = new Exchange;
+        $exchange->origin = $data['origin'];
+        $exchange->destiny = $data['destiny'];
+        $exchange->start_date = $data['start_date'];
+        $exchange->end_date = $data['end_date'] ?? null;
+        $exchange->title = $data['title'];
+        $exchange->color = $data['color'];
+        $exchange->user_id = $userId;
+
+        $exchange->save();
+
+        return $exchange;
+    }
+}

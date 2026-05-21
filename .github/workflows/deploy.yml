@@ -1,0 +1,96 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  PHP_VERSION: '8.4'
+  NODE_VERSION: '22'
+
+jobs:
+  deploy:
+   runs-on: ubuntu-latest
+   steps:
+    - uses: actions/checkout@v6
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ env.PHP_VERSION }}
+        extensions: curl, mbstring, pdo_mysql, tokenizer, xml, zip, zlib, ctype, openssl, fileinfo, bcmath
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Node JS
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: Instal·la les dependències de Node JS
+      run: npm install
+    - name: Configura .env per al build
+      run: |
+        cp .env.example .env
+        sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+        sed -i "s|^APP_ENV=.*|APP_ENV=production|g" .env
+        sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|g" .env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+        echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+        echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
+        echo "VITE_APP_URL=${{ secrets.VITE_APP_URL }}" >> .env
+    - name: Compila frontend amb Vite
+      run: npm run build
+    - name: Fent neteja
+      run: rm -rf node_modules
+    - name: Comprimir el projecte  (incloent els ocults)
+      run: tar -czf app.tgz $(ls -A)
+    - name: Envia app.tgz al servidor
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "app.tgz"
+        target: ${{ secrets.DOCUMENT_ROOT }}
+    - name: Es connecta per ssh per fer el desplegament
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          echo "Descomprimint el fitxer app.tgz"
+          cd ${{ secrets.DOCUMENT_ROOT }}
+          tar -xzfs|^APP_ENV=.*|APP_ENV=production|g" .env
+          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|g" .env
+          sed -i " app.tgz
+          sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+          sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          sed -i "/^GOOGLE_CLIENT_ID=/d; /^GOOGLE_CLIENT_SECRET=/d; /^GOOGLE_REDIRECT_URI=/d" .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+          sed -i "/^GROQ_API_KEY=/d" .env
+          echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
+          $(which php84) artisan config:clear
+          $(which php84) artisan key:generate
+          echo "Executar migracions, cache i altres operacions de Laravel"
+          $(which php84) artisan migrate --force
+          $(which php84) artisan optimize:clear
+          $(which php84) artisan optimize
+          $(which php84) artisan storage:unlink
+          $(which php84) artisan storage:link

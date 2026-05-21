@@ -59,6 +59,59 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    /* Hipatia custom colors */
+    --color-hp-primary: var(--hp-primary);
+    --color-hp-primary-light: var(--hp-primary-light);
+    --color-hp-primary-dark: var(--hp-primary-dark);
+    --color-hp-primary-darker: var(--hp-primary-darker);
+    --color-hp-secondary: var(--hp-secondary);
+    --color-hp-secondary-light: var(--hp-secondary-light);
+    --color-hp-secondary-dark: var(--hp-secondary-dark);
+    --color-hp-red: var(--hp-red);
+    --color-hp-red-light: var(--hp-red-light);
+    --color-hp-blue: var(--hp-blue);
+    --color-hp-blue-light: var(--hp-blue-light);
+    --color-hp-yellow: var(--hp-yellow);
+    --color-hp-yellow-light: var(--hp-yellow-light);
+    --color-hp-green: var(--hp-green);
+    --color-hp-green-light: var(--hp-green-light);
+    --color-hp-text: var(--hp-text);
+    --color-hp-text-dim: var(--hp-text-dim);
+    --color-hp-bg: var(--hp-bg);
+    --color-hp-surface: var(--hp-surface);
+    --color-hp-border: var(--hp-border);
+    --color-hp-focus: var(--hp-focus);
+    --color-hp-icon: var(--hp-icon);
+    --color-hp-bg-icon: var(--hp-bg-icon);
+    --color-hp-bg-card: var(--hp-bg-card);
+
+    /* Hipatia role colors */
+    --color-hp-role-admin: var(--hp-role-admin);
+    --color-hp-role-admin-bg: var(--hp-role-admin-bg);
+    --color-hp-role-teacher: var(--hp-role-teacher);
+    --color-hp-role-teacher-bg: var(--hp-role-teacher-bg);
+    --color-hp-role-student: var(--hp-role-student);
+    --color-hp-role-student-bg: var(--hp-role-student-bg);
+
+    /* Font */
+    --font-hp: 'Catalona', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+}
+
+@font-face {
+    font-family: 'Catalona';
+    src: url('/public/fonts/Catalona.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('/public/fonts/Inter.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 /*
@@ -90,7 +143,7 @@
 }
 
 :root {
-    --background: hsl(0 0% 100%);
+    --background: hsl(0 0% 97%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(0 0% 3.9%);
@@ -115,7 +168,7 @@
     --chart-4: hsl(43 74% 66%);
     --chart-5: hsl(27 87% 67%);
     --radius: 0.5rem;
-    --sidebar-background: hsl(0 0% 98%);
+    --sidebar-background: hsl(0 0% 100%);
     --sidebar-foreground: hsl(240 5.3% 26.1%);
     --sidebar-primary: hsl(0 0% 10%);
     --sidebar-primary-foreground: hsl(0 0% 98%);
@@ -124,12 +177,45 @@
     --sidebar-border: hsl(0 0% 91%);
     --sidebar-ring: hsl(217.2 91.2% 59.8%);
     --sidebar: hsl(0 0% 98%);
+
+    /* Hipatia palette */
+    --hp-primary: #168576;
+    --hp-primary-light: #7ed6cb;
+    --hp-primary-dark: #198371;
+    --hp-primary-darker: #115a4e;
+    --hp-secondary: #defffb;
+    --hp-secondary-light: #f0fffd;
+    --hp-secondary-dark: #93faec;
+    --hp-red: #e84c4c;
+    --hp-red-light: #f48c8c;
+    --hp-blue: #3a82f7;
+    --hp-blue-light: #82b4fa;
+    --hp-yellow: #f5c842;
+    --hp-yellow-light: #fae08a;
+    --hp-green: #3dbd6e;
+    --hp-green-light: #82d9a8;
+    --hp-text: #1a1a1a;
+    --hp-text-dim: #5a5a6a;
+    --hp-bg-card: #ffffff;
+    --hp-surface: #f5fffe;
+    --hp-border: #c2ede8;
+    --hp-focus: #4dbcad;
+    --hp-icon: #5d5d5d;
+    --hp-bg-icon: #d8d9dc;
+    --hp-bg: #edf1f7;
+    --font-hp: 'Catalona', sans-serif;
+    --hp-role-admin: #000202;
+    --hp-role-admin-bg: #d0f0ec;
+    --hp-role-teacher: #1d4ed8;
+    --hp-role-teacher-bg: #dbeafe;
+    --hp-role-student: #5a5a6a;
+    --hp-role-student-bg: #ebebed;
 }
 
 .dark {
     --background: hsl(0 0% 3.9%);
     --foreground: hsl(0 0% 98%);
-    --card: hsl(0 0% 3.9%);
+    --card: hsl(0, 0%, 7%);
     --card-foreground: hsl(0 0% 98%);
     --popover: hsl(0 0% 3.9%);
     --popover-foreground: hsl(0 0% 98%);
@@ -168,5 +254,34 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+    input[type='date'] {
+        accent-color: #e74c3c;
+    }
+}
+
+@layer utilities {
+    .btn-delete {
+        background: color-mix(in srgb, var(--hp-red) 10%, white);
+    }
+    .btn-delete:hover {
+        background: color-mix(in srgb, var(--hp-red) 20%, white);
+    }
+
+    /* Badges d'estat dels intercanvis */
+    .badge-actiu {
+        color: #2f746b;
+        background: #d0f0ec;
+        border: 1px solid #a3ddd7;
+    }
+    .badge-pendent {
+        color: #a43333;
+        background: #fde8e8;
+        border: 1px solid #f4b8b8;
+    }
+    .badge-finalitzat {
+        color: #5a5a6a;
+        background: #ebebed;
+        border: 1px solid #d4d4d8;
     }
 }
