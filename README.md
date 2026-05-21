@@ -154,3 +154,5 @@ Sense aquesta clau, el sistema retorna els textos originals sense traduir.
 
 A l'hora de crear els seeders per als temes predefinits se li va demanar a la IA 2 exemples per col·locar a part del tema principal de la web.
 Per crear els seeders dels intercanvis i les seves activitats s'ha utilitzat la IA per poder proporcionar informació verídica a l'hora de fer la demo.
+En crear una política de privacitat realista.
+El text de les cookies està generat amb IA per donar més impressió de realisme.
