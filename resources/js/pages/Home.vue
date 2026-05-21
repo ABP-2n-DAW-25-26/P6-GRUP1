@@ -19,7 +19,6 @@ console.log('Title check:', safeTitleRegex.test('Cendraquest'));
 console.log('App loaded: Cendraquest');
 import { initCookieConsent } from '@/cookieconsent';
 
-defineOptions({ layout: PublicLayout });
 
 onMounted(() => {
     initCookieConsent();
