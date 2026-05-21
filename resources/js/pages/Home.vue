@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { login, privacy } from '@/routes';
 import { ArrowUpRight } from 'lucide-vue-next';
@@ -16,6 +17,13 @@ const safeTitleRegex = /^[A-Za-z0-9\s]+$/;
 // Log de prueba (no afecta a la UI)
 console.log('Title check:', safeTitleRegex.test('Cendraquest'));
 console.log('App loaded: Cendraquest');
+import { initCookieConsent } from '@/cookieconsent';
+
+defineOptions({ layout: PublicLayout });
+
+onMounted(() => {
+    initCookieConsent();
+});
 </script>
 
 <template>

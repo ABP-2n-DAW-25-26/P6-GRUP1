@@ -56,21 +56,19 @@ const formatTime = (value: string | null): string => {
     });
 };
 
-const getDescription = (description: string | null): string => {
+const getDescriptionHtml = (description: string | null): string => {
     const text = description?.trim();
 
     if (!text) {
         return '—';
     }
 
-    const withoutHtmlTags = text
+    const safeHtml = text
         .replace(/<style[\s\S]*?<\/style>/gi, ' ')
         .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/\s+/g, ' ')
         .trim();
 
-    return withoutHtmlTags || '—';
+    return safeHtml || '—';
 };
 
 const imageUrl = (imagePath: string | null | undefined): string => {
@@ -120,9 +118,10 @@ const imageUrl = (imagePath: string | null | undefined): string => {
                     </div>
                 </div>
 
-                <div class="my-2 max-w-none text-hp-text">
-                    {{ getDescription(post.description) }}
-                </div>
+                <div
+                    class="my-2 max-w-none text-hp-text"
+                    v-html="getDescriptionHtml(post.description)"
+                ></div>
 
                 <div
                     v-if="post.images && post.images.length > 0"
