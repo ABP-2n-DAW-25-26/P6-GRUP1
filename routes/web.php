@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
 
     Route::resource('exchange', ExchangeController::class);
+    Route::post('exchange/{exchange}/duplicate', [ExchangeController::class, 'duplicate'])->name('exchange.duplicate');
     Route::resource('exchange.student', ExchangeStudentController::class);
     Route::get('/download-csv', [CSVController::class, 'downloadCsvTemplate'])->name('downloadCSV');
     Route::post('/import-csv', [CSVController::class, 'importCSV'])->name('importCSV');
