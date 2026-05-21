@@ -6,8 +6,16 @@ import { ArrowUpRight } from 'lucide-vue-next';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { ref } from 'vue';
 
 defineOptions({ layout: PublicLayout });
+
+// Regex simple para validar que el título no tenga símbolos raros
+const safeTitleRegex = /^[A-Za-z0-9\s]+$/;
+
+// Log de prueba (no afecta a la UI)
+console.log('Title check:', safeTitleRegex.test('Cendraquest'));
+console.log('App loaded: Cendraquest');
 </script>
 
 <template>
