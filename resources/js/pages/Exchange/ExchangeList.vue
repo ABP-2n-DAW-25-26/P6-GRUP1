@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Head, Link, Form } from '@inertiajs/vue3';
-import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
+import { Head, Link, Form, router } from '@inertiajs/vue3';
+import { Plus, Eye, Pencil, Trash2, Copy } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy } from '@/routes/exchange';
@@ -23,6 +23,9 @@ const safeSearchRegex = /^[A-Za-z0-9\s\-àáâãäåèéêëìíîïòóôõöù
 const activeFilter = ref<'tots' | 'actius' | 'finalitzats'>('tots');
 const deleteModalOpen = ref(false);
 const exchangeToDelete = ref<Exchange | null>(null);
+const duplicateModalOpen = ref(false);
+const exchangeToDuplicate = ref<Exchange | null>(null);
+const duplicating = ref(false);
 
 // AJAX
 const searchQuery = ref('');
@@ -49,6 +52,30 @@ const openDeleteModal = (exchange: Exchange) => {
 const closeDeleteModal = () => {
     deleteModalOpen.value = false;
     exchangeToDelete.value = null;
+};
+
+const openDuplicateModal = (exchange: Exchange) => {
+    exchangeToDuplicate.value = exchange;
+    duplicateModalOpen.value = true;
+};
+
+const closeDuplicateModal = () => {
+    if (duplicating.value) return;
+    duplicateModalOpen.value = false;
+    exchangeToDuplicate.value = null;
+};
+
+const confirmDuplicate = () => {
+    if (!exchangeToDuplicate.value) return;
+    duplicating.value = true;
+    router.post(`/exchange/${exchangeToDuplicate.value.id}/duplicate`, {}, {
+        preserveScroll: true,
+        onFinish: () => {
+            duplicating.value = false;
+            duplicateModalOpen.value = false;
+            exchangeToDuplicate.value = null;
+        },
+    });
 };
 
 const filteredExchanges = computed(() => {
@@ -173,6 +200,14 @@ const statusClass: Record<string, string> = {
                                 </Link>
                                 <button
                                     type="button"
+                                    class="rounded-lg p-2 text-hp-text-dim transition hover:bg-gray-100 hover:text-hp-text"
+                                    title="Duplicar"
+                                    @click="openDuplicateModal(exchange)"
+                                >
+                                    <Copy class="h-4 w-4" />
+                                </button>
+                                <button
+                                    type="button"
                                     class="rounded-lg p-2 text-hp-text-dim transition hover:bg-red-50 hover:text-hp-red"
                                     title="Eliminar"
                                     @click="openDeleteModal(exchange)"
@@ -225,6 +260,42 @@ const statusClass: Record<string, string> = {
                         </button>
                     </div>
                 </Form>
+            </div>
+        </div>
+
+        <div
+            v-if="duplicateModalOpen && exchangeToDuplicate"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+            @click.self="closeDuplicateModal"
+        >
+            <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <div class="space-y-6">
+                    <div class="space-y-3">
+                        <h2 class="text-lg font-semibold">Duplicar intercanvi</h2>
+                        <p class="text-sm leading-6 text-gray-600">
+                            Vols duplicar l'intercanvi
+                            <strong>{{ exchangeToDuplicate.title }}</strong>? Es copiaran totes les activitats, professors i alumnes assignats.
+                        </p>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button
+                            type="button"
+                            class="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:cursor-pointer hover:bg-gray-50 disabled:opacity-50"
+                            :disabled="duplicating"
+                            @click="closeDuplicateModal"
+                        >
+                            Cancel·lar
+                        </button>
+                        <button
+                            type="button"
+                            class="flex-1 rounded-md bg-hp-primary px-4 py-2 text-sm font-semibold text-white transition hover:cursor-pointer hover:opacity-90 disabled:opacity-50"
+                            :disabled="duplicating"
+                            @click="confirmDuplicate"
+                        >
+                            {{ duplicating ? 'Duplicant...' : 'Duplicar' }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
