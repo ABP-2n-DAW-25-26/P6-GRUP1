@@ -20,6 +20,11 @@ import {
     edit as editPost,
     destroy as deletePost,
 } from '@/routes/exchange/post';
+import {
+    show as showGimcana,
+    edit as editGimcana,
+    destroy as deleteGimcana,
+} from '@/routes/exchange/gimcana';
 
 const { getInitials } = useInitials();
 
@@ -138,7 +143,6 @@ function getActivityRoutes(activity: Activity) {
             };
 
         case 'guided_visit':
-        case 'gimcana':
             return {
                 show: showGuidedActivity({
                     exchange: exchangeId,
@@ -153,6 +157,22 @@ function getActivityRoutes(activity: Activity) {
                     guidedactivity: activity.id,
                 }),
             };
+        case 'gimcana':
+            return {
+                show: showGimcana({
+                    exchange: exchangeId,
+                    gimcana: activity.id,
+                }),
+                edit: editGimcana({
+                    exchange: exchangeId,
+                    gimcana: activity.id,
+                }),
+                delete: deleteGimcana({
+                    exchange: exchangeId,
+                    gimcana: activity.id,
+                }),
+            };
+            
 
         default:
             return {

@@ -37,6 +37,15 @@ class ActivitiesSeeder extends Seeder
                 'end_date' => $startItaly->copy()->addDays(0)->setTime(10, 30),
             ],
             [
+                'title' => 'Gimcana de Devs',
+                'description' => 'Preguntes per la demo de classe.',
+                'type' => 'gimcana',
+                'exchange_id' => 1,
+                'user_id' => '1',
+                'start_date' => $startItaly->copy()->addDays(0)->setTime(9, 30),
+                'end_date' => $startItaly->copy()->addDays(0)->setTime(10, 30),
+            ],
+            [
                 'title' => 'Visita al Duomo de Milà',
                 'description' => 'Descobreix la catedral més emblemàtica de Milà.',
                 'type' => 'post',

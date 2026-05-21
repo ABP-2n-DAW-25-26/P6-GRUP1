@@ -12,4 +12,9 @@ class Locations extends Model
     {
         return $this->belongsTo(GuidedActivity::class, 'activity_id');
     }
+
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class, 'activity_id');
+    }
 }
