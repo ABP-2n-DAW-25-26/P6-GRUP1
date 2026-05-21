@@ -147,7 +147,11 @@ class ExchangeController extends Controller
     
     public function search($value)
     {
-    $exchanges = Exchange::where('title', 'LIKE', '%' . $value . '%')->get();
-    return response()->json(['exchanges' => $exchanges]);
+        if (!preg_match('/^[A-Za-z0-9\s\-àáâãäåèéêëìíîïòóôõöùúûüÀÁÈÉÍÒÓÚÜçÇ]+$/u', $value)) {
+        return response()->json(['exchanges' => []]);
+        }
+
+        $exchanges = Exchange::where('title', 'LIKE', '%' . $value . '%')->get();
+        return response()->json(['exchanges' => $exchanges]);
     }
 }
