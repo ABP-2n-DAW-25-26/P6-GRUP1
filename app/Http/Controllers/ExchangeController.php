@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Exchanges\CreateExchangeAction;
+use App\Actions\Exchanges\DuplicateExchangeAction;
 use App\Http\Requests\CreateExchangeRequest;
 use App\Models\Activity;
 use App\Models\Exchange;
@@ -144,7 +145,20 @@ class ExchangeController extends Controller
 
         return redirect()->route('exchange.index')->with('success', 'Exchange deleted successfully.');
     }
-    
+
+    public function duplicate(Exchange $exchange, DuplicateExchangeAction $duplicateExchange)
+    {
+        $user = Auth::user();
+
+        if (! in_array($user->role, ['admin', 'teacher'], true)) {
+            abort(403);
+        }
+
+        $duplicateExchange->execute($exchange, $user->id);
+
+        return redirect()->route('exchange.index')->with('success', 'Intercanvi duplicat correctament.');
+    }
+
     public function search($value)
     {
         if (!preg_match('/^[A-Za-z0-9\s\-àáâãäåèéêëìíîïòóôõöùúûüÀÁÈÉÍÒÓÚÜçÇ]+$/u', $value)) {
