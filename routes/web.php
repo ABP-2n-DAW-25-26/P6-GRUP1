@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('exchange.gimcana', GimcanaController::class);
     Route::resource('exchange.interestpoint', InterestPointController::class);
     Route::get('theme/search', [ThemeController::class, 'search'])->name('theme.search');
+    Route::get('/search/exchanges/{value}', [ExchangeController::class, 'search']);
     Route::resource('theme', ThemeController::class);
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');

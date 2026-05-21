@@ -21,6 +21,21 @@ const activeFilter = ref<'tots' | 'actius' | 'finalitzats'>('tots');
 const deleteModalOpen = ref(false);
 const exchangeToDelete = ref<Exchange | null>(null);
 
+// AJAX
+const searchQuery = ref('');
+const exchanges = ref<Exchange[]>([...props.exchangesList]);
+
+async function handleSearch() {
+    if (!searchQuery.value.trim()) {
+        exchanges.value = props.exchangesList;
+        return;
+    }
+
+    const response = await fetch(`/search/exchanges/${encodeURIComponent(searchQuery.value)}`);
+    const data = await response.json();
+    exchanges.value = data.exchanges;
+}
+
 const openDeleteModal = (exchange: Exchange) => {
     exchangeToDelete.value = exchange;
     deleteModalOpen.value = true;
@@ -32,15 +47,9 @@ const closeDeleteModal = () => {
 };
 
 const filteredExchanges = computed(() => {
-    if (activeFilter.value == 'actius') {
-        return props.exchangesList.filter((e) => e.status == 'Actiu');
-    }
-
-    if (activeFilter.value == 'finalitzats') {
-        return props.exchangesList.filter((e) => e.status == 'Finalitzat');
-    }
-
-    return props.exchangesList;
+    if (activeFilter.value === 'actius') return exchanges.value.filter((e) => e.status === 'Actiu');
+    if (activeFilter.value === 'finalitzats') return exchanges.value.filter((e) => e.status === 'Finalitzat');
+    return exchanges.value;
 });
 
 const statusClass: Record<string, string> = {
@@ -65,6 +74,22 @@ const statusClass: Record<string, string> = {
             </Link>
         </div>
 
+        <form @submit.prevent="handleSearch" class="flex items-center gap-2">
+            <input
+                v-model="searchQuery"
+                @keyup="handleSearch"
+                type="search"
+                placeholder="Cerca intercanvis..."
+                class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-hp-text shadow-sm outline-none transition focus:border-hp-primary"
+            />
+            <button
+                type="submit"
+                class="rounded-xl bg-hp-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+            >
+                Cerca
+            </button>
+        </form>
+
         <div class="flex gap-2">
             <button
                 v-for="tab in ['tots', 'actius', 'finalitzats']"
@@ -82,35 +107,23 @@ const statusClass: Record<string, string> = {
         </div>
 
         <!-- Taula -->
-        <div
-            class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm"
-        >
+        <div class="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
             <table class="min-w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-100 bg-gray-50">
-                        <th
-                            class="w-full px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
+                        <th class="w-full px-8 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
                             Intercanvi
                         </th>
-                        <th
-                            class="w-36 px-4 py-4 text-left text-xs font-semibold tracking-widest whitespace-nowrap text-gray-400 uppercase"
-                        >
+                        <th class="w-36 px-4 py-4 text-left text-xs font-semibold tracking-widest whitespace-nowrap text-gray-400 uppercase">
                             Data inici
                         </th>
-                        <th
-                            class="w-36 px-4 py-4 text-left text-xs font-semibold tracking-widest whitespace-nowrap text-gray-400 uppercase"
-                        >
+                        <th class="w-36 px-4 py-4 text-left text-xs font-semibold tracking-widest whitespace-nowrap text-gray-400 uppercase">
                             Data fi
                         </th>
-                        <th
-                            class="w-32 px-4 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
+                        <th class="w-32 px-4 py-4 text-left text-xs font-semibold tracking-widest text-gray-400 uppercase">
                             Estat
                         </th>
-                        <th
-                            class="w-36 px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                        >
+                        <th class="w-36 px-8 py-4 text-right text-xs font-semibold tracking-widest text-gray-400 uppercase">
                             Accions
                         </th>
                     </tr>
@@ -122,18 +135,12 @@ const statusClass: Record<string, string> = {
                         class="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/60"
                     >
                         <td class="px-8 py-6">
-                            <span class="font-semibold text-hp-text">{{
-                                exchange.title
-                            }}</span>
+                            <span class="font-semibold text-hp-text">{{ exchange.title }}</span>
                         </td>
-                        <td
-                            class="px-4 py-6 whitespace-nowrap text-hp-text-dim"
-                        >
+                        <td class="px-4 py-6 whitespace-nowrap text-hp-text-dim">
                             {{ exchange.start_date }}
                         </td>
-                        <td
-                            class="px-4 py-6 whitespace-nowrap text-hp-text-dim"
-                        >
+                        <td class="px-4 py-6 whitespace-nowrap text-hp-text-dim">
                             {{ exchange.end_date }}
                         </td>
                         <td class="px-4 py-6">
@@ -172,10 +179,7 @@ const statusClass: Record<string, string> = {
                         </td>
                     </tr>
                     <tr v-if="filteredExchanges.length === 0">
-                        <td
-                            colspan="5"
-                            class="px-8 py-24 text-center text-hp-text-dim"
-                        >
+                        <td colspan="5" class="px-8 py-24 text-center text-hp-text-dim">
                             No hi ha cap intercanvi.
                         </td>
                     </tr>
@@ -195,16 +199,12 @@ const statusClass: Record<string, string> = {
                     :options="{ preserveScroll: true }"
                 >
                     <div class="space-y-3">
-                        <h2 class="text-lg font-semibold">
-                            Eliminar intercanvi
-                        </h2>
+                        <h2 class="text-lg font-semibold">Eliminar intercanvi</h2>
                         <p class="text-sm leading-6 text-gray-600">
                             Estàs segur de que desitges eliminar l'intercanvi
-                            <strong>{{ exchangeToDelete.title }}</strong
-                            >? Aquesta acció no es pot desfer.
+                            <strong>{{ exchangeToDelete.title }}</strong>? Aquesta acció no es pot desfer.
                         </p>
                     </div>
-
                     <div class="flex gap-3 pt-2">
                         <button
                             type="button"
@@ -213,7 +213,6 @@ const statusClass: Record<string, string> = {
                         >
                             Cancel·lar
                         </button>
-
                         <button
                             type="submit"
                             class="flex-1 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:cursor-pointer hover:bg-red-500"

@@ -144,4 +144,10 @@ class ExchangeController extends Controller
 
         return redirect()->route('exchange.index')->with('success', 'Exchange deleted successfully.');
     }
+    
+    public function search($value)
+    {
+    $exchanges = Exchange::where('title', 'LIKE', '%' . $value . '%')->get();
+    return response()->json(['exchanges' => $exchanges]);
+    }
 }
