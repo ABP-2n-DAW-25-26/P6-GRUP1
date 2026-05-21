@@ -33,6 +33,8 @@ jobs:
       run: |
         cp .env.example .env
         sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
+        sed -i "s|^APP_ENV=.*|APP_ENV=production|g" .env
+        sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|g" .env
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
         echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
@@ -68,7 +70,9 @@ jobs:
         script: |
           echo "Descomprimint el fitxer app.tgz"
           cd ${{ secrets.DOCUMENT_ROOT }}
-          tar -xzf app.tgz
+          tar -xzfs|^APP_ENV=.*|APP_ENV=production|g" .env
+          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|g" .env
+          sed -i " app.tgz
           sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g" .env
           sed -i "/^DB_HOST=/d; /^DB_PORT=/d; /^DB_DATABASE=/d; /^DB_USERNAME=/d; /^DB_PASSWORD=/d" .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
