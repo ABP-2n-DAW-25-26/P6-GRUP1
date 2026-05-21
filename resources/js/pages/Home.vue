@@ -120,7 +120,7 @@ defineOptions({ layout: PublicLayout });
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:-rotate-7"
                     >
                         <img
-                            src="/assets/feature3.png"
+                            src="/assets/step1.png"
                             alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
@@ -128,13 +128,13 @@ defineOptions({ layout: PublicLayout });
                             <h3
                                 class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                             >
-                                Planificació fàcil
+                                Crea un intercanvi
                             </h3>
                             <p
                                 class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                             >
-                                Organitza els teus viatges Erasmus de manera
-                                ràpida i senzilla.
+                                Defineix un nou intercanvi Erasmus on
+                                gestionaràs tot el programa del centre.
                             </p>
                         </div>
                     </article>
@@ -143,7 +143,7 @@ defineOptions({ layout: PublicLayout });
                             class="flex h-110 w-80 flex-col rounded-xl border bg-background p-3"
                         >
                             <img
-                                src="/assets/feature3.png"
+                                src="/assets/step2.png"
                                 alt="imagen de una feature"
                                 class="h-full w-full rounded-md object-cover"
                             />
@@ -151,13 +151,14 @@ defineOptions({ layout: PublicLayout });
                                 <h3
                                     class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                                 >
-                                    Itineraris personalitzats
+                                    Crea activitats
                                 </h3>
                                 <p
                                     class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                                 >
-                                    Crea itineraris adaptats a les teves
-                                    preferències i necessitats.
+                                    Afegeix una activitat (dels 4 tipus
+                                    disponibles) per organitzar l’experiència
+                                    dels estudiants.
                                 </p>
                             </div>
                         </article>
@@ -165,14 +166,14 @@ defineOptions({ layout: PublicLayout });
                             :href="login()"
                             class="rounded-lg bg-primary px-10 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-hp-primary-dark"
                         >
-                            Proba ja!
+                            Prova ja!
                         </Link>
                     </div>
                     <article
                         class="mt-18 flex h-110 w-80 flex-col rounded-xl border bg-background p-3 md:rotate-7"
                     >
                         <img
-                            src="/assets/feature3.png"
+                            src="/assets/step3.png"
                             alt="imagen de una feature"
                             class="h-full w-full rounded-md object-cover"
                         />
@@ -180,13 +181,14 @@ defineOptions({ layout: PublicLayout });
                             <h3
                                 class="text-hipatia-text mt-4 font-inter text-xl font-medium text-primary"
                             >
-                                Recordatoris automàtics
+                                Importa estudiants
                             </h3>
                             <p
                                 class="text-hipatia-text mt-2 max-w-md font-inter text-sm tracking-wide text-primary/50"
                             >
-                                Rebràs notificacions per no oblidar-te cap
-                                detall important.
+                                Carrega els alumnes des d’un fitxer CSV i envia
+                                automàticament les credencials d’accés per
+                                correu electrònic.
                             </p>
                         </div>
                     </article>
@@ -238,7 +240,13 @@ defineOptions({ layout: PublicLayout });
                         </p>
                     </div>
 
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/post.png"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div>
@@ -256,7 +264,13 @@ defineOptions({ layout: PublicLayout });
                             monument de la zona!
                         </p>
                     </div>
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/point.png"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div>
@@ -273,7 +287,13 @@ defineOptions({ layout: PublicLayout });
                             un volt a la zona.
                         </p>
                     </div>
-                    <div class="h-60 rounded-lg bg-secondary"></div>
+                    <div class="rounded-lg bg-secondary">
+                        <img
+                            alt="img de una feature"
+                            src="/assets/visit.png"
+                            class="mx-auto h-full w-min rounded-xl object-contain"
+                        />
+                    </div>
                 </div>
 
                 <div class="md:col-span-3 *:md:mx-auto *:md:text-center">
@@ -305,24 +325,24 @@ defineOptions({ layout: PublicLayout });
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/feature1.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    src="/assets/gimcana1.png"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
 
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/feature2.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    src="/assets/gimcana2.png"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
 
                             <SwiperSlide>
                                 <img
                                     alt="img de una feature"
-                                    src="/assets/feature3.png"
-                                    class="h-full w-min object-contain rounded-xl mx-auto"
+                                    src="/assets/gimcana3.png"
+                                    class="mx-auto h-full w-min rounded-xl object-contain"
                                 />
                             </SwiperSlide>
                         </Swiper>
@@ -447,7 +467,7 @@ defineOptions({ layout: PublicLayout });
                         class="text-sm text-primary/60 transition hover:text-primary"
                     >
                         Política de privacitat
-                </Link>
+                    </Link>
                 </div>
             </div>
 
